@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import com.example.simplecad.Mode?>
+<BorderPane fx:id="borderPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.simplecad.MainController">
+    <center>
+        <Pane fx:id="workSpace" prefWidth="1280" prefHeight="720" style="-fx-background-color: #13002a"/>
+    </center>
+
+    <top>
+        <ToolBar>
+            <VBox>
+                <ToggleButton fx:id="lineBtn" onAction="#startLineDrawing" prefWidth="120">Линия</ToggleButton>
+                <ComboBox fx:id="lineMode" value="2 точки" prefWidth="120">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="2 точки"/>
+                            <String fx:value="Угол и длина"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+
+            <VBox>
+                <ToggleButton fx:id="rectBtn" onAction="#startRectDrawing" prefWidth="120">Прямоугольник</ToggleButton>
+                <ComboBox fx:id="rectMode" value="2 точки" prefWidth="120">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="2 точки"/>
+                            <String fx:value="2 стороны"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+
+            <VBox>
+                <ToggleButton fx:id="circleBtn" onAction="#startCircleDrawing" prefWidth="120">Окружность</ToggleButton>
+                <ComboBox fx:id="circleMode" value="Радиус" prefWidth="120">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <Mode fx:value="BY_RADIUS">Радиус</Mode>
+                            <Mode fx:value="BY_POINTS">3 точки</Mode>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+        </ToolBar>
+    </top>
+
+    <left>
+        <ToolBar fx:id="inputTool" orientation="VERTICAL" prefWidth="250">
+            <Label/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label/>
+                <TextField maxWidth="50"/>
+            </HBox>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label/>
+                <TextField maxWidth="50"/>
+            </HBox>
+        </ToolBar>
+    </left>
+
+    <bottom>
+        <ToolBar>
+            <VBox>
+                <Label fx:id="mouseX"/>
+                <Label fx:id="mouseY"/>
+            </VBox>
+            <ToggleButton fx:id="panBtn" onAction="#panByLBM">Pan</ToggleButton>
+            <Button onAction="#zoomPlus">Zoom +</Button>
+            <Button onAction="#zoomMinus">Zoom -</Button>
+        </ToolBar>
+    </bottom>
+
+</BorderPane>

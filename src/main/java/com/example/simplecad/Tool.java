@@ -10,12 +10,14 @@ import javafx.scene.layout.Pane;
 import java.util.Objects;
 
 public class Tool {
+    private final DrawingContext context;
     private final Pane workSpace;
     private double scale;
 
-    public Tool(Pane workSpace) {
-        this.workSpace = workSpace;
-        scale = 1;
+    public Tool(DrawingContext context) {
+        this.context = context;
+        workSpace = context.getWorkSpace();
+        scale = context.getScale();
         pan(MouseButton.MIDDLE);
         zoomByScroll();
     }
@@ -78,6 +80,7 @@ public class Tool {
         });
 
         scale *= zoomCoef;
+        context.setScale(scale);
     }
 
     public void updateCoords(MouseEvent e, Label mouseX, Label mouseY) {

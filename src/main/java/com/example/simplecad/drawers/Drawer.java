@@ -12,7 +12,7 @@ public class Drawer {
     protected final ToolBar toolBar;
     protected final Label inputLabel;
     protected final TextField input1, input2;
-    private final Label prompt1, prompt2;
+    protected final Label prompt1, prompt2;
     protected final Point coordsCenter;
     protected final DrawingContext drawingContext;
 

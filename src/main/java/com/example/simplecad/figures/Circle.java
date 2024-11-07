@@ -27,7 +27,7 @@ public class Circle extends Figure {
         circle.setStroke(color);
         circle.setFill(null);
 
-        getChildren().addAll(circle, center);
+        getChildren().add(circle);
     }
 
     @Override

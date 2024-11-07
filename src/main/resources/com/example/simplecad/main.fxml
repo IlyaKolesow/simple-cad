@@ -4,7 +4,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.*?>
-<?import com.example.simplecad.Mode?>
 <BorderPane fx:id="borderPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.simplecad.MainController">
     <center>
@@ -42,8 +41,8 @@
                 <ComboBox fx:id="circleMode" value="Радиус" prefWidth="120">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
-                            <Mode fx:value="BY_RADIUS">Радиус</Mode>
-                            <Mode fx:value="BY_POINTS">3 точки</Mode>
+                            <String fx:value="Радиус"/>
+                            <String fx:value="3 точки"/>
                         </FXCollections>
                     </items>
                 </ComboBox>

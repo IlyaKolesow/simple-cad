@@ -41,13 +41,13 @@ public class LineDrawer extends Drawer {
             if (e.getCode() == KeyCode.ENTER) {
                 if (firstPoint != null) {
                     double angle = Double.parseDouble(input1.getText());
-                    double length = Double.parseDouble(input2.getText());
+                    double length = Double.parseDouble(input2.getText()) * drawingContext.getScale();
                     Line line = new Line(firstPoint, angle, length);
                     workSpace.getChildren().add(line);
                     firstPoint = new Point(line.getPoint2());
                 } else {
-                    double x = coordsCenter.getX() + Double.parseDouble(input1.getText());
-                    double y = coordsCenter.getY() - Double.parseDouble(input2.getText());
+                    double x = coordsCenter.getX() + Double.parseDouble(input1.getText()) * drawingContext.getScale();
+                    double y = coordsCenter.getY() - Double.parseDouble(input2.getText()) * drawingContext.getScale();
                     firstPoint = new Point(x, y);
                     setPrompts("Укажите угол и длину линии", "Угол", "Длина");
                 }

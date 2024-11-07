@@ -16,6 +16,7 @@ public class DrawingContext {
     private final TextField input1, input2;
     private final Label prompt1, prompt2;
     private final Point coordsCenter;
+    private double scale;
 
     public DrawingContext(Pane workSpace, ToolBar toolBar) {
         this.workSpace = workSpace;
@@ -32,6 +33,15 @@ public class DrawingContext {
         prompt2 = (Label) hBox2.getChildren().get(0);
         input1 = (TextField) hBox1.getChildren().get(1);
         input2 = (TextField) hBox2.getChildren().get(1);
+        scale = 1;
+    }
+
+    public void setScale(double scale) {
+        this.scale = scale;
+    }
+
+    public double getScale() {
+        return scale;
     }
 
     public Pane getWorkSpace() {

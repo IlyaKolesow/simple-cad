@@ -29,8 +29,8 @@ public class RectDrawer extends Drawer {
 
         toolBar.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
-                double param1 = Double.parseDouble(input1.getText());
-                double param2 = Double.parseDouble(input2.getText());
+                double param1 = Double.parseDouble(input1.getText()) * drawingContext.getScale();
+                double param2 = Double.parseDouble(input2.getText()) * drawingContext.getScale();
                 if (rectCenter != null) {
                     Rectangle rectangle = new Rectangle(rectCenter, param1, param2);
                     workSpace.getChildren().add(rectangle);

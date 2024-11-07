@@ -63,8 +63,8 @@ public class MainController {
     public void initialize() {
         cursorInit();
         createCoordsSystem();
-        tool = new Tool(workSpace);
         drawingContext = new DrawingContext(workSpace, inputTool);
+        tool = new Tool(drawingContext);
         borderPane.setLeft(null);
 
         workSpace.setOnMouseMoved(e -> {
@@ -147,9 +147,9 @@ public class MainController {
             circleBtn.setSelected(true);
             borderPane.setLeft(inputTool);
 
-            if (circleMode.getValue().equals(Mode.BY_RADIUS))
+            if (circleMode.getValue().equals("Радиус"))
                 circleDrawer.drawByCenterAndRadius();
-            else if (circleMode.getValue().equals(Mode.BY_POINTS))
+            else if (circleMode.getValue().equals("3 точки"))
                 circleDrawer.drawBy3Points();
 
         } else {

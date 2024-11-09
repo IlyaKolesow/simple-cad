@@ -39,8 +39,10 @@ public abstract class DrawerByPoints extends Drawer {
                     drawFigure(points);
                     setPrompts("Укажите координаты точки 1", "X", "Y");
 
-                    for (int j = 0; j < points.length; j++)
+                    for (int j = 0; j < points.length; j++) {
+                        workSpace.getChildren().remove(points[j]);
                         points[j] = null;
+                    }
                 } else {
                     workSpace.getChildren().add(points[i]);
                     setPrompts("Укажите координаты точки " + (i + 2), "X", "Y");

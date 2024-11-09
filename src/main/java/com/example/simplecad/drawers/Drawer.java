@@ -7,6 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.Pane;
 
+import java.util.Objects;
+
 public class Drawer {
     protected final Pane workSpace;
     protected final ToolBar toolBar;
@@ -29,6 +31,14 @@ public class Drawer {
     }
 
     protected void setPrompts(String label, String prompt1, String prompt2) {
+        if (Objects.equals(prompt2, null)) {
+            input2.setVisible(false);
+            this.prompt2.setVisible(false);
+        } else {
+            input2.setVisible(true);
+            this.prompt2.setVisible(true);
+        }
+
         inputLabel.setText(label + ":");
         input1.setText(null);
         input2.setText(null);

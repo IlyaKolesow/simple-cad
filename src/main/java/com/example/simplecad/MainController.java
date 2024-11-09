@@ -56,7 +56,7 @@ public class MainController {
     private ToolBar inputTool;
 
     private CustomCursor cursor;
-    private Tool tool;
+    private DrawingTool drawingTool;
     private DrawingContext drawingContext;
 
     @FXML
@@ -64,11 +64,11 @@ public class MainController {
         cursorInit();
         createCoordsSystem();
         drawingContext = new DrawingContext(workSpace, inputTool);
-        tool = new Tool(drawingContext);
+        drawingTool = new DrawingTool(drawingContext);
         borderPane.setLeft(null);
 
         workSpace.setOnMouseMoved(e -> {
-            tool.updateCoords(e, mouseX, mouseY);
+            drawingTool.updateCoords(e, mouseX, mouseY);
             cursor.update(e);
         });
     }
@@ -164,9 +164,9 @@ public class MainController {
             resetToggleButtons();
             panBtn.setSelected(true);
 
-            tool.pan(MouseButton.PRIMARY);
+            drawingTool.pan(MouseButton.PRIMARY);
         } else {
-            tool.pan(MouseButton.MIDDLE);
+            drawingTool.pan(MouseButton.MIDDLE);
         }
     }
 
@@ -178,16 +178,16 @@ public class MainController {
 
         workSpace.setOnMouseClicked(null);
 
-        tool.pan(MouseButton.MIDDLE);
+        drawingTool.pan(MouseButton.MIDDLE);
     }
 
     @FXML
     private void zoomPlus(ActionEvent event) {
-        tool.zoom(1.1);
+        drawingTool.zoom(1.1);
     }
 
     @FXML
     private void zoomMinus(ActionEvent event) {
-        tool.zoom(0.9);
+        drawingTool.zoom(0.9);
     }
 }

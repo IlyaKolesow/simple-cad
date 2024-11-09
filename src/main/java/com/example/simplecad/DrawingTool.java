@@ -9,12 +9,12 @@ import javafx.scene.layout.Pane;
 
 import java.util.Objects;
 
-public class Tool {
+public class DrawingTool {
     private final DrawingContext context;
     private final Pane workSpace;
     private double scale;
 
-    public Tool(DrawingContext context) {
+    public DrawingTool(DrawingContext context) {
         this.context = context;
         workSpace = context.getWorkSpace();
         scale = context.getScale();

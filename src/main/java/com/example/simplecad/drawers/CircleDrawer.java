@@ -14,7 +14,7 @@ public class CircleDrawer extends FigureDrawer {
 
     public CircleDrawer(DrawingContext context) {
         super(context);
-        modesComboBox.getItems().addAll(Mode.BY_RADIUS, Mode.BY_POINTS);
+        modesComboBox.getItems().addAll(Mode.BY_RADIUS, Mode.BY_3_POINTS);
         modesComboBox.setValue(Mode.BY_RADIUS);
     }
 
@@ -24,7 +24,7 @@ public class CircleDrawer extends FigureDrawer {
             case BY_RADIUS:
                 drawByCenterAndRadius();
                 break;
-            case BY_POINTS:
+            case BY_3_POINTS:
                 drawBy3Points();
                 break;
         }

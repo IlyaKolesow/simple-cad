@@ -11,14 +11,14 @@ public class LineDrawer extends FigureDrawer {
 
     public LineDrawer(DrawingContext context) {
         super(context);
-        modesComboBox.getItems().addAll(Mode.BY_POINTS, Mode.BY_ANGLE_LENGTH);
-        modesComboBox.setValue(Mode.BY_POINTS);
+        modesComboBox.getItems().addAll(Mode.BY_2_POINTS, Mode.BY_ANGLE_LENGTH);
+        modesComboBox.setValue(Mode.BY_2_POINTS);
     }
 
     @Override
     public void startDrawing() {
         switch (modesComboBox.getValue()) {
-            case BY_POINTS:
+            case BY_2_POINTS:
                 drawBy2Points();
                 break;
             case BY_ANGLE_LENGTH:

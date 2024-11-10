@@ -31,7 +31,7 @@ public class MainController {
     private Label mouseX, mouseY;
 
     @FXML
-    private ToggleButton lineBtn, rectBtn, circleBtn, panBtn;
+    private ToggleButton lineBtn, rectBtn, circleBtn, splineBtn, arcBtn, polygonBtn, panBtn;
 
     @FXML
     private ToolBar inputTool;
@@ -43,22 +43,19 @@ public class MainController {
     private DrawingTool drawingTool;
     private DrawingContext drawingContext;
     private EventHandler<? super MouseEvent> previousMouseClickHandler;
+    private EventHandler<MouseEvent> defaultMouseMovedHandler;
 
     @FXML
     public void initialize() {
         cursorInit();
         coordsSystemInit();
         toggleGroupInit();
+        setDefaultMouseMovedHandler();
 
-        drawingContext = new DrawingContext(workSpace, inputTool);
+        drawingContext = new DrawingContext(workSpace, inputTool, defaultMouseMovedHandler);
         drawingTool = new DrawingTool(drawingContext);
 
         borderPane.setLeft(null);
-
-        workSpace.setOnMouseMoved(e -> {
-            drawingTool.updateCoords(e, mouseX, mouseY);
-            cursor.update(e);
-        });
     }
 
     private void coordsSystemInit() {
@@ -91,21 +88,44 @@ public class MainController {
         lineBtn.setToggleGroup(toggleGroup);
         rectBtn.setToggleGroup(toggleGroup);
         circleBtn.setToggleGroup(toggleGroup);
+        splineBtn.setToggleGroup(toggleGroup);
+        arcBtn.setToggleGroup(toggleGroup);
+        polygonBtn.setToggleGroup(toggleGroup);
+    }
+
+    private void setDefaultMouseMovedHandler() {
+        defaultMouseMovedHandler = e -> {
+            drawingTool.updateCoords(e, mouseX, mouseY);
+            cursor.update(e);
+        };
+        workSpace.setOnMouseMoved(defaultMouseMovedHandler);
     }
 
     @FXML
-    private void startLineDrawing(ActionEvent event) {
+    private void lineDrawing(ActionEvent event) {
         figureDrawing(lineBtn, new LineDrawer(drawingContext));
     }
 
     @FXML
-    private void startRectDrawing(ActionEvent event) {
+    private void rectDrawing(ActionEvent event) {
         figureDrawing(rectBtn, new RectDrawer(drawingContext));
     }
 
     @FXML
-    private void startCircleDrawing(ActionEvent event) {
+    private void circleDrawing(ActionEvent event) {
         figureDrawing(circleBtn, new CircleDrawer(drawingContext));
+    }
+
+    @FXML
+    private void splineDrawing(ActionEvent event) {
+    }
+
+    @FXML
+    private void arcDrawing(ActionEvent event) {
+    }
+
+    @FXML
+    private void polygonDrawing(ActionEvent event) {
     }
 
     private void figureDrawing(ToggleButton button, FigureDrawer drawer) {

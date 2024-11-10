@@ -10,9 +10,12 @@
 
     <top>
         <ToolBar>
-            <ToggleButton fx:id="lineBtn" onAction="#startLineDrawing" prefWidth="120">Линия</ToggleButton>
-            <ToggleButton fx:id="rectBtn" onAction="#startRectDrawing" prefWidth="120">Прямоугольник</ToggleButton>
-            <ToggleButton fx:id="circleBtn" onAction="#startCircleDrawing" prefWidth="120">Окружность</ToggleButton>
+            <ToggleButton fx:id="lineBtn" onAction="#lineDrawing" prefWidth="120">Линия</ToggleButton>
+            <ToggleButton fx:id="rectBtn" onAction="#rectDrawing" prefWidth="120">Прямоугольник</ToggleButton>
+            <ToggleButton fx:id="circleBtn" onAction="#circleDrawing" prefWidth="120">Окружность</ToggleButton>
+            <ToggleButton fx:id="splineBtn" onAction="#splineDrawing" prefWidth="120">Сплайн</ToggleButton>
+            <ToggleButton fx:id="arcBtn" onAction="#arcDrawing" prefWidth="120">Дуга</ToggleButton>
+            <ToggleButton fx:id="polygonBtn" onAction="#polygonDrawing" prefWidth="120">Многоугольник</ToggleButton>
         </ToolBar>
     </top>
 

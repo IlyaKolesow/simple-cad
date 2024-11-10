@@ -1,8 +1,20 @@
 package com.example.simplecad;
 
 public enum Mode {
-    BY_POINTS,
-    BY_SIDES,
-    BY_RADIUS,
-    BY_ANGLE_LENGTH
+    BY_2_POINTS("2 точки"),
+    BY_3_POINTS("3 точки"),
+    BY_SIDES("Стороны"),
+    BY_RADIUS("Радиус"),
+    BY_ANGLE_LENGTH("Угол и длина");
+
+    Mode(String name) {
+        this.name = name;
+    }
+    
+    private final String name;
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

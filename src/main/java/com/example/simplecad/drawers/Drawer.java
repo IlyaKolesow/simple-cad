@@ -3,10 +3,12 @@ package com.example.simplecad.drawers;
 import com.example.simplecad.Mode;
 import com.example.simplecad.util.DrawingContext;
 import com.example.simplecad.figures.Point;
+import javafx.event.EventHandler;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 import java.util.Objects;
@@ -19,6 +21,7 @@ public class Drawer {
     protected final Label prompt1, prompt2;
     protected final Point coordsCenter;
     protected final ComboBox<Mode> modesComboBox;
+    protected final EventHandler<MouseEvent> defaultMouseMovedHandler;
     protected final DrawingContext drawingContext;
 
     public Drawer(DrawingContext context) {
@@ -32,6 +35,7 @@ public class Drawer {
         prompt1 = context.getPrompt1();
         prompt2 = context.getPrompt2();
         modesComboBox = context.getModesComboBox();
+        defaultMouseMovedHandler = context.getDefaultMouseMovedHandler();
     }
 
     protected void setPrompts(String label, String prompt1, String prompt2) {

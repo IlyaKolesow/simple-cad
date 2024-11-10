@@ -2,11 +2,13 @@ package com.example.simplecad.util;
 
 import com.example.simplecad.Mode;
 import com.example.simplecad.figures.Point;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
@@ -21,11 +23,13 @@ public class DrawingContext {
     private final Point coordsCenter;
     private final CustomCursor cursor;
     private final ComboBox<Mode> modesComboBox;
+    private final EventHandler<MouseEvent> defaultMouseMovedHandler;
     private double scale;
 
-    public DrawingContext(Pane workSpace, ToolBar toolBar) {
+    public DrawingContext(Pane workSpace, ToolBar toolBar, EventHandler<MouseEvent> defaultMouseMovedHandler) {
         this.workSpace = workSpace;
         this.toolBar = toolBar;
+        this.defaultMouseMovedHandler = defaultMouseMovedHandler;
 
         coordsCenter = (Point) findById(workSpace, "center");
         cursor = (CustomCursor) findById(workSpace, "cursor");
@@ -94,5 +98,9 @@ public class DrawingContext {
 
     public ComboBox<Mode> getModesComboBox() {
         return modesComboBox;
+    }
+
+    public EventHandler<MouseEvent> getDefaultMouseMovedHandler() {
+        return defaultMouseMovedHandler;
     }
 }

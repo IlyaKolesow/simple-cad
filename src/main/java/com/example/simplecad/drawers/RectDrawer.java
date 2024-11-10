@@ -1,19 +1,34 @@
 package com.example.simplecad.drawers;
 
-import com.example.simplecad.DrawingContext;
+import com.example.simplecad.Mode;
 import com.example.simplecad.figures.Point;
 import com.example.simplecad.figures.Rectangle;
+import com.example.simplecad.util.DrawingContext;
 import javafx.scene.input.KeyCode;
 
-public class RectDrawer extends Drawer {
+public class RectDrawer extends FigureDrawer {
     private Point rectCenter;
 
     public RectDrawer(DrawingContext context) {
         super(context);
+        modesComboBox.getItems().addAll(Mode.BY_POINTS, Mode.BY_SIDES);
+        modesComboBox.setValue(Mode.BY_POINTS);
+    }
+
+    @Override
+    public void startDrawing() {
+        switch (modesComboBox.getValue()) {
+            case BY_POINTS:
+                drawBy2Points();
+                break;
+            case BY_SIDES:
+                drawBy2Sides();
+                break;
+        }
     }
 
     public void drawBy2Points() {
-        DrawerByPoints drawer = new DrawerByPoints(drawingContext, 2) {
+        DrawerByPoints byPoints = new DrawerByPoints(drawingContext, 2) {
             @Override
             public void drawFigure(Point[] points) {
                 Rectangle rectangle = new Rectangle(points[0], points[1]);
@@ -21,7 +36,7 @@ public class RectDrawer extends Drawer {
             }
         };
 
-        drawer.setupDrawing();
+        byPoints.setupDrawing();
     }
 
     public void drawBy2Sides() {
@@ -46,5 +61,7 @@ public class RectDrawer extends Drawer {
                 }
             }
         });
+
+        workSpace.setOnMouseClicked(null);
     }
 }

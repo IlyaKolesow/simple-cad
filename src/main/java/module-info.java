@@ -6,4 +6,6 @@ module com.example.simplecad {
     opens com.example.simplecad to javafx.fxml;
 
     exports com.example.simplecad;
+    exports com.example.simplecad.util;
+    opens com.example.simplecad.util to javafx.fxml;
 }

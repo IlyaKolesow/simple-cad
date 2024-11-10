@@ -1,6 +1,6 @@
 package com.example.simplecad.drawers;
 
-import com.example.simplecad.DrawingContext;
+import com.example.simplecad.util.DrawingContext;
 import com.example.simplecad.figures.Point;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;

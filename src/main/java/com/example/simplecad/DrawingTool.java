@@ -2,33 +2,29 @@ package com.example.simplecad;
 
 import com.example.simplecad.figures.Figure;
 import com.example.simplecad.figures.Point;
+import com.example.simplecad.util.DrawingContext;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
-import java.util.Objects;
-
 public class DrawingTool {
     private final DrawingContext context;
     private final Pane workSpace;
+    private final Point center;
     private double scale;
 
     public DrawingTool(DrawingContext context) {
         this.context = context;
         workSpace = context.getWorkSpace();
         scale = context.getScale();
+        center = context.getCoordsCenter();
         pan(MouseButton.MIDDLE);
         zoomByScroll();
     }
 
     public void pan(MouseButton mouseButton) {
         final double[] start = new double[2];
-
-        CustomCursor cursor = (CustomCursor) workSpace.getChildren()
-                .stream()
-                .filter(elem -> Objects.equals(elem.getId(), "cursor"))
-                .findFirst().get();
 
         workSpace.setOnMousePressed(e -> {
             if (e.getButton() == mouseButton) {
@@ -38,7 +34,7 @@ public class DrawingTool {
         });
 
         workSpace.setOnMouseDragged(e -> {
-            cursor.update(e);
+            context.getCursor().update(e);
 
             if (e.getButton() == mouseButton) {
                 double deltaX = e.getX() - start[0];
@@ -69,11 +65,6 @@ public class DrawingTool {
     }
 
     public void zoom(double zoomCoef) {
-        Point center = (Point) workSpace.getChildren()
-                .stream()
-                .filter(elem -> Objects.equals(elem.getId(), "center"))
-                .findFirst().get();
-
         workSpace.getChildren().forEach(elem -> {
             if (elem instanceof Figure)
                 ((Figure) elem).scale(zoomCoef, center);
@@ -84,11 +75,6 @@ public class DrawingTool {
     }
 
     public void updateCoords(MouseEvent e, Label mouseX, Label mouseY) {
-        Point center = (Point) workSpace.getChildren()
-                .stream()
-                .filter(elem -> Objects.equals(elem.getId(), "center"))
-                .findFirst().get();
-
         mouseX.setText("X: " + String.format("%.1f", (e.getX() - center.getX()) / scale));
         mouseY.setText("Y: " + String.format("%.1f", (center.getY() - e.getY()) / scale));
     }

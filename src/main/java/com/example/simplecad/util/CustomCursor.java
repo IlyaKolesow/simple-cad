@@ -1,4 +1,4 @@
-package com.example.simplecad;
+package com.example.simplecad.util;
 
 import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;

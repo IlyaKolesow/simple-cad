@@ -1,19 +1,34 @@
 package com.example.simplecad.drawers;
 
-import com.example.simplecad.DrawingContext;
+import com.example.simplecad.Mode;
 import com.example.simplecad.figures.Line;
 import com.example.simplecad.figures.Point;
+import com.example.simplecad.util.DrawingContext;
 import javafx.scene.input.KeyCode;
 
-public class LineDrawer extends Drawer {
+public class LineDrawer extends FigureDrawer {
     private Point firstPoint;
 
     public LineDrawer(DrawingContext context) {
         super(context);
+        modesComboBox.getItems().addAll(Mode.BY_POINTS, Mode.BY_ANGLE_LENGTH);
+        modesComboBox.setValue(Mode.BY_POINTS);
+    }
+
+    @Override
+    public void startDrawing() {
+        switch (modesComboBox.getValue()) {
+            case BY_POINTS:
+                drawBy2Points();
+                break;
+            case BY_ANGLE_LENGTH:
+                drawByAngleAndLength();
+                break;
+        }
     }
 
     public void drawBy2Points() {
-        DrawerByPoints drawer = new DrawerByPoints(drawingContext, 2) {
+        DrawerByPoints byPoints = new DrawerByPoints(drawingContext, 2) {
             @Override
             public void drawFigure(Point[] points) {
                 Line line = new Line(points[0], points[1]);
@@ -21,7 +36,7 @@ public class LineDrawer extends Drawer {
             }
         };
 
-        drawer.setupDrawing();
+        byPoints.setupDrawing();
 //        setPrompts("Укажите координаты первой точки", "X", "Y");
 //        pointInputHandler.handleInput((x, y) -> {
 //            if (firstPoint != null) {
@@ -54,5 +69,7 @@ public class LineDrawer extends Drawer {
                 workSpace.getChildren().add(firstPoint);
             }
         });
+
+        workSpace.setOnMouseClicked(null);
     }
 }

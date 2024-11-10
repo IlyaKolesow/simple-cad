@@ -2,7 +2,7 @@ package com.example.simplecad.figures;
 
 import javafx.scene.paint.Color;
 
-import static com.example.simplecad.Util.getSolution;
+import static com.example.simplecad.util.MathCalculation.getSolution;
 
 public class Circle extends Figure {
     private Point center;

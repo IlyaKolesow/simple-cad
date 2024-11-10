@@ -1,18 +1,33 @@
 package com.example.simplecad.drawers;
 
-import com.example.simplecad.DrawingContext;
+import com.example.simplecad.Mode;
 import com.example.simplecad.figures.Circle;
 import com.example.simplecad.figures.Point;
+import com.example.simplecad.util.DrawingContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
-import static com.example.simplecad.Util.getPointsDistance;
+import static com.example.simplecad.util.MathCalculation.getPointsDistance;
 
-public class CircleDrawer extends Drawer {
+public class CircleDrawer extends FigureDrawer {
     private Point center;
 
     public CircleDrawer(DrawingContext context) {
         super(context);
+        modesComboBox.getItems().addAll(Mode.BY_RADIUS, Mode.BY_POINTS);
+        modesComboBox.setValue(Mode.BY_RADIUS);
+    }
+
+    @Override
+    public void startDrawing() {
+        switch (modesComboBox.getValue()) {
+            case BY_RADIUS:
+                drawByCenterAndRadius();
+                break;
+            case BY_POINTS:
+                drawBy3Points();
+                break;
+        }
     }
 
     public void drawByCenterAndRadius() {
@@ -56,7 +71,7 @@ public class CircleDrawer extends Drawer {
     }
 
     public void drawBy3Points() {
-        DrawerByPoints drawer = new DrawerByPoints(drawingContext, 3) {
+        DrawerByPoints byPoints = new DrawerByPoints(drawingContext, 3) {
             @Override
             public void drawFigure(Point[] points) {
                 Circle circle = new Circle(points[0], points[1], points[2]);
@@ -64,6 +79,6 @@ public class CircleDrawer extends Drawer {
             }
         };
 
-        drawer.setupDrawing();
+        byPoints.setupDrawing();
     }
 }

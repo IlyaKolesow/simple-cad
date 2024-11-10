@@ -1,18 +1,20 @@
 package com.example.simplecad;
 
 import com.example.simplecad.drawers.CircleDrawer;
+import com.example.simplecad.drawers.FigureDrawer;
 import com.example.simplecad.drawers.LineDrawer;
 import com.example.simplecad.drawers.RectDrawer;
 import com.example.simplecad.figures.Line;
 import com.example.simplecad.figures.Point;
+import com.example.simplecad.util.CustomCursor;
+import com.example.simplecad.util.DrawingContext;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -26,45 +28,31 @@ public class MainController {
     private Pane workSpace;
 
     @FXML
-    private Label mouseX;
+    private Label mouseX, mouseY;
 
     @FXML
-    private Label mouseY;
-
-    @FXML
-    private ToggleButton lineBtn;
-
-    @FXML
-    private ToggleButton rectBtn;
-
-    @FXML
-    private ToggleButton circleBtn;
-
-    @FXML
-    private ToggleButton panBtn;
-
-    @FXML
-    private ComboBox<String> lineMode;
-
-    @FXML
-    private ComboBox<String> rectMode;
-
-    @FXML
-    private ComboBox<String> circleMode;
+    private ToggleButton lineBtn, rectBtn, circleBtn, panBtn;
 
     @FXML
     private ToolBar inputTool;
 
+    @FXML
+    private ComboBox<Mode> modesComboBox;
+
     private CustomCursor cursor;
     private DrawingTool drawingTool;
     private DrawingContext drawingContext;
+    private EventHandler<? super MouseEvent> previousMouseClickHandler;
 
     @FXML
     public void initialize() {
         cursorInit();
-        createCoordsSystem();
+        coordsSystemInit();
+        toggleGroupInit();
+
         drawingContext = new DrawingContext(workSpace, inputTool);
         drawingTool = new DrawingTool(drawingContext);
+
         borderPane.setLeft(null);
 
         workSpace.setOnMouseMoved(e -> {
@@ -73,7 +61,7 @@ public class MainController {
         });
     }
 
-    private void createCoordsSystem() {
+    private void coordsSystemInit() {
         Point center = new Point(workSpace.getPrefWidth() / 2, workSpace.getPrefHeight() / 2);
         center.setId("center");
         center.setColor(Color.YELLOW);
@@ -98,87 +86,54 @@ public class MainController {
         workSpace.setCursor(Cursor.NONE);
     }
 
+    private void toggleGroupInit() {
+        ToggleGroup toggleGroup = new ToggleGroup();
+        lineBtn.setToggleGroup(toggleGroup);
+        rectBtn.setToggleGroup(toggleGroup);
+        circleBtn.setToggleGroup(toggleGroup);
+    }
+
     @FXML
     private void startLineDrawing(ActionEvent event) {
-        if (lineBtn.isSelected()) {
-            LineDrawer lineDrawer = new LineDrawer(drawingContext);
-
-            resetToggleButtons();
-            lineBtn.setSelected(true);
-            borderPane.setLeft(inputTool);
-
-            if (lineMode.getValue().equals("2 точки"))
-                lineDrawer.drawBy2Points();
-            else if (lineMode.getValue().equals("Угол и длина"))
-                lineDrawer.drawByAngleAndLength();
-
-        } else {
-            workSpace.setOnMouseClicked(null);
-            borderPane.setLeft(null);
-        }
+        figureDrawing(lineBtn, new LineDrawer(drawingContext));
     }
 
     @FXML
     private void startRectDrawing(ActionEvent event) {
-        if (rectBtn.isSelected()) {
-            RectDrawer rectDrawer = new RectDrawer(drawingContext);
-
-            resetToggleButtons();
-            rectBtn.setSelected(true);
-            borderPane.setLeft(inputTool);
-
-            if (rectMode.getValue().equals("2 точки"))
-                rectDrawer.drawBy2Points();
-            else if (rectMode.getValue().equals("2 стороны"))
-                rectDrawer.drawBy2Sides();
-
-        } else {
-            workSpace.setOnMouseClicked(null);
-            borderPane.setLeft(null);
-        }
+        figureDrawing(rectBtn, new RectDrawer(drawingContext));
     }
 
     @FXML
     private void startCircleDrawing(ActionEvent event) {
-        if (circleBtn.isSelected()) {
-            CircleDrawer circleDrawer = new CircleDrawer(drawingContext);
+        figureDrawing(circleBtn, new CircleDrawer(drawingContext));
+    }
 
-            resetToggleButtons();
-            circleBtn.setSelected(true);
+    private void figureDrawing(ToggleButton button, FigureDrawer drawer) {
+        if (button.isSelected()) {
             borderPane.setLeft(inputTool);
-
-            if (circleMode.getValue().equals("Радиус"))
-                circleDrawer.drawByCenterAndRadius();
-            else if (circleMode.getValue().equals("3 точки"))
-                circleDrawer.drawBy3Points();
-
+            drawingTool.pan(MouseButton.MIDDLE);
+            panBtn.setSelected(false);
+            drawer.startDrawing();
+            modesComboBox.setOnAction(e -> drawer.startDrawing());
         } else {
             workSpace.setOnMouseClicked(null);
             borderPane.setLeft(null);
+            previousMouseClickHandler = null;
         }
     }
 
     @FXML
     private void panByLBM(ActionEvent event) {
-        if (panBtn.isSelected()) {
-            resetToggleButtons();
-            panBtn.setSelected(true);
+        if (workSpace.getOnMouseClicked() != null)
+            previousMouseClickHandler = workSpace.getOnMouseClicked();
 
+        if (panBtn.isSelected()) {
+            workSpace.setOnMouseClicked(null);
             drawingTool.pan(MouseButton.PRIMARY);
         } else {
             drawingTool.pan(MouseButton.MIDDLE);
+            workSpace.setOnMouseClicked(previousMouseClickHandler);
         }
-    }
-
-    private void resetToggleButtons() {
-        lineBtn.setSelected(false);
-        rectBtn.setSelected(false);
-        circleBtn.setSelected(false);
-        panBtn.setSelected(false);
-
-        workSpace.setOnMouseClicked(null);
-
-        drawingTool.pan(MouseButton.MIDDLE);
     }
 
     @FXML

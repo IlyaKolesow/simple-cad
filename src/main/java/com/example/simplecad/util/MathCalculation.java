@@ -1,8 +1,8 @@
-package com.example.simplecad;
+package com.example.simplecad.util;
 
 import com.example.simplecad.figures.Point;
 
-public class Util {
+public class MathCalculation {
     public static double getPointsDistance(Point point1, Point point2) {
         double a = Math.abs(point1.getX() - point2.getX());
         double b = Math.abs(point1.getY() - point2.getY());

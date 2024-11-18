@@ -4,6 +4,7 @@ import com.example.simplecad.drawers.CircleDrawer;
 import com.example.simplecad.drawers.FigureDrawer;
 import com.example.simplecad.drawers.LineDrawer;
 import com.example.simplecad.drawers.RectDrawer;
+import com.example.simplecad.figures.Figure;
 import com.example.simplecad.figures.Line;
 import com.example.simplecad.figures.Point;
 import com.example.simplecad.util.CustomCursor;
@@ -18,6 +19,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+
+import java.util.Objects;
 
 public class MainController {
 
@@ -65,6 +68,8 @@ public class MainController {
 
         Line lineX = new Line(center.getX(), center.getY(), center.getX() + 2000, center.getY());
         Line lineY = new Line(center.getX(), center.getY(), center.getX(), center.getY() - 2000);
+        lineX.setId("coordsLineX");
+        lineY.setId("coordsLineY");
         lineX.setColor(Color.RED);
         lineY.setColor(Color.GREEN);
 
@@ -97,8 +102,33 @@ public class MainController {
         defaultMouseMovedHandler = e -> {
             drawingTool.updateCoords(e, mouseX, mouseY);
             cursor.update(e);
+            hovering(e);
         };
         workSpace.setOnMouseMoved(defaultMouseMovedHandler);
+    }
+
+    private void hovering(MouseEvent e) {
+        Figure hoveredFigure = (Figure) workSpace.getChildren()
+                .stream()
+                .filter(elem ->
+                        elem instanceof Figure &&
+                        ((Figure) elem).isHover(e.getX(), e.getY()) &&
+                        !Objects.equals(elem.getId(), "coordsLineX") &&
+                        !Objects.equals(elem.getId(), "coordsLineY"))
+                .findFirst()
+                .orElse(null);
+
+        workSpace.getChildren().forEach(elem -> {
+            if (elem instanceof Figure && !Objects.equals(elem.getId(), "coordsLineX") && !Objects.equals(elem.getId(), "coordsLineY")) {
+                ((Figure) elem).setColor(Color.WHITE);
+
+                if (Objects.equals(elem.getId(), "center"))
+                    ((Figure) elem).setColor(Color.YELLOW);
+            }
+        });
+
+        if (hoveredFigure != null)
+            hoveredFigure.setColor(Color.GRAY);
     }
 
     @FXML

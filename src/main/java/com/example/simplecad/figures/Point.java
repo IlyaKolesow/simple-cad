@@ -43,6 +43,11 @@ public class Point extends Figure {
     }
 
     @Override
+    public boolean isHover(double x, double y) {
+        return Math.abs(this.x - x) < 3 && Math.abs(this.y - y) < 3;
+    }
+
+    @Override
     public void setColor(Color color) {
         super.setColor(color);
         circle.setFill(color);

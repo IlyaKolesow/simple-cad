@@ -2,6 +2,7 @@ package com.example.simplecad.figures;
 
 import javafx.scene.paint.Color;
 
+import static com.example.simplecad.util.MathCalculation.getPointsDistance;
 import static com.example.simplecad.util.MathCalculation.getSolution;
 
 public class Circle extends Figure {
@@ -57,6 +58,13 @@ public class Circle extends Figure {
         center.scale(coef, _center);
         setRadius(radius * coef);
         setCenter(center);
+    }
+
+    @Override
+    public boolean isHover(double x, double y) {
+        double eps = 5;
+        double distance = getPointsDistance(center, new Point(x, y));
+        return Math.abs(distance - radius) < eps;
     }
 
     public void setCenter(Point center) {

@@ -2,6 +2,8 @@ package com.example.simplecad.figures;
 
 import javafx.scene.paint.Color;
 
+import static com.example.simplecad.util.MathCalculation.getPointsDistance;
+
 public class Line extends Figure {
     private Point point1;
     private Point point2;
@@ -49,6 +51,26 @@ public class Line extends Figure {
         point1.scale(coef, center);
         point2.scale(coef, center);
         setPoints(point1, point2);
+    }
+
+    @Override
+    public boolean isHover(double x, double y) {
+        double x1 = point1.getX();
+        double y1 = point1.getY();
+        double x2 = point2.getX();
+        double y2 = point2.getY();
+        double eps = 3;
+        double distance = 10;
+
+        if (x >= Math.min(x1, x2) - eps && x <= Math.max(x1, x2) + eps && y >= Math.min(y1, y2) - eps && y <= Math.max(y1, y2) + eps) {
+            double a = getPointsDistance(point1, point2);
+            double b = getPointsDistance(point1, new Point(x, y));
+            double scalar = (x2 - x1) * (x - x1) + (y2 - y1) * (y - y1);
+            double cos = scalar / (a * b);
+            distance = b * Math.sqrt(1 - cos * cos);
+        }
+
+        return distance < eps;
     }
 
     public void setPoints(Point point1, Point point2) {

@@ -50,6 +50,14 @@ public class Rectangle extends Figure {
         updateLines();
     }
 
+    @Override
+    public boolean isHover(double x, double y) {
+        for (Line line : lines)
+            if (line.isHover(x, y))
+                return true;
+        return false;
+    }
+
     private void updateLines() {
         for (int i = 0; i < 3; i++)
             lines[i].setPoints(points[i], points[i + 1]);

@@ -31,4 +31,6 @@ public abstract class Figure extends Group {
     public abstract void move(double deltaX, double deltaY);
 
     public abstract void scale(double coef, Point center);
+
+    public abstract boolean isHover(double x, double y);
 }

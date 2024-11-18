@@ -30,7 +30,7 @@ public abstract class DrawerByPoints extends Drawer {
         });
     }
 
-    public void drawNextPoint(double x, double y) {
+    private void drawNextPoint(double x, double y) {
         for (int i = 0; i < points.length; i++) {
             if (points[i] == null) {
                 points[i] = new Point(x, y);

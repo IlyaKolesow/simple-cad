@@ -14,7 +14,7 @@ public abstract class DrawerByPoints extends Drawer {
     }
 
     public void setupDrawing() {
-        setPrompts("Укажите координаты точки 1", "X", "Y");
+        setPrompts("Укажите координаты точки 1", null, "X", "Y");
 
         workSpace.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY)
@@ -37,7 +37,7 @@ public abstract class DrawerByPoints extends Drawer {
 
                 if (i == points.length - 1) {
                     drawFigure(points);
-                    setPrompts("Укажите координаты точки 1", "X", "Y");
+                    setPrompts("Укажите координаты точки 1", null, "X", "Y");
 
                     for (int j = 0; j < points.length; j++) {
                         workSpace.getChildren().remove(points[j]);
@@ -45,7 +45,7 @@ public abstract class DrawerByPoints extends Drawer {
                     }
                 } else {
                     workSpace.getChildren().add(points[i]);
-                    setPrompts("Укажите координаты точки " + (i + 2), "X", "Y");
+                    setPrompts("Укажите координаты точки " + (i + 2), null, "X", "Y");
                 }
                 break;
             }

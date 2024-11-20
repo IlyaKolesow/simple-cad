@@ -22,8 +22,8 @@ public class Line extends Figure {
     }
 
     public Line(Point point1, double angle, double length) {
-        double x2 = point1.getX() + Math.cos(-angle * Math.PI / 180) * length;
-        double y2 = point1.getY() + Math.sin(-angle * Math.PI / 180) * length;
+        double x2 = point1.getX() + Math.cos(Math.toRadians(-angle)) * length;
+        double y2 = point1.getY() + Math.sin(Math.toRadians(-angle)) * length;
         Point point2 = new Point(x2, y2);
 
         this.point1 = point1;

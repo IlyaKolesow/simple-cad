@@ -22,6 +22,10 @@
     <left>
         <ToolBar fx:id="inputTool" orientation="VERTICAL" prefWidth="250">
             <ComboBox fx:id="modesComboBox"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label fx:id="prompt0"/>
+                <TextField fx:id="input0" maxWidth="50"/>
+            </HBox>
             <Label fx:id="inputLabel"/>
             <HBox spacing="10" alignment="CENTER_LEFT">
                 <Label fx:id="prompt1"/>

@@ -1,12 +1,7 @@
 package com.example.simplecad;
 
-import com.example.simplecad.drawers.CircleDrawer;
-import com.example.simplecad.drawers.FigureDrawer;
-import com.example.simplecad.drawers.LineDrawer;
-import com.example.simplecad.drawers.RectDrawer;
-import com.example.simplecad.figures.Figure;
-import com.example.simplecad.figures.Line;
-import com.example.simplecad.figures.Point;
+import com.example.simplecad.drawers.*;
+import com.example.simplecad.figures.*;
 import com.example.simplecad.util.CustomCursor;
 import com.example.simplecad.util.DrawingContext;
 import javafx.event.ActionEvent;
@@ -156,6 +151,7 @@ public class MainController {
 
     @FXML
     private void polygonDrawing(ActionEvent event) {
+        figureDrawing(polygonBtn, new PolygonDrawer(drawingContext));
     }
 
     private void figureDrawing(ToggleButton button, FigureDrawer drawer) {

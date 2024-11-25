@@ -16,6 +16,12 @@ public class Circle extends Figure {
         build();
     }
 
+    public Circle(Point center, Point vertex) {
+        this.center = center;
+        this.radius = getPointsDistance(center, vertex);
+        build();
+    }
+
     public Circle(Point point1, Point point2, Point point3) {
         double[][] a = {
                 {2 * point1.getX(), 2 * point1.getY(), 1},

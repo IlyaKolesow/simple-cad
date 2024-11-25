@@ -2,15 +2,11 @@ package com.example.simplecad.drawers;
 
 import com.example.simplecad.Mode;
 import com.example.simplecad.figures.Circle;
+import com.example.simplecad.figures.Figure;
 import com.example.simplecad.figures.Point;
 import com.example.simplecad.util.DrawingContext;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
-
-import static com.example.simplecad.util.MathCalculation.getPointsDistance;
 
 public class CircleDrawer extends FigureDrawer {
-    private Point center;
 
     public CircleDrawer(DrawingContext context) {
         super(context);
@@ -30,55 +26,40 @@ public class CircleDrawer extends FigureDrawer {
         }
     }
 
-    public void drawByCenterAndRadius() {
-        setPrompts("Укажите координаты центральной точки", "Y", "X", null);
-
-        workSpace.setOnMouseClicked(e -> {
-            if (e.getButton() == MouseButton.PRIMARY) {
-                if (center != null) {
-                    double radius = getPointsDistance(center, new Point(e.getX(), e.getY()));
-                    Circle circle = new Circle(center, radius);
-                    workSpace.getChildren().add(circle);
-                    workSpace.getChildren().remove(center);
-                    center = null;
-                    setPrompts("Укажите координаты центральной точки", "Y", "X", null);
-                } else {
-                    center = new Point(e.getX(), e.getY());
-                    workSpace.getChildren().add(center);
-                    setPrompts("Укажите радиус", "R", null, null);
-                }
-            }
-        });
-
-        toolBar.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ENTER) {
-                if (center != null) {
-                    double radius = Double.parseDouble(input1.getText()) * drawingContext.getScale();
-                    Circle circle = new Circle(center, radius);
-                    workSpace.getChildren().add(circle);
-                    workSpace.getChildren().remove(center);
-                    center = null;
-                    setPrompts("Укажите координаты центральной точки", "Y", "X", null);
-                } else {
-                    double x = (coordsCenter.getX() + Double.parseDouble(input1.getText()) * drawingContext.getScale());
-                    double y = (coordsCenter.getY() - Double.parseDouble(input2.getText()) * drawingContext.getScale());
-                    center = new Point(x, y);
-                    workSpace.getChildren().add(center);
-                    setPrompts("Укажите радиус", "R", null, null);
-                }
-            }
-        });
-    }
-
-    public void drawBy3Points() {
+    private void drawBy3Points() {
         DrawerByPoints byPoints = new DrawerByPoints(drawingContext, 3) {
             @Override
-            public void drawFigure(Point[] points) {
-                Circle circle = new Circle(points[0], points[1], points[2]);
-                workSpace.getChildren().add(circle);
+            protected Figure buildFigure(Point[] points) {
+                return new Circle(points[0], points[1], points[2]);
             }
         };
 
         byPoints.setupDrawing();
+    }
+
+    private void drawByCenterAndRadius() {
+        DrawerByRadius byRadius = new DrawerByRadius(drawingContext) {
+            @Override
+            protected Figure buildFigure(Point center, double radius) {
+                return new Circle(center, radius);
+            }
+
+            @Override
+            protected Figure buildFigure(Point center, Point vertex) {
+                return new Circle(center, vertex);
+            }
+
+            @Override
+            protected void setFirstActionPrompts() {
+                setPrompts("Укажите координаты центральной точки", "X", "Y", null);
+            }
+
+            @Override
+            protected void setSecondActionPrompts() {
+                setPrompts("Укажите радиус", "R", null, null);
+            }
+        };
+
+        byRadius.setupDrawing();
     }
 }

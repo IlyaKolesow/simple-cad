@@ -1,5 +1,6 @@
 package com.example.simplecad.drawers;
 
+import com.example.simplecad.figures.Figure;
 import com.example.simplecad.util.DrawingContext;
 import com.example.simplecad.figures.Point;
 import javafx.scene.input.KeyCode;
@@ -36,7 +37,7 @@ public abstract class DrawerByPoints extends Drawer {
                 points[i] = new Point(x, y);
 
                 if (i == points.length - 1) {
-                    drawFigure(points);
+                    workSpace.getChildren().add(buildFigure(points));
                     setPrompts("Укажите координаты точки 1", "X", "Y", null);
 
                     for (int j = 0; j < points.length; j++) {
@@ -52,5 +53,5 @@ public abstract class DrawerByPoints extends Drawer {
         }
     }
 
-    public abstract void drawFigure(Point[] points);
+    protected abstract Figure buildFigure(Point[] points);
 }

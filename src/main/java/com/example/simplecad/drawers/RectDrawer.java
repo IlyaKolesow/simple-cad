@@ -1,6 +1,7 @@
 package com.example.simplecad.drawers;
 
 import com.example.simplecad.Mode;
+import com.example.simplecad.figures.Figure;
 import com.example.simplecad.figures.Point;
 import com.example.simplecad.figures.Rectangle;
 import com.example.simplecad.util.DrawingContext;
@@ -27,19 +28,18 @@ public class RectDrawer extends FigureDrawer {
         }
     }
 
-    public void drawBy2Points() {
+    private void drawBy2Points() {
         DrawerByPoints byPoints = new DrawerByPoints(drawingContext, 2) {
             @Override
-            public void drawFigure(Point[] points) {
-                Rectangle rectangle = new Rectangle(points[0], points[1]);
-                workSpace.getChildren().add(rectangle);
+            public Figure buildFigure(Point[] points) {
+                return new Rectangle(points[0], points[1]);
             }
         };
 
         byPoints.setupDrawing();
     }
 
-    public void drawBy2Sides() {
+    private void drawBy2Sides() {
         setPrompts("Укажите координаты центральной точки", "X", "Y", null);
 
         toolBar.setOnKeyPressed(e -> {

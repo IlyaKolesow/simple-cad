@@ -58,6 +58,9 @@ public class Drawer {
         }
 
         inputLabel.setText(label + ":");
+        input1.setText(null);
+        input2.setText(null);
+        input3.setText(null);
         this.prompt1.setText(prompt1 + ":");
         this.prompt2.setText(prompt2 + ":");
         this.prompt3.setText(prompt3 + ":");

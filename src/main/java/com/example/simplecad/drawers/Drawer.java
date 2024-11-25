@@ -17,8 +17,8 @@ public class Drawer {
     protected final Pane workSpace;
     protected final ToolBar toolBar;
     protected final Label inputLabel;
-    protected final TextField input0, input1, input2;
-    protected final Label prompt0, prompt1, prompt2;
+    protected final TextField input1, input2, input3;
+    protected final Label prompt1, prompt2, prompt3;
     protected final Point coordsCenter;
     protected final ComboBox<Mode> modesComboBox;
     protected final EventHandler<MouseEvent> defaultMouseMovedHandler;
@@ -30,23 +30,23 @@ public class Drawer {
         toolBar = context.getToolBar();
         coordsCenter = context.getCoordsCenter();
         inputLabel = context.getInputLabel();
-        input0 = context.getInput0();
         input1 = context.getInput1();
         input2 = context.getInput2();
-        prompt0 = context.getPrompt0();
+        input3 = context.getInput3();
         prompt1 = context.getPrompt1();
         prompt2 = context.getPrompt2();
+        prompt3 = context.getPrompt3();
         modesComboBox = context.getModesComboBox();
         defaultMouseMovedHandler = context.getDefaultMouseMovedHandler();
     }
 
-    protected void setPrompts(String label, String prompt0, String prompt1, String prompt2) {
-        if (Objects.equals(prompt0, null)) {
-            input0.setVisible(false);
-            this.prompt0.setVisible(false);
+    protected void setPrompts(String label, String prompt1, String prompt2, String prompt3) {
+        if (Objects.equals(prompt3, null)) {
+            input3.setVisible(false);
+            this.prompt3.setVisible(false);
         } else {
-            input0.setVisible(true);
-            this.prompt0.setVisible(true);
+            input3.setVisible(true);
+            this.prompt3.setVisible(true);
         }
 
         if (Objects.equals(prompt2, null)) {
@@ -58,10 +58,8 @@ public class Drawer {
         }
 
         inputLabel.setText(label + ":");
-        input1.setText(null);
-        input2.setText(null);
-        this.prompt0.setText(prompt0 + ":");
         this.prompt1.setText(prompt1 + ":");
         this.prompt2.setText(prompt2 + ":");
+        this.prompt3.setText(prompt3 + ":");
     }
 }

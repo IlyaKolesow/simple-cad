@@ -40,7 +40,7 @@ public class RectDrawer extends FigureDrawer {
     }
 
     public void drawBy2Sides() {
-        setPrompts("Укажите координаты центральной точки", null, "X", "Y");
+        setPrompts("Укажите координаты центральной точки", "X", "Y", null);
 
         toolBar.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
@@ -51,13 +51,13 @@ public class RectDrawer extends FigureDrawer {
                     workSpace.getChildren().add(rectangle);
                     workSpace.getChildren().remove(rectCenter);
                     rectCenter = null;
-                    setPrompts("Укажите координаты центральной точки", null, "X", "Y");
+                    setPrompts("Укажите координаты центральной точки", "Y", "X", null);
                 } else {
                     double x = coordsCenter.getX() + param1;
                     double y = coordsCenter.getY() - param2;
                     rectCenter = new Point(x, y);
                     workSpace.getChildren().add(rectCenter);
-                    setPrompts("Укажите размеры сторон", "Длина", null, "Высота");
+                    setPrompts("Укажите размеры сторон", "Ширина", "Высота", null);
                 }
             }
         });

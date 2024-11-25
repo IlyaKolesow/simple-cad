@@ -50,7 +50,7 @@ public class LineDrawer extends FigureDrawer {
     }
 
     public void drawByAngleAndLength() {
-        setPrompts("Укажите координаты первой точки", null, "X", "Y");
+        setPrompts("Укажите координаты первой точки", "X", "Y", null);
 
         toolBar.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
@@ -64,7 +64,7 @@ public class LineDrawer extends FigureDrawer {
                     double x = coordsCenter.getX() + Double.parseDouble(input1.getText()) * drawingContext.getScale();
                     double y = coordsCenter.getY() - Double.parseDouble(input2.getText()) * drawingContext.getScale();
                     firstPoint = new Point(x, y);
-                    setPrompts("Укажите угол и длину линии", null, "Угол", "Длина");
+                    setPrompts("Укажите угол и длину линии", "Угол", "Длина", null);
                 }
                 workSpace.getChildren().add(firstPoint);
             }

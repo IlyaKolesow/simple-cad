@@ -10,18 +10,22 @@ public class Polygon extends Figure {
     private Line[] lines;
     private Point[] points;
     private Point center;
-    private double radius;
+    private double R;
+    private double r;
 
     public Polygon(Point center, double radius, int n, Mode mode) {
-        this.radius = radius;
+        if (mode == Mode.INSCRIBED_IN_CIRCLE)
+            this.R = radius;
+        else if (mode == Mode.CIRCUMSCRIBED_AROUND_CIRCLE)
+            this.r = radius;
+
         init(center, n);
-        build(mode);
+        build(mode, null);
     }
 
     public Polygon(Point center, Point vertex, int n, Mode mode) {
         init(center, n);
-        points[0] = vertex;
-        build(mode);
+        build(mode, vertex);
     }
 
     private void init(Point center, int n) {
@@ -31,27 +35,50 @@ public class Polygon extends Figure {
         points = new Point[n];
     }
 
-    private void build(Mode mode) {
-        if (mode == Mode.INSCRIBED_IN_CIRCLE) {
-            if (radius == 0)
-                radius = getPointsDistance(center, points[0]);
-            else if (points[0] == null)
-                points[0] = new Point(center.getX(), center.getY() - radius);
+    private void build(Mode mode, Point vertex) {
+        double extraAngle = 0;
 
-            double sideLength = 2 * radius * Math.sin(Math.PI / n);
-            double sidesAngle = 180.0 * (n - 2) / n;
-            double extraAngle = Math.toDegrees(Math.acos((center.getY() - points[0].getY()) / radius));
+        switch (mode) {
+            case INSCRIBED_IN_CIRCLE:
+                if (R == 0) {
+                    R = getPointsDistance(center, vertex);
+                    points[0] = vertex;
+                    extraAngle = Math.toDegrees(Math.acos((center.getY() - vertex.getY()) / R));
+                } else if (vertex == null)
+                    points[0] = new Point(center.getX(), center.getY() - R);
+                r = R * Math.cos(Math.PI / n);
+                break;
 
-            if (points[0].getX() < center.getX())
-                extraAngle = 360 - extraAngle;
-
-            for (int i = 0; i < n - 1; i++) {
-                lines[i] = new Line(points[i], (sidesAngle / 2 - 90) - i * (180 - sidesAngle) - extraAngle, sideLength);
-                points[i + 1] = lines[i].getPoint2();
-            }
-
-            lines[n - 1] = new Line(points[n - 1], points[0]);
+            case CIRCUMSCRIBED_AROUND_CIRCLE:
+                if (r == 0) {
+                    r = getPointsDistance(center, vertex);
+                    R = r / Math.cos(Math.PI / n);
+                    extraAngle = Math.toDegrees(Math.acos((center.getY() - vertex.getY()) / r));
+                } else if (vertex == null) {
+                    R = r / Math.cos(Math.PI / n);
+                    points[0] = new Point(center.getX(), center.getY() - R);
+                }
         }
+
+        double sideLength = 2 * R * Math.sin(Math.PI / n);
+        double sidesAngle = 180.0 * (n - 2) / n;
+
+        if (vertex != null && vertex.getX() < center.getX())
+            extraAngle = 360 - extraAngle;
+
+        if (mode == Mode.CIRCUMSCRIBED_AROUND_CIRCLE && vertex != null) {
+            double x = vertex.getX() + sideLength / 2 * Math.cos(Math.toRadians(extraAngle));
+            double y = vertex.getY() + sideLength / 2 * Math.sin(Math.toRadians(extraAngle));
+            points[0] = new Point(x, y);
+
+            extraAngle += 180.0 / n;
+        }
+
+        for (int i = 0; i < n - 1; i++) {
+            lines[i] = new Line(points[i], (sidesAngle / 2 - 90) - i * (180 - sidesAngle) - extraAngle, sideLength);
+            points[i + 1] = lines[i].getPoint2();
+        }
+        lines[n - 1] = new Line(points[n - 1], points[0]);
 
         getChildren().addAll(lines);
     }

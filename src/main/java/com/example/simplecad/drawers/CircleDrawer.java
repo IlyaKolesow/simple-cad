@@ -31,7 +31,7 @@ public class CircleDrawer extends FigureDrawer {
     }
 
     public void drawByCenterAndRadius() {
-        setPrompts("Укажите координаты центральной точки", null, "X", "Y");
+        setPrompts("Укажите координаты центральной точки", "Y", "X", null);
 
         workSpace.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
@@ -41,11 +41,11 @@ public class CircleDrawer extends FigureDrawer {
                     workSpace.getChildren().add(circle);
                     workSpace.getChildren().remove(center);
                     center = null;
-                    setPrompts("Укажите координаты центральной точки", null, "X", "Y");
+                    setPrompts("Укажите координаты центральной точки", "Y", "X", null);
                 } else {
                     center = new Point(e.getX(), e.getY());
                     workSpace.getChildren().add(center);
-                    setPrompts("Укажите радиус", null, "R", null);
+                    setPrompts("Укажите радиус", "R", null, null);
                 }
             }
         });
@@ -58,13 +58,13 @@ public class CircleDrawer extends FigureDrawer {
                     workSpace.getChildren().add(circle);
                     workSpace.getChildren().remove(center);
                     center = null;
-                    setPrompts("Укажите координаты центральной точки", null, "X", "Y");
+                    setPrompts("Укажите координаты центральной точки", "Y", "X", null);
                 } else {
                     double x = (coordsCenter.getX() + Double.parseDouble(input1.getText()) * drawingContext.getScale());
                     double y = (coordsCenter.getY() - Double.parseDouble(input2.getText()) * drawingContext.getScale());
                     center = new Point(x, y);
                     workSpace.getChildren().add(center);
-                    setPrompts("Укажите радиус", null, "R", null);
+                    setPrompts("Укажите радиус", "R", null, null);
                 }
             }
         });

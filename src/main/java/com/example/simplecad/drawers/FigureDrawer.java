@@ -7,6 +7,9 @@ public abstract class FigureDrawer extends Drawer {
         super(context);
         modesComboBox.setOnAction(null);
         modesComboBox.getItems().clear();
+        input1.setText(null);
+        input2.setText(null);
+        input3.setText(null);
     }
 
     public abstract void startDrawing();

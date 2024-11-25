@@ -18,8 +18,8 @@ public class DrawingContext {
     private final Pane workSpace;
     private final ToolBar toolBar;
     private final Label inputLabel;
-    private final TextField input0, input1, input2;
-    private final Label prompt0, prompt1, prompt2;
+    private final TextField input1, input2, input3;
+    private final Label prompt1, prompt2, prompt3;
     private final Point coordsCenter;
     private final CustomCursor cursor;
     private final ComboBox<Mode> modesComboBox;
@@ -35,16 +35,16 @@ public class DrawingContext {
         cursor = (CustomCursor) findById(workSpace, "cursor");
 
         modesComboBox = (ComboBox<Mode>) toolBar.getItems().get(0);
-        inputLabel = (Label) toolBar.getItems().get(2);
-        HBox hBox0 = (HBox) toolBar.getItems().get(1);
-        HBox hBox1 = (HBox) toolBar.getItems().get(3);
-        HBox hBox2 = (HBox) toolBar.getItems().get(4);
-        prompt0 = (Label) hBox0.getChildren().get(0);
+        inputLabel = (Label) toolBar.getItems().get(1);
+        HBox hBox1 = (HBox) toolBar.getItems().get(2);
+        HBox hBox2 = (HBox) toolBar.getItems().get(3);
+        HBox hBox3 = (HBox) toolBar.getItems().get(4);
         prompt1 = (Label) hBox1.getChildren().get(0);
         prompt2 = (Label) hBox2.getChildren().get(0);
-        input0 = (TextField) hBox0.getChildren().get(1);
+        prompt3 = (Label) hBox3.getChildren().get(0);
         input1 = (TextField) hBox1.getChildren().get(1);
         input2 = (TextField) hBox2.getChildren().get(1);
+        input3 = (TextField) hBox3.getChildren().get(1);
         scale = 1;
     }
 
@@ -107,11 +107,11 @@ public class DrawingContext {
         return defaultMouseMovedHandler;
     }
 
-    public Label getPrompt0() {
-        return prompt0;
+    public Label getPrompt3() {
+        return prompt3;
     }
 
-    public TextField getInput0() {
-        return input0;
+    public TextField getInput3() {
+        return input3;
     }
 }

@@ -20,22 +20,7 @@
     </top>
 
     <left>
-        <ToolBar fx:id="inputTool" orientation="VERTICAL" prefWidth="250">
-            <ComboBox fx:id="modesComboBox"/>
-            <Label fx:id="inputLabel"/>
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <Label fx:id="prompt1"/>
-                <TextField fx:id="input1" maxWidth="50"/>
-            </HBox>
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <Label fx:id="prompt2"/>
-                <TextField fx:id="input2" maxWidth="50"/>
-            </HBox>
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <Label fx:id="prompt3"/>
-                <TextField fx:id="input3" maxWidth="50"/>
-            </HBox>
-        </ToolBar>
+        <ToolBar fx:id="inputTool" orientation="VERTICAL" prefWidth="250"/>
     </left>
 
     <bottom>

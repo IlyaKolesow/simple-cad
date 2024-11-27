@@ -1,6 +1,7 @@
 package com.example.simplecad;
 
 import com.example.simplecad.drawers.*;
+import com.example.simplecad.editors.FigureEditor;
 import com.example.simplecad.figures.*;
 import com.example.simplecad.util.CustomCursor;
 import com.example.simplecad.util.DrawingContext;
@@ -34,14 +35,13 @@ public class MainController {
     @FXML
     private ToolBar inputTool;
 
-    @FXML
-    private ComboBox<Mode> modesComboBox;
-
     private CustomCursor cursor;
     private DrawingTool drawingTool;
     private DrawingContext drawingContext;
     private EventHandler<? super MouseEvent> previousMouseClickHandler;
     private EventHandler<MouseEvent> defaultMouseMovedHandler;
+    private EventHandler<MouseEvent> defaultMouseClickedHandler;
+    private Figure selectedFigure;
 
     @FXML
     public void initialize() {
@@ -49,6 +49,7 @@ public class MainController {
         coordsSystemInit();
         toggleGroupInit();
         setDefaultMouseMovedHandler();
+        setDefaultMouseClickedHandler();
 
         drawingContext = new DrawingContext(workSpace, inputTool, defaultMouseMovedHandler);
         drawingTool = new DrawingTool(drawingContext);
@@ -102,8 +103,13 @@ public class MainController {
         workSpace.setOnMouseMoved(defaultMouseMovedHandler);
     }
 
-    private void hovering(MouseEvent e) {
-        Figure hoveredFigure = (Figure) workSpace.getChildren()
+    private void setDefaultMouseClickedHandler() {
+        defaultMouseClickedHandler = this::figureSelecting;
+        workSpace.setOnMouseClicked(defaultMouseClickedHandler);
+    }
+
+    private Figure findHoveredFigure(MouseEvent e) {
+        return (Figure) workSpace.getChildren()
                 .stream()
                 .filter(elem ->
                         elem instanceof Figure &&
@@ -112,7 +118,9 @@ public class MainController {
                         !Objects.equals(elem.getId(), "coordsLineY"))
                 .findFirst()
                 .orElse(null);
+    }
 
+    private void resetColors() {
         workSpace.getChildren().forEach(elem -> {
             if (elem instanceof Figure && !Objects.equals(elem.getId(), "coordsLineX") && !Objects.equals(elem.getId(), "coordsLineY")) {
                 ((Figure) elem).setColor(Color.WHITE);
@@ -121,9 +129,27 @@ public class MainController {
                     ((Figure) elem).setColor(Color.YELLOW);
             }
         });
+    }
 
+    private void hovering(MouseEvent e) {
+        Figure hoveredFigure = findHoveredFigure(e);
+        resetColors();
         if (hoveredFigure != null)
             hoveredFigure.setColor(Color.GRAY);
+        if (selectedFigure!= null)
+            selectedFigure.setColor(Color.ORANGE);
+    }
+
+    private void figureSelecting(MouseEvent e) {
+        Figure hoveredFigure = findHoveredFigure(e);
+        selectedFigure = null;
+//        borderPane.setLeft(null);
+        resetColors();
+        if (hoveredFigure != null) {
+            hoveredFigure.setColor(Color.ORANGE);
+            selectedFigure = hoveredFigure;
+//            borderPane.setLeft(inputTool);
+        }
     }
 
     @FXML
@@ -160,9 +186,9 @@ public class MainController {
             drawingTool.pan(MouseButton.MIDDLE);
             panBtn.setSelected(false);
             drawer.startDrawing();
-            modesComboBox.setOnAction(e -> drawer.startDrawing());
+
         } else {
-            workSpace.setOnMouseClicked(null);
+            workSpace.setOnMouseClicked(defaultMouseClickedHandler);
             borderPane.setLeft(null);
             previousMouseClickHandler = null;
         }

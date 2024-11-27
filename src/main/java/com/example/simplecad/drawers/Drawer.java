@@ -16,11 +16,11 @@ import java.util.Objects;
 public class Drawer {
     protected final Pane workSpace;
     protected final ToolBar toolBar;
-    protected final Label inputLabel;
-    protected final TextField input1, input2, input3;
-    protected final Label prompt1, prompt2, prompt3;
+    protected Label inputLabel;
+    protected TextField input1, input2, input3;
+    protected Label prompt1, prompt2, prompt3;
     protected final Point coordsCenter;
-    protected final ComboBox<Mode> modesComboBox;
+    protected ComboBox<Mode> modesComboBox;
     protected final EventHandler<MouseEvent> defaultMouseMovedHandler;
     protected final DrawingContext drawingContext;
 

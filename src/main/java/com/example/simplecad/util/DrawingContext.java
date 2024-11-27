@@ -9,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 import java.util.Objects;
@@ -17,12 +16,12 @@ import java.util.Objects;
 public class DrawingContext {
     private final Pane workSpace;
     private final ToolBar toolBar;
-    private final Label inputLabel;
-    private final TextField input1, input2, input3;
-    private final Label prompt1, prompt2, prompt3;
+    private Label inputLabel;
+    private TextField input1, input2, input3;
+    private Label prompt1, prompt2, prompt3;
     private final Point coordsCenter;
     private final CustomCursor cursor;
-    private final ComboBox<Mode> modesComboBox;
+    private ComboBox<Mode> modesComboBox;
     private final EventHandler<MouseEvent> defaultMouseMovedHandler;
     private double scale;
 
@@ -34,17 +33,6 @@ public class DrawingContext {
         coordsCenter = (Point) findById(workSpace, "center");
         cursor = (CustomCursor) findById(workSpace, "cursor");
 
-        modesComboBox = (ComboBox<Mode>) toolBar.getItems().get(0);
-        inputLabel = (Label) toolBar.getItems().get(1);
-        HBox hBox1 = (HBox) toolBar.getItems().get(2);
-        HBox hBox2 = (HBox) toolBar.getItems().get(3);
-        HBox hBox3 = (HBox) toolBar.getItems().get(4);
-        prompt1 = (Label) hBox1.getChildren().get(0);
-        prompt2 = (Label) hBox2.getChildren().get(0);
-        prompt3 = (Label) hBox3.getChildren().get(0);
-        input1 = (TextField) hBox1.getChildren().get(1);
-        input2 = (TextField) hBox2.getChildren().get(1);
-        input3 = (TextField) hBox3.getChildren().get(1);
         scale = 1;
     }
 
@@ -113,5 +101,37 @@ public class DrawingContext {
 
     public TextField getInput3() {
         return input3;
+    }
+
+    public void setInputLabel(Label inputLabel) {
+        this.inputLabel = inputLabel;
+    }
+
+    public void setInput1(TextField input1) {
+        this.input1 = input1;
+    }
+
+    public void setInput2(TextField input2) {
+        this.input2 = input2;
+    }
+
+    public void setInput3(TextField input3) {
+        this.input3 = input3;
+    }
+
+    public void setPrompt1(Label prompt1) {
+        this.prompt1 = prompt1;
+    }
+
+    public void setPrompt2(Label prompt2) {
+        this.prompt2 = prompt2;
+    }
+
+    public void setPrompt3(Label prompt3) {
+        this.prompt3 = prompt3;
+    }
+
+    public void setModesComboBox(ComboBox<Mode> modesComboBox) {
+        this.modesComboBox = modesComboBox;
     }
 }

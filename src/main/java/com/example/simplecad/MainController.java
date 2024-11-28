@@ -143,12 +143,13 @@ public class MainController {
     private void figureSelecting(MouseEvent e) {
         Figure hoveredFigure = findHoveredFigure(e);
         selectedFigure = null;
-//        borderPane.setLeft(null);
+        borderPane.setLeft(null);
         resetColors();
         if (hoveredFigure != null) {
             hoveredFigure.setColor(Color.ORANGE);
             selectedFigure = hoveredFigure;
-//            borderPane.setLeft(inputTool);
+            new FigureEditor(drawingContext, selectedFigure).toolBarInit();
+            borderPane.setLeft(inputTool);
         }
     }
 
@@ -186,7 +187,6 @@ public class MainController {
             drawingTool.pan(MouseButton.MIDDLE);
             panBtn.setSelected(false);
             drawer.startDrawing();
-
         } else {
             workSpace.setOnMouseClicked(defaultMouseClickedHandler);
             borderPane.setLeft(null);

@@ -2,6 +2,8 @@ package com.example.simplecad.figures;
 
 import javafx.scene.paint.Color;
 
+import java.util.*;
+
 public class Point extends Figure {
     private double x;
     private double y;
@@ -69,5 +71,24 @@ public class Point extends Figure {
     public void setY(double y) {
         this.y = y;
         circle.setCenterY(y);
+    }
+
+    @Override
+    public void setValuesFromInputs(List<Double> values, Point center) {
+        setX(values.get(0) + center.getX());
+        setY(center.getY() - values.get(1));
+    }
+
+    @Override
+    public Map<String, Double> getValuesForOutput(Point center) {
+        Map<String, Double> map = new LinkedHashMap<>();
+        map.put("X", x - center.getX());
+        map.put("Y", center.getY() - y);
+        return map;
+    }
+
+    @Override
+    public String getName() {
+        return "ТОЧКА";
     }
 }

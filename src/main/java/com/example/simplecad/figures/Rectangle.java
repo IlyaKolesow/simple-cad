@@ -2,6 +2,10 @@ package com.example.simplecad.figures;
 
 import javafx.scene.paint.Color;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Rectangle extends Figure {
     private final Line[] lines = new Line[4];
     private final Point[] points = new Point[4];
@@ -76,5 +80,33 @@ public class Rectangle extends Figure {
         super.setThickness(thickness);
         for (Line line : lines)
             line.setThickness(thickness);
+    }
+
+    @Override
+    public void setValuesFromInputs(List<Double> values, Point center) {
+        points[0].setX(values.get(0) + center.getX());
+        points[0].setY(center.getY() - values.get(1));
+        points[2].setX(values.get(2) + center.getX());
+        points[2].setY(center.getY() - values.get(3));
+        points[1].setX(points[0].getX());
+        points[1].setY(points[2].getY());
+        points[3].setX(points[2].getX());
+        points[3].setY(points[0].getY());
+        updateLines();
+    }
+
+    @Override
+    public Map<String, Double> getValuesForOutput(Point center) {
+        Map<String, Double> map = new LinkedHashMap<>();
+        map.put("Диагональ [X1]", points[0].getX() - center.getX());
+        map.put("Диагональ [Y1]", center.getY() - points[0].getY());
+        map.put("Диагональ [X2]", points[2].getX() - center.getX());
+        map.put("Диагональ [Y2]", center.getY() - points[2].getY());
+        return map;
+    }
+
+    @Override
+    public String getName() {
+        return "ПРЯМОУГОЛЬНИК";
     }
 }

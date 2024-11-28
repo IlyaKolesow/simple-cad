@@ -3,6 +3,10 @@ package com.example.simplecad.figures;
 import com.example.simplecad.Mode;
 import javafx.scene.paint.Color;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import static com.example.simplecad.util.MathCalculation.getPointsDistance;
 
 public class Polygon extends Figure {
@@ -123,5 +127,20 @@ public class Polygon extends Figure {
         super.setThickness(thickness);
         for (Line line : lines)
             line.setThickness(thickness);
+    }
+
+    @Override
+    public void setValuesFromInputs(List<Double> values, Point center) {
+
+    }
+
+    @Override
+    public Map<String, Double> getValuesForOutput(Point center) {
+        return new Circle(this.center, R).getValuesForOutput(center);
+    }
+
+    @Override
+    public String getName() {
+        return "МНОГОУГОЛЬНИК";
     }
 }

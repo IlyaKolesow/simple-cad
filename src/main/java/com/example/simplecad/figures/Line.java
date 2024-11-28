@@ -2,6 +2,11 @@ package com.example.simplecad.figures;
 
 import javafx.scene.paint.Color;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import static com.example.simplecad.util.MathCalculation.getPointsDistance;
 
 public class Line extends Figure {
@@ -104,5 +109,29 @@ public class Line extends Figure {
 
     public Point getPoint2() {
         return point2;
+    }
+
+    @Override
+    public void setValuesFromInputs(List<Double> values, Point center) {
+        point1.setX(values.get(0) + center.getX());
+        point1.setY(center.getY() - values.get(1));
+        point2.setX(values.get(2) + center.getX());
+        point2.setY(center.getY() - values.get(3));
+        setPoints(point1, point2);
+    }
+
+    @Override
+    public Map<String, Double> getValuesForOutput(Point center) {
+        Map<String, Double> map = new LinkedHashMap<>();
+        map.put("X1", point1.getX() - center.getX());
+        map.put("Y1", center.getY() - point1.getY());
+        map.put("X2", point2.getX() - center.getX());
+        map.put("Y2", center.getY() - point2.getY());
+        return map;
+    }
+
+    @Override
+    public String getName() {
+        return "ЛИНИЯ";
     }
 }

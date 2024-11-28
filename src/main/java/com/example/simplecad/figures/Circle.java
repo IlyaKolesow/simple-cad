@@ -2,6 +2,10 @@ package com.example.simplecad.figures;
 
 import javafx.scene.paint.Color;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import static com.example.simplecad.util.MathCalculation.getPointsDistance;
 import static com.example.simplecad.util.MathCalculation.getSolution;
 
@@ -94,5 +98,27 @@ public class Circle extends Figure {
     public void setThickness(double thickness) {
         super.setThickness(thickness);
         circle.setStrokeWidth(thickness);
+    }
+
+    @Override
+    public void setValuesFromInputs(List<Double> values, Point center) {
+        double x = values.get(0) + center.getX();
+        double y = center.getY() - values.get(1);
+        setCenter(new Point(x, y));
+        setRadius(values.get(2));
+    }
+
+    @Override
+    public Map<String, Double> getValuesForOutput(Point center) {
+        Map<String, Double> map = new LinkedHashMap<>();
+        map.put("Центр [X]", this.center.getX() - center.getX());
+        map.put("Центр [Y]", center.getY() - this.center.getY());
+        map.put("Радиус", radius);
+        return map;
+    }
+
+    @Override
+    public String getName() {
+        return "ОКРУЖНОСТЬ";
     }
 }

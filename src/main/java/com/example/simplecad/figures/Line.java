@@ -52,9 +52,9 @@ public class Line extends Figure {
     }
 
     @Override
-    public void scale(double coef, Point center) {
-        point1.scale(coef, center);
-        point2.scale(coef, center);
+    public void scale(double coef, Point cursorPosition) {
+        point1.scale(coef, cursorPosition);
+        point2.scale(coef, cursorPosition);
         setPoints(point1, point2);
     }
 

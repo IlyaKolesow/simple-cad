@@ -48,9 +48,9 @@ public class Rectangle extends Figure {
     }
 
     @Override
-    public void scale(double coef, Point center) {
+    public void scale(double coef, Point cursorPosition) {
         for (Point point : points)
-            point.scale(coef, center);
+            point.scale(coef, cursorPosition);
         updateLines();
     }
 

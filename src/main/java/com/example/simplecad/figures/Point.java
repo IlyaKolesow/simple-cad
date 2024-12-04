@@ -34,9 +34,9 @@ public class Point extends Figure {
     }
 
     @Override
-    public void scale(double coef, Point center) {
-        double actualX = x - center.getX();
-        double actualY = center.getY() - y;
+    public void scale(double coef, Point cursorPosition) {
+        double actualX = x - cursorPosition.getX();
+        double actualY = cursorPosition.getY() - y;
 
         double deltaX = actualX * coef - actualX;
         double deltaY = actualY * coef - actualY;

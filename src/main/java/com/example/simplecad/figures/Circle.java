@@ -64,8 +64,8 @@ public class Circle extends Figure {
     }
 
     @Override
-    public void scale(double coef, Point _center) {
-        center.scale(coef, _center);
+    public void scale(double coef, Point cursorPosition) {
+        center.scale(coef, cursorPosition);
         setRadius(radius * coef);
         setCenter(center);
     }

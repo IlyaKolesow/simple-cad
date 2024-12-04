@@ -32,7 +32,7 @@ public abstract class Figure extends Group {
     }
 
     public abstract void move(double deltaX, double deltaY);
-    public abstract void scale(double coef, Point center);
+    public abstract void scale(double coef, Point cursorPosition);
     public abstract boolean isHover(double x, double y);
     public abstract void setValuesFromInputs(List<Double> values, Point center);
     public abstract Map<String, Double> getValuesForOutput(Point center);

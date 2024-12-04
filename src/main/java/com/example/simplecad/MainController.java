@@ -136,7 +136,7 @@ public class MainController {
         resetColors();
         if (hoveredFigure != null)
             hoveredFigure.setColor(Color.GRAY);
-        if (selectedFigure!= null)
+        if (selectedFigure != null)
             selectedFigure.setColor(Color.ORANGE);
     }
 

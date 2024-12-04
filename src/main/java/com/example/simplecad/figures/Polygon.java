@@ -129,9 +129,25 @@ public class Polygon extends Figure {
             line.setThickness(thickness);
     }
 
-    @Override
-    public void setValuesFromInputs(List<Double> values, Point center) {
+    private void setCenter(double x, double y) {
+        double deltaX = x - this.center.getX();
+        double deltaY = y - this.center.getY();
+        move(deltaX, deltaY);
+        this.center = new Point(x, y);
+    }
 
+    private void setRadius(double R) {
+        double scaleCoef = R / this.R;
+        scale(scaleCoef, this.center);
+        this.R = R;
+        r = R * Math.cos(Math.PI / n);
+    }
+
+    @Override
+    public void setValuesFromInputs(List<Double> values, Point coordsCenter) {
+        setCenter(values.get(0) + coordsCenter.getX(), coordsCenter.getY() - values.get(1));
+        double R = values.get(2);
+        setRadius(R);
     }
 
     @Override

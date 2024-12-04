@@ -49,14 +49,15 @@ public class LineDrawer extends FigureDrawer {
                     double length = Double.parseDouble(input2.getText()) * drawingContext.getScale();
                     Line line = new Line(firstPoint, angle, length);
                     workSpace.getChildren().add(line);
-                    firstPoint = new Point(line.getPoint2());
+                    firstPoint = null;
+                    setPrompts("Укажите координаты первой точки", "X", "Y", null);
                 } else {
                     double x = coordsCenter.getX() + Double.parseDouble(input1.getText()) * drawingContext.getScale();
                     double y = coordsCenter.getY() - Double.parseDouble(input2.getText()) * drawingContext.getScale();
                     firstPoint = new Point(x, y);
+                    workSpace.getChildren().add(firstPoint);
                     setPrompts("Укажите угол и длину линии", "Угол", "Длина", null);
                 }
-                workSpace.getChildren().add(firstPoint);
             }
         });
 

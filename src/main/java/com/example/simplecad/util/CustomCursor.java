@@ -1,5 +1,6 @@
 package com.example.simplecad.util;
 
+import com.example.simplecad.figures.Point;
 import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -27,5 +28,11 @@ public class CustomCursor extends Group {
         line2.setStartY(e.getY() - 30);
         line2.setEndX(e.getX());
         line2.setEndY(e.getY() + 30);
+    }
+
+    public Point getPosition() {
+        double x = line2.getStartX();
+        double y = line1.getStartY();
+        return new Point(x, y);
     }
 }

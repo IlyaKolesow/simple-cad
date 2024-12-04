@@ -67,7 +67,7 @@ public class DrawingTool {
     public void zoom(double zoomCoef) {
         workSpace.getChildren().forEach(elem -> {
             if (elem instanceof Figure)
-                ((Figure) elem).scale(zoomCoef, center);
+                ((Figure) elem).scale(zoomCoef, context.getCursor().getPosition());
         });
 
         scale *= zoomCoef;

@@ -91,6 +91,7 @@ public class Polygon extends Figure {
     public void move(double deltaX, double deltaY) {
         for (Point point : points)
             point.move(deltaX, deltaY);
+        center.move(deltaX, deltaY);
         updateLines();
     }
 
@@ -98,7 +99,10 @@ public class Polygon extends Figure {
     public void scale(double coef, Point cursorPosition) {
         for (Point point : points)
             point.scale(coef, cursorPosition);
+        center.scale(coef, cursorPosition);
         updateLines();
+        R *= coef;
+        r = R * Math.cos(Math.PI / n);
     }
 
     @Override
@@ -133,7 +137,6 @@ public class Polygon extends Figure {
         double deltaX = x - this.center.getX();
         double deltaY = y - this.center.getY();
         move(deltaX, deltaY);
-        this.center = new Point(x, y);
     }
 
     private void setRadius(double R) {
@@ -152,11 +155,22 @@ public class Polygon extends Figure {
 
     @Override
     public Map<String, Double> getValuesForOutput(Point center) {
-        return new Circle(this.center, R).getValuesForOutput(center);
+        Map<String, Double> map = new LinkedHashMap<>();
+        map.put("Центр [X]", this.center.getX() - center.getX());
+        map.put("Центр [Y]", center.getY() - this.center.getY());
+        map.put("Радиус", R);
+        return map;
     }
 
     @Override
     public String getName() {
         return "МНОГОУГОЛЬНИК";
+    }
+
+    @Override
+    public void rotate(Point centralPoint, double angle) {
+        for (Point point : points)
+            point.rotate(centralPoint, angle);
+        updateLines();
     }
 }

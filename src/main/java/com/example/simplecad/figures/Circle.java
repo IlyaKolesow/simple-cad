@@ -121,4 +121,10 @@ public class Circle extends Figure {
     public String getName() {
         return "ОКРУЖНОСТЬ";
     }
+
+    @Override
+    public void rotate(Point centralPoint, double angle) {
+        center.rotate(centralPoint, angle);
+        setCenter(center);
+    }
 }

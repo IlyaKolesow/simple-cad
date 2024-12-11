@@ -109,4 +109,11 @@ public class Rectangle extends Figure {
     public String getName() {
         return "ПРЯМОУГОЛЬНИК";
     }
+
+    @Override
+    public void rotate(Point centralPoint, double angle) {
+        for (Point point : points)
+            point.rotate(centralPoint, angle);
+        updateLines();
+    }
 }

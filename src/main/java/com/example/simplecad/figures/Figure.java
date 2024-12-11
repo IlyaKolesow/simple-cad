@@ -37,4 +37,5 @@ public abstract class Figure extends Group {
     public abstract void setValuesFromInputs(List<Double> values, Point center);
     public abstract Map<String, Double> getValuesForOutput(Point center);
     public abstract String getName();
+    public abstract void rotate(Point centralPoint, double angle);
 }

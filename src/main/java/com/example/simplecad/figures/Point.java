@@ -2,6 +2,8 @@ package com.example.simplecad.figures;
 
 import javafx.scene.paint.Color;
 
+import static com.example.simplecad.util.MathCalculation.getPointsDistance;
+
 import java.util.*;
 
 public class Point extends Figure {
@@ -90,5 +92,20 @@ public class Point extends Figure {
     @Override
     public String getName() {
         return "ТОЧКА";
+    }
+
+    @Override
+    public void rotate(Point centralPoint, double angle) {
+        double distance = getPointsDistance(this, centralPoint);
+        if (distance == 0)
+            return;
+        double extraAngle = Math.toDegrees(Math.asin((centralPoint.getY() - y) / distance));
+        if (x < centralPoint.getX())
+            extraAngle = 180 - extraAngle;
+
+        double x = distance * Math.cos(Math.toRadians(angle + extraAngle));
+        double y = distance * Math.sin(Math.toRadians(angle + extraAngle));
+        setX(centralPoint.getX() + x);
+        setY(centralPoint.getY() - y);
     }
 }

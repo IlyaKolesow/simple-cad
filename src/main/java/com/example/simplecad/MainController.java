@@ -16,6 +16,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 public class MainController {
@@ -30,7 +32,7 @@ public class MainController {
     private Label mouseX, mouseY;
 
     @FXML
-    private ToggleButton lineBtn, rectBtn, circleBtn, splineBtn, arcBtn, polygonBtn, panBtn;
+    private ToggleButton lineBtn, rectBtn, circleBtn, splineBtn, arcBtn, polygonBtn, panBtn, rotationBtn;
 
     @FXML
     private ToolBar inputTool;
@@ -41,7 +43,7 @@ public class MainController {
     private EventHandler<? super MouseEvent> previousMouseClickHandler;
     private EventHandler<MouseEvent> defaultMouseMovedHandler;
     private EventHandler<MouseEvent> defaultMouseClickedHandler;
-    private Figure selectedFigure;
+    private List<Figure> selectedFigures = new LinkedList<>();
 
     @FXML
     public void initialize() {
@@ -92,6 +94,7 @@ public class MainController {
         splineBtn.setToggleGroup(toggleGroup);
         arcBtn.setToggleGroup(toggleGroup);
         polygonBtn.setToggleGroup(toggleGroup);
+        rotationBtn.setToggleGroup(toggleGroup);
     }
 
     private void setDefaultMouseMovedHandler() {
@@ -136,21 +139,27 @@ public class MainController {
         resetColors();
         if (hoveredFigure != null)
             hoveredFigure.setColor(Color.GRAY);
-        if (selectedFigure != null)
-            selectedFigure.setColor(Color.ORANGE);
+        selectedFigures.forEach(figure -> figure.setColor(Color.ORANGE));
     }
 
     private void figureSelecting(MouseEvent e) {
         Figure hoveredFigure = findHoveredFigure(e);
-        selectedFigure = null;
-        borderPane.setLeft(null);
+        if (!rotationBtn.isSelected())
+            borderPane.setLeft(null);
         resetColors();
         if (hoveredFigure != null) {
-            hoveredFigure.setColor(Color.ORANGE);
-            selectedFigure = hoveredFigure;
-            new FigureEditor(drawingContext, selectedFigure).toolBarInit();
-            borderPane.setLeft(inputTool);
-        }
+            if (!e.isShiftDown())
+                selectedFigures.clear();
+
+            selectedFigures.add(hoveredFigure);
+            selectedFigures.forEach(figure -> figure.setColor(Color.ORANGE));
+
+            if (selectedFigures.size() == 1 && !rotationBtn.isSelected()) {
+                new FigureEditor(drawingContext, hoveredFigure).toolBarInit();
+                borderPane.setLeft(inputTool);
+            }
+        } else
+            selectedFigures.clear();
     }
 
     @FXML
@@ -216,5 +225,16 @@ public class MainController {
     @FXML
     private void zoomMinus(ActionEvent event) {
         drawingTool.zoom(0.9);
+    }
+
+    @FXML
+    private void rotate() {
+        if (rotationBtn.isSelected()) {
+            borderPane.setLeft(inputTool);
+            drawingTool.rotate(selectedFigures);
+        } else {
+            workSpace.setOnMouseClicked(defaultMouseClickedHandler);
+            borderPane.setLeft(null);
+        }
     }
 }

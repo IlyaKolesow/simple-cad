@@ -134,4 +134,11 @@ public class Line extends Figure {
     public String getName() {
         return "ЛИНИЯ";
     }
+
+    @Override
+    public void rotate(Point centralPoint, double angle) {
+        point1.rotate(centralPoint, angle);
+        point2.rotate(centralPoint, angle);
+        setPoints(point1, point2);
+    }
 }

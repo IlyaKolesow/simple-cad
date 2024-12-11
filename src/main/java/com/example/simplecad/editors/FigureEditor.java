@@ -41,7 +41,7 @@ public class FigureEditor {
 
         for (Map.Entry<String, Double> entry : figure.getValuesForOutput(center).entrySet()) {
             Label label = new Label(entry.getKey() + ":");
-            TextField input = new TextField(String.format("%.1f", entry.getValue()));
+            TextField input = new TextField(String.format("%.1f", entry.getValue() / scale));
             inputs.add(input);
             HBox hBox = new HBox(label, input);
 

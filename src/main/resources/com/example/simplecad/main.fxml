@@ -29,9 +29,10 @@
                 <Label fx:id="mouseX"/>
                 <Label fx:id="mouseY"/>
             </VBox>
-            <ToggleButton fx:id="panBtn" onAction="#panByLBM">Pan</ToggleButton>
-            <Button onAction="#zoomPlus">Zoom +</Button>
-            <Button onAction="#zoomMinus">Zoom -</Button>
+            <ToggleButton fx:id="panBtn" onAction="#panByLBM">Панорамирование</ToggleButton>
+            <Button onAction="#zoomPlus">Зум +</Button>
+            <Button onAction="#zoomMinus">Зум -</Button>
+            <ToggleButton fx:id="rotationBtn" onAction="#rotate">Поворот</ToggleButton>
         </ToolBar>
     </bottom>
 

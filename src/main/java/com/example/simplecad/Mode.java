@@ -7,7 +7,8 @@ public enum Mode {
     BY_RADIUS("Радиус"),
     BY_ANGLE_LENGTH("Угол и длина"),
     INSCRIBED_IN_CIRCLE("Вписанный"),
-    CIRCUMSCRIBED_AROUND_CIRCLE("Описанный");
+    CIRCUMSCRIBED_AROUND_CIRCLE("Описанный"),
+    CHORD("Хорда");
 
     Mode(String name) {
         this.name = name;

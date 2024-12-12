@@ -183,6 +183,7 @@ public class MainController {
 
     @FXML
     private void arcDrawing(ActionEvent event) {
+        figureDrawing(arcBtn, new ArcDrawer(drawingContext));
     }
 
     @FXML

@@ -2,7 +2,6 @@ package com.example.simplecad.figures;
 
 import javafx.scene.paint.Color;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;

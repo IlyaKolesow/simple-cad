@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.example.simplecad.util.MathCalculation.getPointsDistance;
-import static com.example.simplecad.util.MathCalculation.getSolution;
+import static com.example.simplecad.util.MathCalculation.getCenterAndRadius;
 
 public class Circle extends Figure {
     private Point center;
@@ -27,21 +27,9 @@ public class Circle extends Figure {
     }
 
     public Circle(Point point1, Point point2, Point point3) {
-        double[][] a = {
-                {2 * point1.getX(), 2 * point1.getY(), 1},
-                {2 * point2.getX(), 2 * point2.getY(), 1},
-                {2 * point3.getX(), 2 * point3.getY(), 1}
-        };
-        double[] b = {
-                point1.getX() * point1.getX() + point1.getY() * point1.getY(),
-                point2.getX() * point2.getX() + point2.getY() * point2.getY(),
-                point3.getX() * point3.getX() + point3.getY() * point3.getY()
-        };
-        double[] x = getSolution(a, b);
-
-        center = new Point(x[0], x[1]);
-        radius = Math.sqrt(x[0] * x[0] + x[1] * x[1] + x[2]);
-
+        double[] values = getCenterAndRadius(point1, point2, point3);
+        center = new Point(values[0], values[1]);
+        radius = values[2];
         build();
     }
 

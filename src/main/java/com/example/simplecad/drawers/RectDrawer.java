@@ -1,6 +1,7 @@
 package com.example.simplecad.drawers;
 
 import com.example.simplecad.Mode;
+import com.example.simplecad.drawers.helpers.DrawerByPoints;
 import com.example.simplecad.figures.Figure;
 import com.example.simplecad.figures.Point;
 import com.example.simplecad.figures.Rectangle;
@@ -12,13 +13,13 @@ public class RectDrawer extends FigureDrawer {
 
     public RectDrawer(DrawingContext context) {
         super(context);
-        modesComboBox.getItems().addAll(Mode.BY_2_POINTS, Mode.BY_SIDES);
-        modesComboBox.setValue(Mode.BY_2_POINTS);
+        modes.getItems().addAll(Mode.BY_2_POINTS, Mode.BY_SIDES);
+        modes.setValue(Mode.BY_2_POINTS);
     }
 
     @Override
     public void startDrawing() {
-        switch (modesComboBox.getValue()) {
+        switch (modes.getValue()) {
             case BY_2_POINTS:
                 drawBy2Points();
                 break;
@@ -29,7 +30,7 @@ public class RectDrawer extends FigureDrawer {
     }
 
     private void drawBy2Points() {
-        DrawerByPoints byPoints = new DrawerByPoints(drawingContext, 2) {
+        DrawerByPoints byPoints = new DrawerByPoints(drawingContext, inputBuilder, 2) {
             @Override
             public Figure buildFigure(Point[] points) {
                 return new Rectangle(points[0], points[1]);
@@ -40,24 +41,24 @@ public class RectDrawer extends FigureDrawer {
     }
 
     private void drawBy2Sides() {
-        setPrompts("Укажите координаты центральной точки", "X", "Y", null);
+        inputBuilder.setPrompts("Укажите координаты центральной точки", "X", "Y");
 
         toolBar.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
-                double param1 = Double.parseDouble(input1.getText()) * drawingContext.getScale();
-                double param2 = Double.parseDouble(input2.getText()) * drawingContext.getScale();
+                double param1 = Double.parseDouble(inputBuilder.getInputs().get(0).getText()) * drawingContext.getScale();
+                double param2 = Double.parseDouble(inputBuilder.getInputs().get(1).getText()) * drawingContext.getScale();
                 if (rectCenter != null) {
                     Rectangle rectangle = new Rectangle(rectCenter, param1, param2);
                     workSpace.getChildren().add(rectangle);
                     workSpace.getChildren().remove(rectCenter);
                     rectCenter = null;
-                    setPrompts("Укажите координаты центральной точки", "Y", "X", null);
+                    inputBuilder.setPrompts("Укажите координаты центральной точки", "Y", "X");
                 } else {
                     double x = coordsCenter.getX() + param1;
                     double y = coordsCenter.getY() - param2;
                     rectCenter = new Point(x, y);
                     workSpace.getChildren().add(rectCenter);
-                    setPrompts("Укажите размеры сторон", "Ширина", "Высота", null);
+                    inputBuilder.setPrompts("Укажите размеры сторон", "Ширина", "Высота");
                 }
             }
         });

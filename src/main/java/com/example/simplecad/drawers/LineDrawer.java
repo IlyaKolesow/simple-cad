@@ -1,6 +1,7 @@
 package com.example.simplecad.drawers;
 
 import com.example.simplecad.Mode;
+import com.example.simplecad.drawers.helpers.DrawerByPoints;
 import com.example.simplecad.figures.Figure;
 import com.example.simplecad.figures.Line;
 import com.example.simplecad.figures.Point;
@@ -12,13 +13,13 @@ public class LineDrawer extends FigureDrawer {
 
     public LineDrawer(DrawingContext context) {
         super(context);
-        modesComboBox.getItems().addAll(Mode.BY_2_POINTS, Mode.BY_ANGLE_LENGTH);
-        modesComboBox.setValue(Mode.BY_2_POINTS);
+        modes.getItems().addAll(Mode.BY_2_POINTS, Mode.BY_ANGLE_LENGTH);
+        modes.setValue(Mode.BY_2_POINTS);
     }
 
     @Override
     public void startDrawing() {
-        switch (modesComboBox.getValue()) {
+        switch (modes.getValue()) {
             case BY_2_POINTS:
                 drawBy2Points();
                 break;
@@ -29,7 +30,7 @@ public class LineDrawer extends FigureDrawer {
     }
 
     private void drawBy2Points() {
-        DrawerByPoints byPoints = new DrawerByPoints(drawingContext, 2) {
+        DrawerByPoints byPoints = new DrawerByPoints(drawingContext, inputBuilder, 2) {
             @Override
             public Figure buildFigure(Point[] points) {
                 return new Line(points[0], points[1]);
@@ -40,23 +41,23 @@ public class LineDrawer extends FigureDrawer {
     }
 
     private void drawByAngleAndLength() {
-        setPrompts("Укажите координаты первой точки", "X", "Y", null);
+        inputBuilder.setPrompts("Укажите координаты первой точки", "X", "Y");
 
         toolBar.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
                 if (firstPoint != null) {
-                    double angle = Double.parseDouble(input1.getText());
-                    double length = Double.parseDouble(input2.getText()) * drawingContext.getScale();
+                    double angle = Double.parseDouble(inputBuilder.getInputs().get(0).getText());
+                    double length = Double.parseDouble(inputBuilder.getInputs().get(1).getText()) * drawingContext.getScale();
                     Line line = new Line(firstPoint, angle, length);
                     workSpace.getChildren().add(line);
                     firstPoint = null;
-                    setPrompts("Укажите координаты первой точки", "X", "Y", null);
+                    inputBuilder.setPrompts("Укажите координаты первой точки", "X", "Y");
                 } else {
-                    double x = coordsCenter.getX() + Double.parseDouble(input1.getText()) * drawingContext.getScale();
-                    double y = coordsCenter.getY() - Double.parseDouble(input2.getText()) * drawingContext.getScale();
+                    double x = coordsCenter.getX() + Double.parseDouble(inputBuilder.getInputs().get(0).getText()) * drawingContext.getScale();
+                    double y = coordsCenter.getY() - Double.parseDouble(inputBuilder.getInputs().get(1).getText()) * drawingContext.getScale();
                     firstPoint = new Point(x, y);
                     workSpace.getChildren().add(firstPoint);
-                    setPrompts("Укажите угол и длину линии", "Угол", "Длина", null);
+                    inputBuilder.setPrompts("Укажите угол и длину линии", "Угол", "Длина");
                 }
             }
         });

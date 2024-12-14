@@ -27,7 +27,7 @@ public class FigureEditor {
     public FigureEditor(DrawingContext context, Figure figure) {
         this.context = context;
         this.figure = figure;
-        this.toolBar = context.getToolBar();
+        this.toolBar = context.getInputTool();
         this.scale = context.getScale();
         this.center = context.getCoordsCenter();
     }

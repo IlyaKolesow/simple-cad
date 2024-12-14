@@ -1,21 +1,24 @@
-package com.example.simplecad.drawers;
+package com.example.simplecad.drawers.helpers;
 
+import com.example.simplecad.drawers.Drawer;
 import com.example.simplecad.figures.Figure;
 import com.example.simplecad.util.DrawingContext;
 import com.example.simplecad.figures.Point;
+import com.example.simplecad.util.InputBuilder;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
 public abstract class DrawerByPoints extends Drawer {
     private final Point[] points;
 
-    public DrawerByPoints(DrawingContext context, int numberOfPoints) {
+    public DrawerByPoints(DrawingContext context, InputBuilder inputBuilder, int numberOfPoints) {
         super(context);
         points = new Point[numberOfPoints];
+        this.inputBuilder = inputBuilder;
     }
 
     public void setupDrawing() {
-        setPrompts("Укажите координаты точки 1", "X", "Y", null);
+        inputBuilder.setPrompts("Укажите координаты точки 1", "X", "Y");
 
         workSpace.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY)
@@ -24,8 +27,8 @@ public abstract class DrawerByPoints extends Drawer {
 
         toolBar.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
-                double x = (coordsCenter.getX() + Double.parseDouble(input1.getText()) * drawingContext.getScale());
-                double y = (coordsCenter.getY() - Double.parseDouble(input2.getText()) * drawingContext.getScale());
+                double x = (coordsCenter.getX() + Double.parseDouble(inputBuilder.getInputs().get(0).getText()) * drawingContext.getScale());
+                double y = (coordsCenter.getY() - Double.parseDouble(inputBuilder.getInputs().get(1).getText()) * drawingContext.getScale());
                 drawNextPoint(x, y);
             }
         });
@@ -38,7 +41,7 @@ public abstract class DrawerByPoints extends Drawer {
 
                 if (i == points.length - 1) {
                     workSpace.getChildren().add(buildFigure(points));
-                    setPrompts("Укажите координаты точки 1", "X", "Y", null);
+                    inputBuilder.setPrompts("Укажите координаты точки 1", "X", "Y");
 
                     for (int j = 0; j < points.length; j++) {
                         workSpace.getChildren().remove(points[j]);
@@ -46,7 +49,7 @@ public abstract class DrawerByPoints extends Drawer {
                     }
                 } else {
                     workSpace.getChildren().add(points[i]);
-                    setPrompts("Укажите координаты точки " + (i + 2), "X", "Y", null);
+                    inputBuilder.setPrompts("Укажите координаты точки " + (i + 2), "X", "Y");
                 }
                 break;
             }

@@ -1,6 +1,7 @@
 package com.example.simplecad.drawers;
 
 import com.example.simplecad.Mode;
+import com.example.simplecad.drawers.helpers.DrawerByRadius;
 import com.example.simplecad.figures.Figure;
 import com.example.simplecad.figures.Point;
 import com.example.simplecad.figures.Polygon;
@@ -11,14 +12,14 @@ public class PolygonDrawer extends FigureDrawer {
 
     public PolygonDrawer(DrawingContext context) {
         super(context);
-        modesComboBox.getItems().addAll(Mode.INSCRIBED_IN_CIRCLE, Mode.CIRCUMSCRIBED_AROUND_CIRCLE);
-        modesComboBox.setValue(Mode.INSCRIBED_IN_CIRCLE);
-        input3.setText(String.valueOf(n));
+        modes.getItems().addAll(Mode.INSCRIBED_IN_CIRCLE, Mode.CIRCUMSCRIBED_AROUND_CIRCLE);
+        modes.setValue(Mode.INSCRIBED_IN_CIRCLE);
+        //input3.setText(String.valueOf(n));
     }
 
     @Override
     public void startDrawing() {
-        switch (modesComboBox.getValue()) {
+        switch (modes.getValue()) {
             case INSCRIBED_IN_CIRCLE:
                 draw(Mode.INSCRIBED_IN_CIRCLE);
                 break;
@@ -29,7 +30,7 @@ public class PolygonDrawer extends FigureDrawer {
     }
 
     private void draw(Mode mode) {
-        DrawerByRadius byRadius = new DrawerByRadius(drawingContext) {
+        DrawerByRadius byRadius = new DrawerByRadius(drawingContext, inputBuilder) {
             @Override
             protected Figure buildFigure(Point center, double radius) {
                 return new Polygon(center, radius, n, mode);
@@ -42,18 +43,18 @@ public class PolygonDrawer extends FigureDrawer {
 
             @Override
             protected void setFirstActionPrompts() {
-                if (input3.getText() != null)
-                    n = Integer.parseInt(input3.getText());
-                setPrompts("Укажите координаты центральной точки", "X", "Y", "Количество сторон");
-                input3.setText(String.valueOf(n));
+                if (inputBuilder.getInputs().get(2).getText() != null)
+                    n = Integer.parseInt(inputBuilder.getInputs().get(2).getText());
+                inputBuilder.setPrompts("Укажите координаты центральной точки", "X", "Y", "Количество сторон");
+                inputBuilder.getInputs().get(2).setText(String.valueOf(n));
             }
 
             @Override
             protected void setSecondActionPrompts() {
-                if (input3.getText() != null)
-                    n = Integer.parseInt(input3.getText());
-                setPrompts("Укажите радиус", "R", null, "Количество сторон");
-                input3.setText(String.valueOf(n));
+                if (inputBuilder.getInputs().get(2).getText() != null)
+                    n = Integer.parseInt(inputBuilder.getInputs().get(2).getText());
+                inputBuilder.setPrompts("Укажите радиус", "R", "Количество сторон");
+                inputBuilder.getInputs().get(2).setText(String.valueOf(n));
             }
         };
 

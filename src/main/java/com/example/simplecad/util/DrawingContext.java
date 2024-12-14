@@ -15,7 +15,7 @@ import java.util.Objects;
 
 public class DrawingContext {
     private final Pane workSpace;
-    private final ToolBar toolBar;
+    private final ToolBar inputTool;
     private Label inputLabel;
     private TextField input1, input2, input3;
     private Label prompt1, prompt2, prompt3;
@@ -23,12 +23,14 @@ public class DrawingContext {
     private final CustomCursor cursor;
     private ComboBox<Mode> modesComboBox;
     private final EventHandler<MouseEvent> defaultMouseMovedHandler;
+    private final EventHandler<MouseEvent> defaultMouseClickedHandler;
     private double scale;
 
-    public DrawingContext(Pane workSpace, ToolBar toolBar, EventHandler<MouseEvent> defaultMouseMovedHandler) {
+    public DrawingContext(Pane workSpace, ToolBar inputTool, EventHandler<MouseEvent> defaultMouseMovedHandler, EventHandler<MouseEvent> defaultMouseClickedHandler) {
         this.workSpace = workSpace;
-        this.toolBar = toolBar;
+        this.inputTool = inputTool;
         this.defaultMouseMovedHandler = defaultMouseMovedHandler;
+        this.defaultMouseClickedHandler = defaultMouseClickedHandler;
 
         coordsCenter = (Point) findById(workSpace, "center");
         cursor = (CustomCursor) findById(workSpace, "cursor");
@@ -55,8 +57,8 @@ public class DrawingContext {
         return workSpace;
     }
 
-    public ToolBar getToolBar() {
-        return toolBar;
+    public ToolBar getInputTool() {
+        return inputTool;
     }
 
     public Label getInputLabel() {
@@ -93,6 +95,10 @@ public class DrawingContext {
 
     public EventHandler<MouseEvent> getDefaultMouseMovedHandler() {
         return defaultMouseMovedHandler;
+    }
+
+    public EventHandler<MouseEvent> getDefaultMouseClickedHandler() {
+        return defaultMouseClickedHandler;
     }
 
     public Label getPrompt3() {

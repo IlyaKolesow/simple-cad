@@ -38,7 +38,7 @@ public class MainController {
     private ToolBar inputTool;
 
     private CustomCursor cursor;
-    private DrawingTool drawingTool;
+    private ToolPanel toolPanel;
     private DrawingContext drawingContext;
     private EventHandler<? super MouseEvent> previousMouseClickHandler;
     private EventHandler<MouseEvent> defaultMouseMovedHandler;
@@ -53,8 +53,8 @@ public class MainController {
         setDefaultMouseMovedHandler();
         setDefaultMouseClickedHandler();
 
-        drawingContext = new DrawingContext(workSpace, inputTool, defaultMouseMovedHandler);
-        drawingTool = new DrawingTool(drawingContext);
+        drawingContext = new DrawingContext(workSpace, inputTool, defaultMouseMovedHandler, defaultMouseClickedHandler);
+        toolPanel = new ToolPanel(drawingContext);
 
         borderPane.setLeft(null);
     }
@@ -99,7 +99,7 @@ public class MainController {
 
     private void setDefaultMouseMovedHandler() {
         defaultMouseMovedHandler = e -> {
-            drawingTool.updateCoords(e, mouseX, mouseY);
+            toolPanel.updateCoords(e, mouseX, mouseY);
             cursor.update(e);
             hovering(e);
         };
@@ -194,7 +194,7 @@ public class MainController {
     private void figureDrawing(ToggleButton button, FigureDrawer drawer) {
         if (button.isSelected()) {
             borderPane.setLeft(inputTool);
-            drawingTool.pan(MouseButton.MIDDLE);
+            toolPanel.pan(MouseButton.MIDDLE);
             panBtn.setSelected(false);
             drawer.startDrawing();
         } else {
@@ -211,28 +211,28 @@ public class MainController {
 
         if (panBtn.isSelected()) {
             workSpace.setOnMouseClicked(null);
-            drawingTool.pan(MouseButton.PRIMARY);
+            toolPanel.pan(MouseButton.PRIMARY);
         } else {
-            drawingTool.pan(MouseButton.MIDDLE);
+            toolPanel.pan(MouseButton.MIDDLE);
             workSpace.setOnMouseClicked(previousMouseClickHandler);
         }
     }
 
     @FXML
     private void zoomPlus(ActionEvent event) {
-        drawingTool.zoom(1.1);
+        toolPanel.zoom(1.1);
     }
 
     @FXML
     private void zoomMinus(ActionEvent event) {
-        drawingTool.zoom(0.9);
+        toolPanel.zoom(0.9);
     }
 
     @FXML
     private void rotate() {
         if (rotationBtn.isSelected()) {
             borderPane.setLeft(inputTool);
-            drawingTool.rotate(selectedFigures);
+            toolPanel.rotate(selectedFigures);
         } else {
             workSpace.setOnMouseClicked(defaultMouseClickedHandler);
             borderPane.setLeft(null);

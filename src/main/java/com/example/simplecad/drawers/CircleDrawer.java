@@ -1,6 +1,8 @@
 package com.example.simplecad.drawers;
 
 import com.example.simplecad.Mode;
+import com.example.simplecad.drawers.helpers.DrawerByPoints;
+import com.example.simplecad.drawers.helpers.DrawerByRadius;
 import com.example.simplecad.figures.Circle;
 import com.example.simplecad.figures.Figure;
 import com.example.simplecad.figures.Point;
@@ -10,13 +12,13 @@ public class CircleDrawer extends FigureDrawer {
 
     public CircleDrawer(DrawingContext context) {
         super(context);
-        modesComboBox.getItems().addAll(Mode.BY_RADIUS, Mode.BY_3_POINTS);
-        modesComboBox.setValue(Mode.BY_RADIUS);
+        modes.getItems().addAll(Mode.BY_RADIUS, Mode.BY_3_POINTS);
+        modes.setValue(Mode.BY_RADIUS);
     }
 
     @Override
     public void startDrawing() {
-        switch (modesComboBox.getValue()) {
+        switch (modes.getValue()) {
             case BY_RADIUS:
                 drawByCenterAndRadius();
                 break;
@@ -27,7 +29,7 @@ public class CircleDrawer extends FigureDrawer {
     }
 
     private void drawBy3Points() {
-        DrawerByPoints byPoints = new DrawerByPoints(drawingContext, 3) {
+        DrawerByPoints byPoints = new DrawerByPoints(drawingContext, inputBuilder, 3) {
             @Override
             protected Figure buildFigure(Point[] points) {
                 return new Circle(points[0], points[1], points[2]);
@@ -38,7 +40,7 @@ public class CircleDrawer extends FigureDrawer {
     }
 
     private void drawByCenterAndRadius() {
-        DrawerByRadius byRadius = new DrawerByRadius(drawingContext) {
+        DrawerByRadius byRadius = new DrawerByRadius(drawingContext, inputBuilder) {
             @Override
             protected Figure buildFigure(Point center, double radius) {
                 return new Circle(center, radius);
@@ -51,12 +53,12 @@ public class CircleDrawer extends FigureDrawer {
 
             @Override
             protected void setFirstActionPrompts() {
-                setPrompts("Укажите координаты центральной точки", "X", "Y", null);
+                inputBuilder.setPrompts("Укажите координаты центральной точки", "X", "Y");
             }
 
             @Override
             protected void setSecondActionPrompts() {
-                setPrompts("Укажите радиус", "R", null, null);
+                inputBuilder.setPrompts("Укажите радиус", "R");
             }
         };
 

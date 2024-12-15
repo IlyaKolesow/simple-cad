@@ -94,54 +94,33 @@ public class ToolPanel {
     public void rotate(List<Figure> figures) {
         InputBuilder inputBuilder = new InputBuilder(inputTool);
         inputBuilder.setPrompts("Выберите объекты для поворта");
-        Button button = new Button("Готово");
+        Button button = inputBuilder.addApplyButton();
+        button.requestFocus();
 
-        final Point[] centralPoint = new Point[1];
-        final Double[] angle = new Double[1];
+        EventHandler<ActionEvent> eventHandler = new EventHandler<>() {
+            private Point centralPoint;
+            private Double angle;
 
-        EventHandler<ActionEvent> eventHandler = event -> {
-            if (centralPoint[0] != null && angle[0] == null) {
-                angle[0] = Double.parseDouble(inputBuilder.getInputs().get(0).getText());
-                figures.forEach(figure -> figure.rotate(centralPoint[0], angle[0]));
-//                centralPoint[0] = null;
-//                angle[0] = null;
-                inputBuilder.setPrompts("Выберите объекты для поворта");
-                inputTool.getItems().add(button);
-            } else if (centralPoint[0] != null && angle[0] != null) {
-                inputBuilder.setPrompts("Укажите координаты центральной точки вращения", "X", "Y");
-                inputTool.getItems().add(button);
-                centralPoint[0] = null;
-                angle[0] = null;
-            } else if (!figures.isEmpty()) {
-                inputBuilder.setPrompts("Укажите координаты центральной точки вращения", "X", "Y");
-                inputTool.getItems().add(button);
-            }
-
-
-
-            if (!figures.isEmpty() && centralPoint[0] == null && !inputBuilder.getInputs().isEmpty()) {
-                inputBuilder.setPrompts("Укажите координаты центральной точки вращения", "X", "Y");
-            } else if (centralPoint[0] == null && !inputBuilder.getInputs().isEmpty()) {
-                double x = (center.getX() + Double.parseDouble(inputBuilder.getInputs().get(0).getText()) * scale);
-                double y = (center.getY() - Double.parseDouble(inputBuilder.getInputs().get(1).getText()) * scale);
-                centralPoint[0] = new Point(x, y);
-                inputBuilder.setPrompts("Укажите угол поворота:", "Угол:");
-            } else if (centralPoint[0] != null) {
-                angle[0] = Double.parseDouble(inputBuilder.getInputs().get(0).getText());
-                figures.forEach(figure -> figure.rotate(centralPoint[0], angle[0]));
-                centralPoint[0] = null;
-                inputBuilder.setPrompts("Выберите объекты для поворта");
+            @Override
+            public void handle(ActionEvent event) {
+                if (!figures.isEmpty() && centralPoint == null && inputBuilder.getInputs().isEmpty()) {
+                    inputBuilder.setPrompts("Укажите координаты центральной точки вращения", "X", "Y");
+                } else if (centralPoint == null && !inputBuilder.getInputs().isEmpty()) {
+                    double x = (center.getX() + Double.parseDouble(inputBuilder.getInputs().get(0).getText()) * scale);
+                    double y = (center.getY() - Double.parseDouble(inputBuilder.getInputs().get(1).getText()) * scale);
+                    centralPoint = new Point(x, y);
+                    inputBuilder.setPrompts("Укажите угол поворота", "Угол");
+                } else if (centralPoint != null) {
+                    angle = Double.parseDouble(inputBuilder.getInputs().get(0).getText());
+                    figures.forEach(figure -> figure.rotate(centralPoint, angle));
+                    centralPoint = null;
+                    inputBuilder.setPrompts("Выберите объекты для поворта");
+                }
             }
         };
 
         button.setOnAction(eventHandler);
-
-//        toolBar.setOnKeyPressed(e -> {
-//            if (e.getCode() == KeyCode.ENTER) {
-//
-//            }
-//        });
-
+        inputTool.setOnKeyPressed(null);
         workSpace.setOnMouseClicked(context.getDefaultMouseClickedHandler());
     }
 }

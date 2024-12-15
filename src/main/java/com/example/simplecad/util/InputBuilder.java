@@ -2,10 +2,7 @@ package com.example.simplecad.util;
 
 import com.example.simplecad.Mode;
 import javafx.geometry.Pos;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
@@ -17,6 +14,7 @@ public class InputBuilder {
     private final List<Label> prompts;
     private final List<TextField> inputs;
     private final ComboBox<Mode> modes;
+    private Button applyBtn;
 
     public InputBuilder(ToolBar toolBar) {
         this.toolBar = toolBar;
@@ -57,10 +55,19 @@ public class InputBuilder {
             hBox.setAlignment(Pos.CENTER_LEFT);
             inputs.get(i).setMaxWidth(50);
         }
+
+        if (applyBtn != null)
+            toolBar.getItems().add(applyBtn);
     }
     
     public ComboBox<Mode> addModeSelection() {
         toolBar.getItems().addFirst(modes);
         return modes;
+    }
+
+    public Button addApplyButton() {
+        applyBtn = new Button("Готово");
+        toolBar.getItems().addLast(applyBtn);
+        return applyBtn;
     }
 }

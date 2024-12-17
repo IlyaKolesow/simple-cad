@@ -45,8 +45,8 @@ public class RectDrawer extends FigureDrawer {
 
         toolBar.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
-                double param1 = Double.parseDouble(inputBuilder.getInputs().get(0).getText()) * drawingContext.getScale();
-                double param2 = Double.parseDouble(inputBuilder.getInputs().get(1).getText()) * drawingContext.getScale();
+                double param1 = Double.parseDouble(input(0).getText()) * drawingContext.getScale();
+                double param2 = Double.parseDouble(input(1).getText()) * drawingContext.getScale();
                 if (rectCenter != null) {
                     Rectangle rectangle = new Rectangle(rectCenter, param1, param2);
                     workSpace.getChildren().add(rectangle);

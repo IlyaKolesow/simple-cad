@@ -46,15 +46,15 @@ public class LineDrawer extends FigureDrawer {
         toolBar.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
                 if (firstPoint != null) {
-                    double angle = Double.parseDouble(inputBuilder.getInputs().get(0).getText());
-                    double length = Double.parseDouble(inputBuilder.getInputs().get(1).getText()) * drawingContext.getScale();
+                    double angle = Double.parseDouble(input(0).getText());
+                    double length = Double.parseDouble(input(1).getText()) * drawingContext.getScale();
                     Line line = new Line(firstPoint, angle, length);
                     workSpace.getChildren().add(line);
                     firstPoint = null;
                     inputBuilder.setPrompts("Укажите координаты первой точки", "X", "Y");
                 } else {
-                    double x = coordsCenter.getX() + Double.parseDouble(inputBuilder.getInputs().get(0).getText()) * drawingContext.getScale();
-                    double y = coordsCenter.getY() - Double.parseDouble(inputBuilder.getInputs().get(1).getText()) * drawingContext.getScale();
+                    double x = coordsCenter.getX() + Double.parseDouble(input(0).getText()) * drawingContext.getScale();
+                    double y = coordsCenter.getY() - Double.parseDouble(input(1).getText()) * drawingContext.getScale();
                     firstPoint = new Point(x, y);
                     workSpace.getChildren().add(firstPoint);
                     inputBuilder.setPrompts("Укажите угол и длину линии", "Угол", "Длина");

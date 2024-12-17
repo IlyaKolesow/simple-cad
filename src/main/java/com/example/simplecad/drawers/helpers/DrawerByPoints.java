@@ -27,8 +27,8 @@ public abstract class DrawerByPoints extends Drawer {
 
         toolBar.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
-                double x = (coordsCenter.getX() + Double.parseDouble(inputBuilder.getInputs().get(0).getText()) * drawingContext.getScale());
-                double y = (coordsCenter.getY() - Double.parseDouble(inputBuilder.getInputs().get(1).getText()) * drawingContext.getScale());
+                double x = (coordsCenter.getX() + Double.parseDouble(input(0).getText()) * drawingContext.getScale());
+                double y = (coordsCenter.getY() - Double.parseDouble(input(1).getText()) * drawingContext.getScale());
                 drawNextPoint(x, y);
             }
         });

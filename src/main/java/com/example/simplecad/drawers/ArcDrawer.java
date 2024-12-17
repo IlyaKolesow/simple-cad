@@ -4,10 +4,17 @@ import com.example.simplecad.Mode;
 import com.example.simplecad.drawers.helpers.DrawerByPoints;
 import com.example.simplecad.figures.Arc;
 import com.example.simplecad.figures.Figure;
+import com.example.simplecad.figures.Line;
 import com.example.simplecad.figures.Point;
 import com.example.simplecad.util.DrawingContext;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 
 public class ArcDrawer extends FigureDrawer {
+    private Point center;
+    private Point startPoint;
+    private Point endPoint;
+
     public ArcDrawer(DrawingContext context) {
         super(context);
         modes.getItems().addAll(Mode.BY_3_POINTS, Mode.CHORD);
@@ -38,6 +45,37 @@ public class ArcDrawer extends FigureDrawer {
     }
 
     private void drawByChord() {
+        inputBuilder.setPrompts("Укажите координаты центральной точки", "X", "Y");
 
+        workSpace.setOnMouseClicked(e -> {
+            if (e.getButton() == MouseButton.PRIMARY) {
+                if (startPoint != null) {
+                    endPoint = new Point(e.getX(), e.getY());
+                    Arc arc = new Arc(center, new Line(startPoint, endPoint));
+                    workSpace.getChildren().add(arc);
+                    workSpace.getChildren().removeAll(startPoint, center);
+                    endPoint = null;
+                    startPoint = null;
+                    center = null;
+                    inputBuilder.setPrompts("Укажите координаты центральной точки", "X", "Y");
+                } else if (center != null) {
+                    startPoint = new Point(e.getX(), e.getY());
+                    workSpace.getChildren().add(startPoint);
+                    inputBuilder.setPrompts("Укажите координаты второй точки хорды", "X", "Y");
+                } else {
+                    center = new Point(e.getX(), e.getY());
+                    workSpace.getChildren().add(center);
+                    inputBuilder.setPrompts("Укажите координаты первой точки хорды", "X", "Y");
+                }
+            }
+        });
+
+        toolBar.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                double x = (coordsCenter.getX() + Double.parseDouble(input(0).getText()) * drawingContext.getScale());
+                double y = (coordsCenter.getY() - Double.parseDouble(input(1).getText()) * drawingContext.getScale());
+
+            }
+        });
     }
 }

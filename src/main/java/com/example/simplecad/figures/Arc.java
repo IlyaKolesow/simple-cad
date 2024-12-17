@@ -25,28 +25,68 @@ public class Arc extends Figure {
         build(point1, point2, point3);
     }
 
-    private void build(Point point1, Point point2, Point point3) {
-        double angle1 = Math.toDegrees(Math.asin((center.getY() - point1.getY()) / radius));
-        double angle2 = Math.toDegrees(Math.asin((center.getY() - point2.getY()) / radius));
-        double angle3 = Math.toDegrees(Math.asin((center.getY() - point3.getY()) / radius));
+    public Arc(Point center, Line chord) {
+        this.center = center;
+        startPoint = chord.getPoint1();
+        radius = getPointsDistance(center, startPoint);
+        build(chord);
+    }
 
-        if (center.getX() > point1.getX())
-            angle1 = 180 - angle1;
-        if (center.getX() > point2.getX())
-            angle2 = 180 - angle2;
-        if (center.getX() > point3.getX())
-            angle3 = 180 - angle3;
+    private void build(Point point1, Point point2, Point point3) {
+        double cx = center.getX();
+        double cy = center.getY();
+
+        double angle1 = Math.toDegrees(Math.acos((point1.getX() - cx) / radius));
+        double angle2 = Math.toDegrees(Math.acos((point2.getX() - cx) / radius));
+        double angle3 = Math.toDegrees(Math.acos((point3.getX() - cx) / radius));
+
+        if (cy < point1.getY())
+            angle1 = 360 - angle1;
+        if (cy < point2.getY())
+            angle2 = 360 - angle2;
+        if (cy < point3.getY())
+            angle3 = 360 - angle3;
 
         double arcAngle = (angle3 - angle1 + 360) % 360;
 
-        if (angle2 < angle1)
+        boolean isClockwiseNormalCase = angle1 < angle3 && !(angle1 < angle2 && angle2 < angle3);
+        boolean isClockwiseCrossZero = angle1 > angle3 && !(angle1 < angle2 || angle2 < angle3);
+
+        if (isClockwiseNormalCase || isClockwiseCrossZero)
             arcAngle -= 360;
 
-        arc = new javafx.scene.shape.Arc(center.getX(), center.getY(), radius, radius, angle1, arcAngle);
+        arc = new javafx.scene.shape.Arc(cx, cy, radius, radius, angle1, arcAngle);
         arc.setStrokeWidth(thickness);
         arc.setStroke(color);
         arc.setFill(null);
         getChildren().addAll(arc, point1, point3);
+    }
+
+    private void build(Line chord) {
+        Point point2 = chord.getPoint2();
+        double cx = center.getX();
+        double cy = center.getY();
+        double scale = radius / getPointsDistance(center, point2);
+        double x = cx + (point2.getX() - cx) * scale;
+        double y = cy + (point2.getY() - cy) * scale;
+        endPoint = new Point(x, y);
+
+        double startAngle = Math.toDegrees(Math.acos((startPoint.getX() - cx) / radius));
+        if (cy < startPoint.getY())
+            startAngle = 360 - startAngle;
+
+        double scalar = (startPoint.getX() - cx) * (endPoint.getX() - cx) + (startPoint.getY() - cy) * (endPoint.getY() - cy);
+        double arcAngle = Math.toDegrees(Math.acos(scalar / (radius * radius)));
+
+        double cross = (startPoint.getX() - cx) * (cy - endPoint.getY()) - (cy - startPoint.getY()) * (endPoint.getX() - cx);
+        if (cross < 0)
+            arcAngle *= -1;
+
+        arc = new javafx.scene.shape.Arc(cx, cy, radius, radius, startAngle, arcAngle);
+        arc.setStrokeWidth(thickness);
+        arc.setStroke(color);
+        arc.setFill(null);
+        getChildren().addAll(arc, startPoint, endPoint);
     }
 
     @Override

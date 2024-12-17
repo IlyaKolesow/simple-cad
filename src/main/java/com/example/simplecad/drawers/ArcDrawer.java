@@ -49,24 +49,7 @@ public class ArcDrawer extends FigureDrawer {
 
         workSpace.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
-                if (startPoint != null) {
-                    endPoint = new Point(e.getX(), e.getY());
-                    Arc arc = new Arc(center, new Line(startPoint, endPoint));
-                    workSpace.getChildren().add(arc);
-                    workSpace.getChildren().removeAll(startPoint, center);
-                    endPoint = null;
-                    startPoint = null;
-                    center = null;
-                    inputBuilder.setPrompts("Укажите координаты центральной точки", "X", "Y");
-                } else if (center != null) {
-                    startPoint = new Point(e.getX(), e.getY());
-                    workSpace.getChildren().add(startPoint);
-                    inputBuilder.setPrompts("Укажите координаты второй точки хорды", "X", "Y");
-                } else {
-                    center = new Point(e.getX(), e.getY());
-                    workSpace.getChildren().add(center);
-                    inputBuilder.setPrompts("Укажите координаты первой точки хорды", "X", "Y");
-                }
+                drawNextPoint(e.getX(), e.getY());
             }
         });
 
@@ -74,8 +57,29 @@ public class ArcDrawer extends FigureDrawer {
             if (e.getCode() == KeyCode.ENTER) {
                 double x = (coordsCenter.getX() + Double.parseDouble(input(0).getText()) * drawingContext.getScale());
                 double y = (coordsCenter.getY() - Double.parseDouble(input(1).getText()) * drawingContext.getScale());
-
+                drawNextPoint(x, y);
             }
         });
+    }
+
+    private void drawNextPoint(double x, double y) {
+        if (startPoint != null) {
+            endPoint = new Point(x, y);
+            Arc arc = new Arc(center, new Line(startPoint, endPoint));
+            workSpace.getChildren().add(arc);
+            workSpace.getChildren().removeAll(startPoint, center);
+            endPoint = null;
+            startPoint = null;
+            center = null;
+            inputBuilder.setPrompts("Укажите координаты центральной точки", "X", "Y");
+        } else if (center != null) {
+            startPoint = new Point(x, y);
+            workSpace.getChildren().add(startPoint);
+            inputBuilder.setPrompts("Укажите координаты второй точки хорды", "X", "Y");
+        } else {
+            center = new Point(x, y);
+            workSpace.getChildren().add(center);
+            inputBuilder.setPrompts("Укажите координаты первой точки хорды", "X", "Y");
+        }
     }
 }

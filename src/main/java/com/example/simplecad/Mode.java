@@ -8,7 +8,9 @@ public enum Mode {
     BY_ANGLE_LENGTH("Угол и длина"),
     INSCRIBED_IN_CIRCLE("Вписанный"),
     CIRCUMSCRIBED_AROUND_CIRCLE("Описанный"),
-    CHORD("Хорда");
+    CHORD("Хорда"),
+    QUAD_SPLINE("Квадратичный"),
+    BEZIER("Безье");
 
     Mode(String name) {
         this.name = name;

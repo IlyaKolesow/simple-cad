@@ -154,7 +154,7 @@ public class MainController {
             selectedFigures.add(hoveredFigure);
             selectedFigures.forEach(figure -> figure.setColor(Color.ORANGE));
 
-            if (selectedFigures.size() == 1 && !rotationBtn.isSelected()) {
+            if (selectedFigures.size() == 1 && !rotationBtn.isSelected() && !(hoveredFigure instanceof Spline)) {
                 new FigureEditor(drawingContext, hoveredFigure).toolBarInit();
                 borderPane.setLeft(inputTool);
             }
@@ -179,6 +179,7 @@ public class MainController {
 
     @FXML
     private void splineDrawing(ActionEvent event) {
+        figureDrawing(splineBtn, new SplineDrawer(drawingContext));
     }
 
     @FXML

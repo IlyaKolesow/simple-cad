@@ -57,8 +57,7 @@ public class Arc extends Figure {
 
         arc = new javafx.scene.shape.Arc(cx, cy, radius, radius, angle1, arcAngle);
         arc.setStrokeWidth(thickness);
-        arc.setStroke(color);
-        arc.setFill(null);
+        setColor(color);
         getChildren().addAll(arc, point1, point3);
     }
 
@@ -84,8 +83,7 @@ public class Arc extends Figure {
 
         arc = new javafx.scene.shape.Arc(cx, cy, radius, radius, startAngle, arcAngle);
         arc.setStrokeWidth(thickness);
-        arc.setStroke(color);
-        arc.setFill(null);
+        setColor(color);
         getChildren().addAll(arc, startPoint, endPoint);
     }
 
@@ -120,6 +118,7 @@ public class Arc extends Figure {
         arc.setStroke(color);
         startPoint.setColor(color);
         endPoint.setColor(color);
+        arc.setFill(null);
     }
 
     private void setCenter(Point center) {

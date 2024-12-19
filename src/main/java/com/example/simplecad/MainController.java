@@ -2,6 +2,7 @@ package com.example.simplecad;
 
 import com.example.simplecad.drawers.*;
 import com.example.simplecad.editors.FigureEditor;
+import com.example.simplecad.editors.SplineEditor;
 import com.example.simplecad.figures.*;
 import com.example.simplecad.util.CustomCursor;
 import com.example.simplecad.util.DrawingContext;
@@ -41,8 +42,7 @@ public class MainController {
     private ToolPanel toolPanel;
     private DrawingContext drawingContext;
     private EventHandler<? super MouseEvent> previousMouseClickHandler;
-    private EventHandler<MouseEvent> defaultMouseMovedHandler;
-    private EventHandler<MouseEvent> defaultMouseClickedHandler;
+    private EventHandler<MouseEvent> defaultMouseMovedHandler, defaultMouseClickedHandler, defaultMouseDraggedHandler;
     private List<Figure> selectedFigures = new LinkedList<>();
 
     @FXML
@@ -52,8 +52,10 @@ public class MainController {
         toggleGroupInit();
         setDefaultMouseMovedHandler();
         setDefaultMouseClickedHandler();
+        setDefaultMouseDraggedHandler();
 
-        drawingContext = new DrawingContext(workSpace, inputTool, defaultMouseMovedHandler, defaultMouseClickedHandler);
+        //создать WorkSpace extends Pane с методами
+        drawingContext = new DrawingContext(workSpace, inputTool, defaultMouseMovedHandler, defaultMouseClickedHandler, defaultMouseDraggedHandler);
         toolPanel = new ToolPanel(drawingContext);
 
         borderPane.setLeft(null);
@@ -111,6 +113,11 @@ public class MainController {
         workSpace.setOnMouseClicked(defaultMouseClickedHandler);
     }
 
+    private void setDefaultMouseDraggedHandler() {
+        defaultMouseDraggedHandler = e -> cursor.update(e);
+        workSpace.setOnMouseDragged(defaultMouseDraggedHandler);
+    }
+
     private Figure findHoveredFigure(MouseEvent e) {
         return (Figure) workSpace.getChildren()
                 .stream()
@@ -157,6 +164,8 @@ public class MainController {
             if (selectedFigures.size() == 1 && !rotationBtn.isSelected() && !(hoveredFigure instanceof Spline)) {
                 new FigureEditor(drawingContext, hoveredFigure).toolBarInit();
                 borderPane.setLeft(inputTool);
+            } else if (hoveredFigure instanceof Spline) {
+                new SplineEditor(drawingContext, hoveredFigure).pointMovement();
             }
         } else
             selectedFigures.clear();

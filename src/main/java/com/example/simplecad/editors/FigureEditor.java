@@ -18,11 +18,11 @@ import java.util.List;
 import java.util.Map;
 
 public class FigureEditor {
-    private final DrawingContext context;
-    private final ToolBar toolBar;
-    private final Figure figure;
-    private final double scale;
-    private final Point center;
+    protected final DrawingContext context;
+    protected final ToolBar toolBar;
+    protected final Figure figure;
+    protected final double scale;
+    protected final Point center;
 
     public FigureEditor(DrawingContext context, Figure figure) {
         this.context = context;

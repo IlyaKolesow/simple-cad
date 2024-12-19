@@ -13,7 +13,7 @@ public class QuadSpline extends Spline {
     private List<Line> lines = new ArrayList<>();
 
     @Override
-    protected void update() {
+    public void update() {
         splines.clear();
         lines.clear();
         getChildren().clear();
@@ -101,6 +101,6 @@ public class QuadSpline extends Spline {
 
     @Override
     public String getName() {
-        return null;
+        return "КВАДРАТИЧНЫЙ СПЛАЙН";
     }
 }

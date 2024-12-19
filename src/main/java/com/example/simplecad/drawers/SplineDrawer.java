@@ -1,20 +1,19 @@
 package com.example.simplecad.drawers;
 
 import com.example.simplecad.Mode;
-import com.example.simplecad.figures.Line;
 import com.example.simplecad.figures.Point;
 import com.example.simplecad.figures.QuadSpline;
+import com.example.simplecad.figures.Spline;
 import com.example.simplecad.util.DrawingContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SplineDrawer extends FigureDrawer {
     private List<Point> points = new ArrayList<>();
-    private QuadSpline spline;
+    private Spline spline;
 
     public SplineDrawer(DrawingContext context) {
         super(context);
@@ -35,7 +34,7 @@ public class SplineDrawer extends FigureDrawer {
     }
 
     private void drawQuadSpline() {
-        spline  = new QuadSpline();
+        spline = new QuadSpline();
         workSpace.getChildren().add(spline);
         inputBuilder.setPrompts("Укажите координаты точки 1", "X", "Y");
 
@@ -61,13 +60,6 @@ public class SplineDrawer extends FigureDrawer {
             workSpace.getChildren().add(point);
         if (points.size() == 2)
             workSpace.getChildren().remove(points.getFirst());
-//        if (points.size() > 1) {
-//            Line line = new Line(points.get(points.size() - 2), point);
-//            workSpace.getChildren().add(line);
-//            line.setColor(Color.DARKGRAY);
-//        }
-//        if (points.size() == 3)
-//            workSpace.getChildren().add(spline);
 
         inputBuilder.setPrompts("Укажите координаты точки " + (points.size() + 1), "X", "Y");
     }

@@ -2,6 +2,7 @@ package com.example.simplecad.figures;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class Spline extends Figure {
     protected final List<Point> points = new ArrayList<>();
@@ -11,10 +12,14 @@ public abstract class Spline extends Figure {
         update();
     }
 
-    protected abstract void update();
+    public abstract void update();
 
     public List<Point> getPoints() {
         return points;
+    }
+
+    public Optional<Point> getSelectedPoint(double x, double y) {
+        return points.stream().filter(p -> p.isHover(x, y)).findFirst();
     }
 
     @Override

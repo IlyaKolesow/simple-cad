@@ -1,6 +1,7 @@
 package com.example.simplecad.drawers;
 
 import com.example.simplecad.Mode;
+import com.example.simplecad.figures.Bezier;
 import com.example.simplecad.figures.Point;
 import com.example.simplecad.figures.QuadSpline;
 import com.example.simplecad.figures.Spline;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SplineDrawer extends FigureDrawer {
-    private List<Point> points = new ArrayList<>();
+    private final List<Point> points = new ArrayList<>();
     private Spline spline;
 
     public SplineDrawer(DrawingContext context) {
@@ -25,16 +26,21 @@ public class SplineDrawer extends FigureDrawer {
     public void startDrawing() {
         switch (modes.getValue()) {
             case QUAD_SPLINE:
-                drawQuadSpline();
+                drawSpline(Mode.QUAD_SPLINE);
                 break;
             case BEZIER:
-                drawBezier();
+                drawSpline(Mode.BEZIER);
                 break;
         }
     }
 
-    private void drawQuadSpline() {
-        spline = new QuadSpline();
+    private void drawSpline(Mode mode) {
+        points.clear();
+        if (mode == Mode.QUAD_SPLINE)
+            spline = new QuadSpline();
+        else
+            spline = new Bezier();
+
         workSpace.getChildren().add(spline);
         inputBuilder.setPrompts("Укажите координаты точки 1", "X", "Y");
 
@@ -63,9 +69,4 @@ public class SplineDrawer extends FigureDrawer {
 
         inputBuilder.setPrompts("Укажите координаты точки " + (points.size() + 1), "X", "Y");
     }
-
-    private void drawBezier() {
-
-    }
-
 }

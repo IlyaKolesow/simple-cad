@@ -6,6 +6,7 @@ import java.util.Optional;
 
 public abstract class Spline extends Figure {
     protected final List<Point> points = new ArrayList<>();
+    protected final List<Line> lines = new ArrayList<>();
 
     public void addPoint(Point point) {
         points.add(point);
@@ -18,9 +19,7 @@ public abstract class Spline extends Figure {
         return points;
     }
 
-    public Optional<Point> getSelectedPoint(double x, double y) {
-        return points.stream().filter(p -> p.isHover(x, y)).findFirst();
-    }
+    public abstract Optional<Point> getSelectedPoint(double x, double y);
 
     @Override
     public void move(double deltaX, double deltaY) {

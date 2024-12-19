@@ -2,6 +2,9 @@ package com.example.simplecad.util;
 
 import com.example.simplecad.figures.Point;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MathCalculation {
     public static double getPointsDistance(Point point1, Point point2) {
         double a = Math.abs(point1.getX() - point2.getX());
@@ -52,25 +55,41 @@ public class MathCalculation {
         return new double[]{centerX, centerY, radius};
     }
 
-//    public static boolean pointInsideTriangle(Point point, Point v1, Point v2, Point v3) {
-//
-//    }
+    public static List<Point> findLineCircleIntersections(Point center, double radius, Point point1, Point point2) {
+        double cx = center.getX();
+        double cy = center.getY();
 
-    private static double max(double... nums) {
-        double max = nums[0];
-        for (double n : nums) {
-            if (n > max)
-                max = n;
-        }
-        return max;
-    }
+        double x1 = point1.getX();
+        double y1 = point1.getY();
+        double x2 = point2.getX();
+        double y2 = point2.getY();
 
-    private static double min(double... nums) {
-        double min = nums[0];
-        for (double n : nums) {
-            if (n < min)
-                min = n;
+        double k = (y2 - y1) / (x2 - x1);
+        double b = y1 - k * x1;
+
+        double A = 1 + k * k;
+        double B = 2 * k * (b - cy) - 2 * cx;
+        double C = cx * cx + (b - cy) * (b - cy) - radius * radius;
+
+        double D = B * B - 4 * A * C;
+
+        if (D < 0)
+            return new ArrayList<>();
+
+        if (D == 0) {
+            double xIntersect = B / (2 * A);
+            double yIntersect = k * xIntersect + b;
+            return List.of(new Point(xIntersect, yIntersect));
         }
-        return min;
+
+        double sqrtD = Math.sqrt(D);
+        double xIntersect1 = (-B + sqrtD) / (2 * A);
+        double yIntersect1 = k * xIntersect1 + b;
+        double xIntersect2 = (-B - sqrtD) / (2 * A);
+        double yIntersect2 = k * xIntersect2 + b;
+        Point intersection1 = new Point(xIntersect1, yIntersect1);
+        Point intersection2 = new Point(xIntersect2, yIntersect2);
+
+        return List.of(intersection1, intersection2);
     }
 }

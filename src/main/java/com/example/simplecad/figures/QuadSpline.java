@@ -9,8 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class QuadSpline extends Spline {
-    private List<QuadCurve> splines = new ArrayList<>();
-    private List<Line> lines = new ArrayList<>();
+    private final List<QuadCurve> splines = new ArrayList<>();
 
     @Override
     public void update() {
@@ -20,7 +19,7 @@ public class QuadSpline extends Spline {
 
         if (points.size() > 1) {
             Line line = new Line(points.getFirst(), points.get(1));
-            line.setColor(Color.DARKGRAY);
+            line.setColor(Color.AQUA);
             lines.add(line);
             getChildren().add(line);
         }
@@ -43,7 +42,7 @@ public class QuadSpline extends Spline {
             }
 
             Line line = new Line(p1, p2);
-            line.setColor(Color.DARKGRAY);
+            line.setColor(Color.AQUA);
             lines.add(line);
             getChildren().add(line);
 
@@ -66,6 +65,11 @@ public class QuadSpline extends Spline {
         double x = p1.getX() + 0.5 * (p2.getX() - p1.getX());
         double y = p1.getY() + 0.5 * (p2.getY() - p1.getY());
         return new Point(x, y);
+    }
+
+    @Override
+    public Optional<Point> getSelectedPoint(double x, double y) {
+        return points.stream().filter(p -> p.isHover(x, y)).findFirst();
     }
 
     @Override

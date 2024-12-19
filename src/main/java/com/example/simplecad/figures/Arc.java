@@ -6,8 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.simplecad.util.MathCalculation.getCenterAndRadius;
-import static com.example.simplecad.util.MathCalculation.getPointsDistance;
+import static com.example.simplecad.util.MathCalculation.*;
 
 public class Arc extends Figure {
     private Point center;
@@ -62,13 +61,17 @@ public class Arc extends Figure {
     }
 
     private void build(Line chord) {
-        Point point2 = chord.getPoint2();
         double cx = center.getX();
         double cy = center.getY();
-        double scale = radius / getPointsDistance(center, point2);
-        double x = cx + (point2.getX() - cx) * scale;
-        double y = cy + (point2.getY() - cy) * scale;
-        endPoint = new Point(x, y);
+        List<Point> intersections = findLineCircleIntersections(center, radius, chord.getPoint1(), chord.getPoint2());
+        if (intersections.size() == 2) {
+            if (Math.abs(startPoint.getX() - intersections.get(0).getX()) < 0.0001 && Math.abs(startPoint.getY() - intersections.get(0).getY()) < 0.0001)
+                endPoint = intersections.get(1);
+            else
+                endPoint = intersections.get(0);
+        }
+        if (intersections.size() == 1)
+            endPoint = intersections.get(0);
 
         double startAngle = Math.toDegrees(Math.acos((startPoint.getX() - cx) / radius));
         if (cy < startPoint.getY())

@@ -14,15 +14,16 @@ public class DrawingContext {
     private final ToolBar inputTool;
     private final Point coordsCenter;
     private final CustomCursor cursor;
-    private final EventHandler<MouseEvent> defaultMouseMovedHandler, defaultMouseClickedHandler, defaultMouseDraggedHandler;
+    private final EventHandler<MouseEvent> defaultMouseMovedHandler, defaultMouseClickedHandler, defaultMouseDraggedHandler, defaultMousePressedHandler;
     private double scale;
 
-    public DrawingContext(Pane workSpace, ToolBar inputTool, EventHandler<MouseEvent> defaultMouseMovedHandler, EventHandler<MouseEvent> defaultMouseClickedHandler, EventHandler<MouseEvent> defaultMouseDraggedHandler) {
+    public DrawingContext(Pane workSpace, ToolBar inputTool, EventHandler<MouseEvent> defaultMouseMovedHandler, EventHandler<MouseEvent> defaultMouseClickedHandler, EventHandler<MouseEvent> defaultMouseDraggedHandler, EventHandler<MouseEvent> defaultMousePressedHandler) {
         this.workSpace = workSpace;
         this.inputTool = inputTool;
         this.defaultMouseMovedHandler = defaultMouseMovedHandler;
         this.defaultMouseClickedHandler = defaultMouseClickedHandler;
         this.defaultMouseDraggedHandler = defaultMouseDraggedHandler;
+        this.defaultMousePressedHandler = defaultMousePressedHandler;
 
         coordsCenter = (Point) findById(workSpace, "center");
         cursor = (CustomCursor) findById(workSpace, "cursor");
@@ -71,5 +72,9 @@ public class DrawingContext {
 
     public EventHandler<MouseEvent> getDefaultMouseDraggedHandler() {
         return defaultMouseDraggedHandler;
+    }
+
+    public EventHandler<MouseEvent> getDefaultMousePressedHandler() {
+        return defaultMousePressedHandler;
     }
 }

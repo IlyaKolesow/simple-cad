@@ -22,6 +22,7 @@ public class SplineEditor {
     public void pointMovement() {
         final double[] start = new double[2];
         workSpace.setOnMousePressed(e -> {
+            context.getDefaultMousePressedHandler().handle(e);
             if (e.getButton() == MouseButton.PRIMARY) {
                 selectedPoint = spline.getSelectedPoint(e.getX(), e.getY()).orElse(null);
                 start[0] = e.getX();

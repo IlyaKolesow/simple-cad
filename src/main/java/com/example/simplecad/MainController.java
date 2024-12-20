@@ -42,8 +42,9 @@ public class MainController {
     private ToolPanel toolPanel;
     private DrawingContext drawingContext;
     private EventHandler<? super MouseEvent> previousMouseClickHandler;
-    private EventHandler<MouseEvent> defaultMouseMovedHandler, defaultMouseClickedHandler, defaultMouseDraggedHandler;
+    private EventHandler<MouseEvent> defaultMouseMovedHandler, defaultMouseClickedHandler, defaultMouseDraggedHandler, defaultMousePressedHandler;
     private List<Figure> selectedFigures = new LinkedList<>();
+    private final double[] panStart = new double[2];
 
     @FXML
     public void initialize() {
@@ -52,10 +53,11 @@ public class MainController {
         toggleGroupInit();
         setDefaultMouseMovedHandler();
         setDefaultMouseClickedHandler();
-        setDefaultMouseDraggedHandler();
+        setDefaultMousePressedHandler();
+        setDefaultMouseDraggedHandler(MouseButton.MIDDLE);
 
         //создать WorkSpace extends Pane с методами
-        drawingContext = new DrawingContext(workSpace, inputTool, defaultMouseMovedHandler, defaultMouseClickedHandler, defaultMouseDraggedHandler);
+        drawingContext = new DrawingContext(workSpace, inputTool, defaultMouseMovedHandler, defaultMouseClickedHandler, defaultMouseDraggedHandler, defaultMousePressedHandler);
         toolPanel = new ToolPanel(drawingContext);
 
         borderPane.setLeft(null);
@@ -113,8 +115,20 @@ public class MainController {
         workSpace.setOnMouseClicked(defaultMouseClickedHandler);
     }
 
-    private void setDefaultMouseDraggedHandler() {
-        defaultMouseDraggedHandler = e -> cursor.update(e);
+    private void setDefaultMousePressedHandler() {
+        defaultMousePressedHandler = e -> {
+            panStart[0] = e.getX();
+            panStart[1] = e.getY();
+        };
+        workSpace.setOnMousePressed(defaultMousePressedHandler);
+    }
+
+    private void setDefaultMouseDraggedHandler(MouseButton button) {
+        defaultMouseDraggedHandler = event -> {
+            cursor.update(event);
+            if (event.getButton() == button)
+                toolPanel.pan(event, panStart);
+        };
         workSpace.setOnMouseDragged(defaultMouseDraggedHandler);
     }
 
@@ -150,25 +164,27 @@ public class MainController {
     }
 
     private void figureSelecting(MouseEvent e) {
-        Figure hoveredFigure = findHoveredFigure(e);
-        if (!rotationBtn.isSelected())
-            borderPane.setLeft(null);
-        resetColors();
-        if (hoveredFigure != null) {
-            if (!e.isShiftDown())
+        if (e.getButton() == MouseButton.PRIMARY) {
+            Figure hoveredFigure = findHoveredFigure(e);
+            if (!rotationBtn.isSelected())
+                borderPane.setLeft(null);
+            resetColors();
+            if (hoveredFigure != null) {
+                if (!e.isShiftDown())
+                    selectedFigures.clear();
+
+                selectedFigures.add(hoveredFigure);
+                selectedFigures.forEach(figure -> figure.setColor(Color.ORANGE));
+
+                if (selectedFigures.size() == 1 && !rotationBtn.isSelected() && !(hoveredFigure instanceof Spline)) {
+                    new FigureEditor(drawingContext, hoveredFigure).toolBarInit();
+                    borderPane.setLeft(inputTool);
+                } else if (hoveredFigure instanceof Spline) {
+                    new SplineEditor(drawingContext, hoveredFigure).pointMovement();
+                }
+            } else
                 selectedFigures.clear();
-
-            selectedFigures.add(hoveredFigure);
-            selectedFigures.forEach(figure -> figure.setColor(Color.ORANGE));
-
-            if (selectedFigures.size() == 1 && !rotationBtn.isSelected() && !(hoveredFigure instanceof Spline)) {
-                new FigureEditor(drawingContext, hoveredFigure).toolBarInit();
-                borderPane.setLeft(inputTool);
-            } else if (hoveredFigure instanceof Spline) {
-                new SplineEditor(drawingContext, hoveredFigure).pointMovement();
-            }
-        } else
-            selectedFigures.clear();
+        }
     }
 
     @FXML
@@ -202,9 +218,12 @@ public class MainController {
     }
 
     private void figureDrawing(ToggleButton button, FigureDrawer drawer) {
+        resetColors();
+        selectedFigures.clear();
+
         if (button.isSelected()) {
             borderPane.setLeft(inputTool);
-            toolPanel.pan(MouseButton.MIDDLE);
+//            toolPanel.pan(MouseButton.MIDDLE);
             panBtn.setSelected(false);
             drawer.startDrawing();
         } else {
@@ -221,9 +240,9 @@ public class MainController {
 
         if (panBtn.isSelected()) {
             workSpace.setOnMouseClicked(null);
-            toolPanel.pan(MouseButton.PRIMARY);
+            setDefaultMouseDraggedHandler(MouseButton.PRIMARY);
         } else {
-            toolPanel.pan(MouseButton.MIDDLE);
+            setDefaultMouseDraggedHandler(MouseButton.MIDDLE);
             workSpace.setOnMouseClicked(previousMouseClickHandler);
         }
     }

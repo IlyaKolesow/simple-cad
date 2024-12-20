@@ -31,36 +31,20 @@ public class ToolPanel {
         inputTool = context.getInputTool();
         scale = context.getScale();
         center = context.getCoordsCenter();
-        pan(MouseButton.MIDDLE);
         zoomByScroll();
     }
 
-    public void pan(MouseButton mouseButton) {
-        final double[] start = new double[2];
+    public void pan(MouseEvent e, double[] start) {
+        double deltaX = e.getX() - start[0];
+        double deltaY = e.getY() - start[1];
 
-        workSpace.setOnMousePressed(e -> {
-            if (e.getButton() == mouseButton) {
-                start[0] = e.getX();
-                start[1] = e.getY();
-            }
+        workSpace.getChildren().forEach(elem -> {
+            if (elem instanceof Figure)
+                ((Figure) elem).move(deltaX, deltaY);
         });
 
-        workSpace.setOnMouseDragged(e -> {
-            cursor.update(e);
-
-            if (e.getButton() == mouseButton) {
-                double deltaX = e.getX() - start[0];
-                double deltaY = e.getY() - start[1];
-
-                workSpace.getChildren().forEach(elem -> {
-                    if (elem instanceof Figure)
-                        ((Figure) elem).move(deltaX, deltaY);
-                });
-
-                start[0] = e.getX();
-                start[1] = e.getY();
-            }
-        });
+        start[0] = e.getX();
+        start[1] = e.getY();
     }
 
     public void zoomByScroll() {

@@ -89,15 +89,16 @@ public class ToolPanel {
 
             @Override
             public void handle(ActionEvent event) {
+                List<Double> inputs = inputBuilder.readInputValues();
                 if (!figures.isEmpty() && centralPoint == null && inputBuilder.getInputs().isEmpty()) {
                     inputBuilder.setPrompts("Укажите координаты центральной точки вращения", "X", "Y");
                 } else if (centralPoint == null && !inputBuilder.getInputs().isEmpty()) {
-                    double x = (center.getX() + Double.parseDouble(inputBuilder.getInputs().get(0).getText()) * scale);
-                    double y = (center.getY() - Double.parseDouble(inputBuilder.getInputs().get(1).getText()) * scale);
+                    double x = (center.getX() + inputs.get(0) * scale);
+                    double y = (center.getY() - inputs.get(1) * scale);
                     centralPoint = new Point(x, y);
                     inputBuilder.setPrompts("Укажите угол поворота", "Угол");
                 } else if (centralPoint != null) {
-                    angle = Double.parseDouble(inputBuilder.getInputs().get(0).getText());
+                    angle = inputs.get(0);
                     figures.forEach(figure -> figure.rotate(centralPoint, angle));
                     centralPoint = null;
                     inputBuilder.setPrompts("Выберите объекты для поворта");

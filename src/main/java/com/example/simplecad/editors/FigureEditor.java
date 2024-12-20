@@ -10,10 +10,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToolBar;
 import javafx.scene.input.KeyCode;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class FigureEditor {
     private final DrawingContext context;
@@ -36,6 +34,7 @@ public class FigureEditor {
     public void toolBarInit() {
         Map<String, Double> prompts = figure.getValuesForOutput(center);
         inputBuilder.setPrompts(figure.getName(), prompts, scale);
+        inputBuilder.addThicknessInput(figure.getThickness());
 
         lineTypes = inputBuilder.addLineTypeSelection();
         lineTypes.getItems().addAll(LineType.SOLID, LineType.DASHED, LineType.DASH_DOT, LineType.DASH_DOT_DOT);
@@ -53,8 +52,9 @@ public class FigureEditor {
 
     private void applyInputs() {
         List<Double> values = inputBuilder.readInputValues().stream()
-                .map(value -> value * scale)
+                .map(value -> value * context.getScale())
                 .toList();
         figure.setValuesFromInputs(values, center);
+        figure.setThickness(inputBuilder.getThicknessValue());
     }
 }

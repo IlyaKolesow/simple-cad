@@ -92,4 +92,10 @@ public class MathCalculation {
 
         return List.of(intersection1, intersection2);
     }
+
+    public static Point getMiddlePoint(Point p1, Point p2) {
+        double x = p1.getX() + 0.5 * (p2.getX() - p1.getX());
+        double y = p1.getY() + 0.5 * (p2.getY() - p1.getY());
+        return new Point(x, y);
+    }
 }

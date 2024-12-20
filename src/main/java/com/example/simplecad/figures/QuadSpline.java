@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.example.simplecad.util.MathCalculation.getMiddlePoint;
+
 public class QuadSpline extends Spline {
     private final List<QuadCurve> splines = new ArrayList<>();
 
@@ -59,12 +61,6 @@ public class QuadSpline extends Spline {
             setThickness(thickness);
             getChildren().add(spline);
         }
-    }
-
-    private Point getMiddlePoint(Point p1, Point p2) {
-        double x = p1.getX() + 0.5 * (p2.getX() - p1.getX());
-        double y = p1.getY() + 0.5 * (p2.getY() - p1.getY());
-        return new Point(x, y);
     }
 
     @Override

@@ -18,12 +18,14 @@ public class InputBuilder {
     private final ComboBox<Mode> modes;
     private final ComboBox<LineType> lineTypes;
     private Button applyBtn;
+    private TextField thickness;
 
     public InputBuilder(ToolBar toolBar) {
         this.toolBar = toolBar;
         label = new Label();
         prompts = new ArrayList<>();
         inputs = new ArrayList<>();
+        thickness = new TextField();
         modes = new ComboBox<>();
         lineTypes = new ComboBox<>();
     }
@@ -96,8 +98,6 @@ public class InputBuilder {
     }
 
     public ComboBox<LineType> addLineTypeSelection() {
-//        lineTypes.getItems().addAll(LineType.SOLID, LineType.DASHED, LineType.DASH_DOT, LineType.DASH_DOT_DOT);
-//        lineTypes.setValue(LineType.SOLID);
         toolBar.getItems().addLast(lineTypes);
         return lineTypes;
     }
@@ -106,5 +106,17 @@ public class InputBuilder {
         applyBtn = new Button("Готово");
         toolBar.getItems().addLast(applyBtn);
         return applyBtn;
+    }
+
+    public void addThicknessInput(double defaultValue) {
+        thickness = new TextField(String.valueOf(defaultValue));
+        prompts.add(new Label("Толщина линии:"));
+        inputs.add(thickness);
+        toolBar.getItems().add(thickness);
+        update();
+    }
+
+    public double getThicknessValue() {
+        return Double.parseDouble(thickness.getText().replace(",", "."));
     }
 }

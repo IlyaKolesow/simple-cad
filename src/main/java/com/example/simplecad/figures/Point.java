@@ -57,6 +57,12 @@ public class Point extends Figure {
         circle.setFill(color);
     }
 
+    @Override
+    public void setThickness(double thickness) {
+        super.setThickness(thickness);
+        circle.setRadius(thickness + 1);
+    }
+
     public double getX() {
         return x;
     }
@@ -72,6 +78,13 @@ public class Point extends Figure {
 
     public void setY(double y) {
         this.y = y;
+        circle.setCenterY(y);
+    }
+
+    public void setCoords(double x, double y) {
+        this.x = x;
+        this.y = y;
+        circle.setCenterX(x);
         circle.setCenterY(y);
     }
 

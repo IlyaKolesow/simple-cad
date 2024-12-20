@@ -1,5 +1,6 @@
 package com.example.simplecad.figures;
 
+import com.example.simplecad.LineType;
 import javafx.scene.paint.Color;
 
 import java.util.LinkedHashMap;
@@ -100,6 +101,14 @@ public class Line extends Figure {
         line.setStrokeWidth(thickness);
         point1.setThickness(thickness + 1);
         point2.setThickness(thickness + 1);
+    }
+
+    @Override
+    public void setLineType(LineType lineType, double scale) {
+        super.setLineType(lineType, scale);
+        line.getStrokeDashArray().clear();
+        if (lineType != LineType.SOLID)
+            line.getStrokeDashArray().addAll(lineType.getPattern(scale));
     }
 
     public Point getPoint1() {

@@ -1,5 +1,6 @@
 package com.example.simplecad.util;
 
+import com.example.simplecad.LineType;
 import com.example.simplecad.Mode;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -7,6 +8,7 @@ import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class InputBuilder {
     private final ToolBar toolBar;
@@ -14,6 +16,7 @@ public class InputBuilder {
     private final List<Label> prompts;
     private final List<TextField> inputs;
     private final ComboBox<Mode> modes;
+    private final ComboBox<LineType> lineTypes;
     private Button applyBtn;
 
     public InputBuilder(ToolBar toolBar) {
@@ -22,6 +25,7 @@ public class InputBuilder {
         prompts = new ArrayList<>();
         inputs = new ArrayList<>();
         modes = new ComboBox<>();
+        lineTypes = new ComboBox<>();
     }
 
     public void setPrompts(String label, String... prompts) {
@@ -37,8 +41,32 @@ public class InputBuilder {
         update();
     }
 
+    public void setPrompts(String label, Map<String, Double> prompts, double scale) {
+        this.prompts.clear();
+        this.inputs.clear();
+
+        for (Map.Entry<String, Double> entry : prompts.entrySet()) {
+            this.prompts.add(new Label(entry.getKey() + ":"));
+            String value = String.format("%.1f", entry.getValue() / scale);
+            inputs.add(new TextField(value.replace(",", ".")));
+        }
+
+        this.label.setText(label + ":");
+
+        update();
+    }
+
     public List<TextField> getInputs() {
         return inputs;
+    }
+
+    public List<Double> readInputValues() {
+        List<Double> values = new ArrayList<>();
+        for (TextField field : inputs) {
+            String text = field.getText();
+            values.add(Double.parseDouble(text.replace(",", ".")));
+        }
+        return values;
     }
 
     private void update() {
@@ -56,6 +84,8 @@ public class InputBuilder {
             inputs.get(i).setMaxWidth(50);
         }
 
+        if (!lineTypes.getItems().isEmpty())
+            toolBar.getItems().add(lineTypes);
         if (applyBtn != null)
             toolBar.getItems().add(applyBtn);
     }
@@ -63,6 +93,13 @@ public class InputBuilder {
     public ComboBox<Mode> addModeSelection() {
         toolBar.getItems().addFirst(modes);
         return modes;
+    }
+
+    public ComboBox<LineType> addLineTypeSelection() {
+//        lineTypes.getItems().addAll(LineType.SOLID, LineType.DASHED, LineType.DASH_DOT, LineType.DASH_DOT_DOT);
+//        lineTypes.setValue(LineType.SOLID);
+        toolBar.getItems().addLast(lineTypes);
+        return lineTypes;
     }
 
     public Button addApplyButton() {

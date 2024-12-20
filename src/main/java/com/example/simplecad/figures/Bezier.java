@@ -2,7 +2,6 @@ package com.example.simplecad.figures;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.CubicCurve;
-import javafx.scene.shape.QuadCurve;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +24,6 @@ public class Bezier extends Spline {
             controlPoints.add(new Point(points.getLast().getX() + 50, points.getLast().getY()));
             controlPoints.add(new Point(points.getLast().getX() - 50, points.getLast().getY()));
         }
-//        if (points.size() > 2)
-//            controlPoints.add(new Point(points.get(points.size() - 2).getX() - 50, points.get(points.size() - 2).getY() + 50));
 
         for (int i = 1; i < points.size(); i++) {
             Point p0 = points.get(i - 1);
@@ -60,6 +57,27 @@ public class Bezier extends Spline {
     @Override
     public Optional<Point> getSelectedPoint(double x, double y) {
         return controlPoints.stream().filter(p -> p.isHover(x, y)).findFirst();
+    }
+
+    @Override
+    public void move(double deltaX, double deltaY) {
+        points.forEach(p -> p.move(deltaX, deltaY));
+        controlPoints.forEach(p -> p.move(deltaX, deltaY));
+        update();
+    }
+
+    @Override
+    public void scale(double coef, Point cursorPosition) {
+        points.forEach(p -> p.scale(coef, cursorPosition));
+        controlPoints.forEach(p -> p.scale(coef, cursorPosition));
+        update();
+    }
+
+    @Override
+    public void rotate(Point centralPoint, double angle) {
+        points.forEach(p -> p.rotate(centralPoint, angle));
+        controlPoints.forEach(p -> p.rotate(centralPoint, angle));
+        update();
     }
 
     @Override

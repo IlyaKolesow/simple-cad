@@ -1,5 +1,6 @@
 package com.example.simplecad.figures;
 
+import com.example.simplecad.LineType;
 import javafx.scene.paint.Color;
 
 import java.util.LinkedHashMap;
@@ -80,6 +81,13 @@ public class Rectangle extends Figure {
         super.setThickness(thickness);
         for (Line line : lines)
             line.setThickness(thickness);
+    }
+
+    @Override
+    public void setLineType(LineType lineType, double scale) {
+        super.setLineType(lineType, scale);
+        for (Line line : lines)
+            line.setLineType(lineType, scale);
     }
 
     @Override

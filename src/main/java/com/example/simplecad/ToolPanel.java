@@ -77,13 +77,15 @@ public class ToolPanel {
     }
 
     public void zoom(double zoomCoef) {
-        workSpace.getChildren().forEach(elem -> {
-            if (elem instanceof Figure)
-                ((Figure) elem).scale(zoomCoef, cursor.getPosition());
-        });
-
         scale *= zoomCoef;
         context.setScale(scale);
+
+        workSpace.getChildren().forEach(elem -> {
+            if (elem instanceof Figure) {
+                ((Figure) elem).scale(zoomCoef, cursor.getPosition());
+                ((Figure) elem).setLineType(((Figure) elem).getLineType(), scale);
+            }
+        });
     }
 
     public void updateCoords(MouseEvent e, Label mouseX, Label mouseY) {

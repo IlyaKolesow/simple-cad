@@ -1,5 +1,6 @@
 package com.example.simplecad.figures;
 
+import com.example.simplecad.LineType;
 import javafx.scene.paint.Color;
 
 import java.util.LinkedHashMap;
@@ -86,6 +87,14 @@ public class Circle extends Figure {
     public void setThickness(double thickness) {
         super.setThickness(thickness);
         circle.setStrokeWidth(thickness);
+    }
+
+    @Override
+    public void setLineType(LineType lineType, double scale) {
+        super.setLineType(lineType, scale);
+        circle.getStrokeDashArray().clear();
+        if (lineType != LineType.SOLID)
+            circle.getStrokeDashArray().addAll(lineType.getPattern(scale));
     }
 
     @Override

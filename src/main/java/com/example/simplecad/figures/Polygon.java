@@ -1,5 +1,6 @@
 package com.example.simplecad.figures;
 
+import com.example.simplecad.LineType;
 import com.example.simplecad.Mode;
 import javafx.scene.paint.Color;
 
@@ -131,6 +132,13 @@ public class Polygon extends Figure {
         super.setThickness(thickness);
         for (Line line : lines)
             line.setThickness(thickness);
+    }
+
+    @Override
+    public void setLineType(LineType lineType, double scale) {
+        super.setLineType(lineType, scale);
+        for (Line line : lines)
+            line.setLineType(lineType, scale);
     }
 
     private void setCenter(double x, double y) {

@@ -20,19 +20,4 @@ public abstract class Spline extends Figure {
     }
 
     public abstract Optional<Point> getSelectedPoint(double x, double y);
-
-    @Override
-    public void move(double deltaX, double deltaY) {
-
-    }
-
-    @Override
-    public void scale(double coef, Point cursorPosition) {
-
-    }
-
-    @Override
-    public void rotate(Point centralPoint, double angle) {
-
-    }
 }

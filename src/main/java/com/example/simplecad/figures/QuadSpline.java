@@ -73,6 +73,24 @@ public class QuadSpline extends Spline {
     }
 
     @Override
+    public void move(double deltaX, double deltaY) {
+        points.forEach(p -> p.move(deltaX, deltaY));
+        update();
+    }
+
+    @Override
+    public void scale(double coef, Point cursorPosition) {
+        points.forEach(p -> p.scale(coef, cursorPosition));
+        update();
+    }
+
+    @Override
+    public void rotate(Point centralPoint, double angle) {
+        points.forEach(p -> p.rotate(centralPoint, angle));
+        update();
+    }
+
+    @Override
     public void setColor(Color color) {
         super.setColor(color);
         splines.forEach(e -> {

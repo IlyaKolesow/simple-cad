@@ -60,7 +60,7 @@ public class Point extends Figure {
     @Override
     public void setThickness(double thickness) {
         super.setThickness(thickness);
-        circle.setRadius(thickness + 1);
+        circle.setRadius(thickness);
     }
 
     public double getX() {

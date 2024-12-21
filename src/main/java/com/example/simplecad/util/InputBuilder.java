@@ -33,17 +33,17 @@ public class InputBuilder {
     public void setPrompts(String label, String... prompts) {
         this.prompts.clear();
         this.inputs.clear();
-        
+
         for (String text : prompts) {
             this.prompts.add(new Label(text + ":"));
             inputs.add(new TextField());
         }
         this.label.setText(label + ":");
-        
+
         update();
     }
 
-    public void setPrompts(String label, Map<String, Double> prompts, double scale) {
+    public void setPrompts(String label, Map<String, Double> prompts, double scale, double thickness, double[] dashSpace) {
         this.prompts.clear();
         this.inputs.clear();
 
@@ -52,8 +52,17 @@ public class InputBuilder {
             String value = String.format("%.1f", entry.getValue() / scale);
             inputs.add(new TextField(value.replace(",", ".")));
         }
-
         this.label.setText(label + ":");
+
+        this.thickness = new TextField(String.valueOf(thickness));
+        this.prompts.add(new Label("Толщина линии:"));
+        inputs.add(this.thickness);
+        toolBar.getItems().add(this.thickness);
+
+        this.prompts.add(new Label("Длина штриха:"));
+        this.prompts.add(new Label("Длина пробела:"));
+        inputs.add(new TextField(String.valueOf(dashSpace[0])));
+        inputs.add(new TextField(String.valueOf(dashSpace[1])));
 
         update();
     }
@@ -91,7 +100,7 @@ public class InputBuilder {
         if (applyBtn != null)
             toolBar.getItems().add(applyBtn);
     }
-    
+
     public ComboBox<Mode> addModeSelection() {
         toolBar.getItems().addFirst(modes);
         return modes;
@@ -108,15 +117,18 @@ public class InputBuilder {
         return applyBtn;
     }
 
-    public void addThicknessInput(double defaultValue) {
-        thickness = new TextField(String.valueOf(defaultValue));
-        prompts.add(new Label("Толщина линии:"));
-        inputs.add(thickness);
-        toolBar.getItems().add(thickness);
-        update();
-    }
-
     public double getThicknessValue() {
         return Double.parseDouble(thickness.getText().replace(",", "."));
+    }
+
+    public void setDashSpace(double dashLength, double spaceLength) {
+        inputs.get(inputs.size() - 2).setText(String.valueOf(dashLength));
+        inputs.getLast().setText(String.valueOf(spaceLength));
+    }
+
+    public double[] getDashSpace() {
+        double dash = Double.parseDouble(inputs.get(inputs.size() - 2).getText().replace(",", "."));
+        double space = Double.parseDouble(inputs.getLast().getText().replace(",", "."));
+        return new double[]{dash, space};
     }
 }

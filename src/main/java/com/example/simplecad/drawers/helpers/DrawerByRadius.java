@@ -8,6 +8,8 @@ import com.example.simplecad.util.InputBuilder;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
+import java.util.List;
+
 public abstract class DrawerByRadius extends Drawer {
     private Point center;
 
@@ -36,15 +38,16 @@ public abstract class DrawerByRadius extends Drawer {
 
         toolBar.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
+                List<Double> inputs = inputBuilder.readInputValues();
                 if (center != null) {
-                    double radius = Double.parseDouble(input(0).getText()) * drawingContext.getScale();
+                    double radius = inputs.get(0) * drawingContext.getScale();
                     setFirstActionPrompts();
                     workSpace.getChildren().add(buildFigure(center, radius));
                     workSpace.getChildren().remove(center);
                     center = null;
                 } else {
-                    double x = (coordsCenter.getX() + Double.parseDouble(input(0).getText()) * drawingContext.getScale());
-                    double y = (coordsCenter.getY() - Double.parseDouble(input(1).getText()) * drawingContext.getScale());
+                    double x = (coordsCenter.getX() + inputs.get(0) * drawingContext.getScale());
+                    double y = (coordsCenter.getY() - inputs.get(1) * drawingContext.getScale());
                     center = new Point(x, y);
                     workSpace.getChildren().add(center);
                     setSecondActionPrompts();

@@ -8,6 +8,8 @@ import com.example.simplecad.figures.Rectangle;
 import com.example.simplecad.util.DrawingContext;
 import javafx.scene.input.KeyCode;
 
+import java.util.List;
+
 public class RectDrawer extends FigureDrawer {
     private Point rectCenter;
 
@@ -45,8 +47,9 @@ public class RectDrawer extends FigureDrawer {
 
         toolBar.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
-                double param1 = Double.parseDouble(input(0).getText()) * drawingContext.getScale();
-                double param2 = Double.parseDouble(input(1).getText()) * drawingContext.getScale();
+                List<Double> inputs = inputBuilder.readInputValues();
+                double param1 = inputs.get(0) * drawingContext.getScale();
+                double param2 = inputs.get(1) * drawingContext.getScale();
                 if (rectCenter != null) {
                     Rectangle rectangle = new Rectangle(rectCenter, param1, param2);
                     workSpace.getChildren().add(rectangle);

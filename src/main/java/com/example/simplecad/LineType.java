@@ -2,10 +2,11 @@ package com.example.simplecad;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class LineType {
-    public static final LineType SOLID = new LineType("Сплошная", 0, 0);
+    public static final LineType SOLID = new LineType("Сплошная");
     public static final LineType DASHED = new LineType("Штриховая", 8.0, 2.0);
     public static final LineType DASH_DOT = new LineType("Штрих-пунктирная", 8.0, 5.0);
     public static final LineType DASH_DOT_DOT = new LineType("Штрих-пунктир с 2 точками", 8.0, 6.0);
@@ -17,8 +18,13 @@ public class LineType {
 
     public LineType(String name, double dashLength, double spaceLength) {
         this.name = name;
-        this.pattern = new ArrayList<>();
+        pattern = new ArrayList<>();
         setDashSpace(new double[]{dashLength, spaceLength});
+    }
+
+    public LineType(String name) {
+        this.name = name;
+        pattern = new ArrayList<>();
     }
 
     public List<Double> getPattern(double scale) {
@@ -59,5 +65,18 @@ public class LineType {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LineType lineType = (LineType) o;
+        return Objects.equals(name, lineType.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

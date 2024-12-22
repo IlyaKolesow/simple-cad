@@ -33,7 +33,11 @@ public class FigureEditor {
 
     public void toolBarInit() {
         Map<String, Double> prompts = figure.getValuesForOutput(center);
-        inputBuilder.setPrompts(figure.getName(), prompts, scale, figure.getThickness(), figure.getLineType().getDashSpace());
+
+        if (figure.getLineType() == LineType.SOLID)
+            inputBuilder.setPrompts(figure.getName(), prompts, scale, figure.getThickness());
+        else
+            inputBuilder.setPrompts(figure.getName(), prompts, scale, figure.getThickness(), figure.getLineType().getDashSpace());
 
         lineTypes = inputBuilder.addLineTypeSelection();
         lineTypes.getItems().addAll(LineType.SOLID, LineType.DASHED, LineType.DASH_DOT, LineType.DASH_DOT_DOT);
@@ -42,7 +46,11 @@ public class FigureEditor {
             LineType lineType = LineType.copy(lineTypes.getValue());
             double dash = lineType.getDashSpace()[0];
             double space = lineType.getDashSpace()[1];
-            inputBuilder.setDashSpace(dash, space);
+
+            if (lineType.equals(LineType.SOLID))
+                inputBuilder.setPrompts(figure.getName(), prompts, scale, figure.getThickness());
+            else
+                inputBuilder.setPrompts(figure.getName(), prompts, scale, figure.getThickness(), dash, space);
             figure.setLineType(lineType, scale);
         });
 

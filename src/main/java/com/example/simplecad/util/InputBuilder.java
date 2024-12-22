@@ -43,7 +43,7 @@ public class InputBuilder {
         update();
     }
 
-    public void setPrompts(String label, Map<String, Double> prompts, double scale, double thickness, double[] dashSpace) {
+    public void setPrompts(String label, Map<String, Double> prompts, double scale, double thickness, double... dashSpace) {
         this.prompts.clear();
         this.inputs.clear();
 
@@ -59,10 +59,12 @@ public class InputBuilder {
         inputs.add(this.thickness);
         toolBar.getItems().add(this.thickness);
 
-        this.prompts.add(new Label("Длина штриха:"));
-        this.prompts.add(new Label("Длина пробела:"));
-        inputs.add(new TextField(String.valueOf(dashSpace[0])));
-        inputs.add(new TextField(String.valueOf(dashSpace[1])));
+        if (dashSpace.length > 0) {
+            this.prompts.add(new Label("Длина штриха:"));
+            this.prompts.add(new Label("Длина пробела:"));
+            inputs.add(new TextField(String.valueOf(dashSpace[0])));
+            inputs.add(new TextField(String.valueOf(dashSpace[1])));
+        }
 
         update();
     }

@@ -8,6 +8,8 @@ import com.example.simplecad.figures.Point;
 import com.example.simplecad.util.DrawingContext;
 import javafx.scene.input.KeyCode;
 
+import java.util.List;
+
 public class LineDrawer extends FigureDrawer {
     private Point firstPoint;
 
@@ -45,16 +47,17 @@ public class LineDrawer extends FigureDrawer {
 
         toolBar.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
+                List<Double> inputs = inputBuilder.readInputValues();
                 if (firstPoint != null) {
-                    double angle = Double.parseDouble(input(0).getText());
-                    double length = Double.parseDouble(input(1).getText()) * drawingContext.getScale();
+                    double angle = inputs.get(0);
+                    double length = inputs.get(1) * drawingContext.getScale();
                     Line line = new Line(firstPoint, angle, length);
                     workSpace.getChildren().add(line);
                     firstPoint = null;
                     inputBuilder.setPrompts("Укажите координаты первой точки", "X", "Y");
                 } else {
-                    double x = coordsCenter.getX() + Double.parseDouble(input(0).getText()) * drawingContext.getScale();
-                    double y = coordsCenter.getY() - Double.parseDouble(input(1).getText()) * drawingContext.getScale();
+                    double x = coordsCenter.getX() + inputs.get(0) * drawingContext.getScale();
+                    double y = coordsCenter.getY() - inputs.get(1) * drawingContext.getScale();
                     firstPoint = new Point(x, y);
                     workSpace.getChildren().add(firstPoint);
                     inputBuilder.setPrompts("Укажите угол и длину линии", "Угол", "Длина");

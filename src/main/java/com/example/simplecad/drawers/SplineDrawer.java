@@ -51,8 +51,9 @@ public class SplineDrawer extends FigureDrawer {
 
         toolBar.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
-                double x = (coordsCenter.getX() + Double.parseDouble(input(0).getText()) * drawingContext.getScale());
-                double y = (coordsCenter.getY() - Double.parseDouble(input(1).getText()) * drawingContext.getScale());
+                List<Double> inputs = inputBuilder.readInputValues();
+                double x = (coordsCenter.getX() + inputs.get(0) * drawingContext.getScale());
+                double y = (coordsCenter.getY() - inputs.get(1) * drawingContext.getScale());
                 drawNextPoint(x, y);
             }
         });

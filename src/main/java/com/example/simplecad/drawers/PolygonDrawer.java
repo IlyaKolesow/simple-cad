@@ -52,7 +52,7 @@ public class PolygonDrawer extends FigureDrawer {
 
             @Override
             protected void setSecondActionPrompts() {
-                if (inputBuilder.getInputs().get(2).getText() != null)
+                if (inputBuilder.getInputs().getLast().getText() != null)
                     n = Integer.parseInt(inputBuilder.getInputs().getLast().getText());
                 inputBuilder.setPrompts("Укажите радиус", "R", "Количество сторон");
                 inputBuilder.getInputs().getLast().setText(String.valueOf(n));

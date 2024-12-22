@@ -10,10 +10,11 @@ import com.example.simplecad.util.DrawingContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
+import java.util.List;
+
 public class ArcDrawer extends FigureDrawer {
     private Point center;
     private Point startPoint;
-    private Point endPoint;
 
     public ArcDrawer(DrawingContext context) {
         super(context);
@@ -55,8 +56,9 @@ public class ArcDrawer extends FigureDrawer {
 
         toolBar.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
-                double x = (coordsCenter.getX() + Double.parseDouble(input(0).getText()) * drawingContext.getScale());
-                double y = (coordsCenter.getY() - Double.parseDouble(input(1).getText()) * drawingContext.getScale());
+                List<Double> inputs = inputBuilder.readInputValues();
+                double x = (coordsCenter.getX() + inputs.get(0) * drawingContext.getScale());
+                double y = (coordsCenter.getY() - inputs.get(1) * drawingContext.getScale());
                 drawNextPoint(x, y);
             }
         });
@@ -64,11 +66,10 @@ public class ArcDrawer extends FigureDrawer {
 
     private void drawNextPoint(double x, double y) {
         if (startPoint != null) {
-            endPoint = new Point(x, y);
+            Point endPoint = new Point(x, y);
             Arc arc = new Arc(center, new Line(startPoint, endPoint));
             workSpace.getChildren().add(arc);
             workSpace.getChildren().removeAll(startPoint, center);
-            endPoint = null;
             startPoint = null;
             center = null;
             inputBuilder.setPrompts("Укажите координаты центральной точки", "X", "Y");

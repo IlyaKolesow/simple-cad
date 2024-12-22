@@ -5,7 +5,6 @@ import javafx.scene.shape.CubicCurve;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class Bezier extends Spline {
@@ -101,16 +100,6 @@ public class Bezier extends Spline {
             if (new Line(points.get(i), points.get(i + 1)).isHover(x, y))
                 return true;
         return false;
-    }
-
-    @Override
-    public void setValuesFromInputs(List<Double> values, Point center) {
-
-    }
-
-    @Override
-    public Map<String, Double> getValuesForOutput(Point center) {
-        return null;
     }
 
     @Override

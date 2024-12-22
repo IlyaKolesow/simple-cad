@@ -1,7 +1,7 @@
 package com.example.simplecad.editors;
 
+import com.example.simplecad.figures.InputModifiableFigure;
 import com.example.simplecad.LineType;
-import com.example.simplecad.figures.Figure;
 import com.example.simplecad.figures.Point;
 import com.example.simplecad.util.DrawingContext;
 import com.example.simplecad.util.InputBuilder;
@@ -16,13 +16,13 @@ import java.util.Map;
 public class FigureEditor {
     private final DrawingContext context;
     private final ToolBar toolBar;
-    private final Figure figure;
+    private final InputModifiableFigure figure;
     private final double scale;
     private final Point center;
     private final InputBuilder inputBuilder;
     private ComboBox<LineType> lineTypes;
 
-    public FigureEditor(DrawingContext context, Figure figure) {
+    public FigureEditor(DrawingContext context, InputModifiableFigure figure) {
         this.context = context;
         this.figure = figure;
         this.toolBar = context.getInputTool();

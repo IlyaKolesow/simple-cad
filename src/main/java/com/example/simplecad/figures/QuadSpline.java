@@ -5,7 +5,6 @@ import javafx.scene.shape.QuadCurve;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static com.example.simplecad.util.MathCalculation.getMiddlePoint;
@@ -105,16 +104,6 @@ public class QuadSpline extends Spline {
     public boolean isHover(double x, double y) {
         Optional<Line> optional = lines.stream().filter(line -> line.isHover(x, y)).findFirst();
         return optional.isPresent();
-    }
-
-    @Override
-    public void setValuesFromInputs(List<Double> values, Point center) {
-
-    }
-
-    @Override
-    public Map<String, Double> getValuesForOutput(Point center) {
-        return null;
     }
 
     @Override

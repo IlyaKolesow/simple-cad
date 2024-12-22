@@ -3,14 +3,13 @@ package com.example.simplecad.figures;
 import com.example.simplecad.LineType;
 import javafx.scene.paint.Color;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.example.simplecad.util.MathCalculation.getPointsDistance;
 import static com.example.simplecad.util.MathCalculation.getCenterAndRadius;
 
-public class Circle extends Figure {
+public class Circle extends InputModifiableFigure {
     private Point center;
     private double radius;
     private javafx.scene.shape.Circle circle;
@@ -107,11 +106,7 @@ public class Circle extends Figure {
 
     @Override
     public Map<String, Double> getValuesForOutput(Point center) {
-        Map<String, Double> map = new LinkedHashMap<>();
-        map.put("Центр [X]", this.center.getX() - center.getX());
-        map.put("Центр [Y]", center.getY() - this.center.getY());
-        map.put("Радиус", radius);
-        return map;
+        return centerRadius(center, this.center, radius);
     }
 
     @Override

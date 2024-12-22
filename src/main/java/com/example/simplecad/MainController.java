@@ -176,10 +176,10 @@ public class MainController {
                 selectedFigures.add(hoveredFigure);
                 selectedFigures.forEach(figure -> figure.setColor(Color.ORANGE));
 
-                if (selectedFigures.size() == 1 && !rotationBtn.isSelected() && !(hoveredFigure instanceof Spline)) {
-                    new FigureEditor(drawingContext, hoveredFigure).toolBarInit();
+                if (selectedFigures.size() == 1 && !rotationBtn.isSelected() && hoveredFigure instanceof InputModifiableFigure) {
+                    new FigureEditor(drawingContext, (InputModifiableFigure) hoveredFigure).toolBarInit();
                     borderPane.setLeft(inputTool);
-                } else if (hoveredFigure instanceof Spline) {
+                } else if (!(hoveredFigure instanceof InputModifiableFigure)) {
                     new SplineEditor(drawingContext, hoveredFigure).pointMovement();
                 }
             } else

@@ -4,13 +4,12 @@ import com.example.simplecad.LineType;
 import com.example.simplecad.Mode;
 import javafx.scene.paint.Color;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.example.simplecad.util.MathCalculation.getPointsDistance;
 
-public class Polygon extends Figure {
+public class Polygon extends InputModifiableFigure {
     private int n;
     private Line[] lines;
     private Point[] points;
@@ -163,11 +162,7 @@ public class Polygon extends Figure {
 
     @Override
     public Map<String, Double> getValuesForOutput(Point center) {
-        Map<String, Double> map = new LinkedHashMap<>();
-        map.put("Центр [X]", this.center.getX() - center.getX());
-        map.put("Центр [Y]", center.getY() - this.center.getY());
-        map.put("Радиус", R);
-        return map;
+        return centerRadius(center, this.center, R);
     }
 
     @Override

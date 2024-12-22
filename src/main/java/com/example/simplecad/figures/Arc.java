@@ -9,7 +9,7 @@ import java.util.Map;
 
 import static com.example.simplecad.util.MathCalculation.*;
 
-public class Arc extends Figure {
+public class Arc extends InputModifiableFigure {
     private Point center;
     private double radius;
     private Point startPoint;

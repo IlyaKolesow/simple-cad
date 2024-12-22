@@ -9,7 +9,7 @@ import java.util.Map;
 
 import static com.example.simplecad.util.MathCalculation.getMiddlePoint;
 
-public class Rectangle extends Figure {
+public class Rectangle extends InputModifiableFigure {
     private final Line[] lines = new Line[4];
     private final Point[] points = new Point[4];
     private double width;

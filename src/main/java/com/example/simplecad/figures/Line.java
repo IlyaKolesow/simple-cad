@@ -9,7 +9,7 @@ import java.util.Map;
 
 import static com.example.simplecad.util.MathCalculation.getPointsDistance;
 
-public class Line extends Figure {
+public class Line extends InputModifiableFigure {
     private Point point1;
     private Point point2;
     private javafx.scene.shape.Line line;

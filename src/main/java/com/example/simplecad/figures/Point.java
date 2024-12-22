@@ -6,7 +6,7 @@ import static com.example.simplecad.util.MathCalculation.getPointsDistance;
 
 import java.util.*;
 
-public class Point extends Figure {
+public class Point extends InputModifiableFigure {
     private double x;
     private double y;
     private javafx.scene.shape.Circle circle;

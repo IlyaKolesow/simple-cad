@@ -1,7 +1,7 @@
 package com.example.simplecad;
 
 import com.example.simplecad.drawers.*;
-import com.example.simplecad.editors.FigureEditor;
+import com.example.simplecad.editors.InputFigureEditor;
 import com.example.simplecad.editors.SplineEditor;
 import com.example.simplecad.figures.*;
 import com.example.simplecad.util.CustomCursor;
@@ -56,8 +56,9 @@ public class MainController {
         setDefaultMousePressedHandler();
         setDefaultMouseDraggedHandler(MouseButton.MIDDLE);
 
+        List<EventHandler<MouseEvent>> mouseHandlers = List.of(defaultMouseMovedHandler, defaultMouseClickedHandler, defaultMouseDraggedHandler, defaultMousePressedHandler);
         //создать WorkSpace extends Pane с методами
-        drawingContext = new DrawingContext(workSpace, inputTool, defaultMouseMovedHandler, defaultMouseClickedHandler, defaultMouseDraggedHandler, defaultMousePressedHandler);
+        drawingContext = new DrawingContext(workSpace, inputTool, mouseHandlers);
         toolPanel = new ToolPanel(drawingContext);
 
         borderPane.setLeft(null);
@@ -177,7 +178,7 @@ public class MainController {
                 selectedFigures.forEach(figure -> figure.setColor(Color.ORANGE));
 
                 if (selectedFigures.size() == 1 && !rotationBtn.isSelected() && hoveredFigure instanceof InputModifiableFigure) {
-                    new FigureEditor(drawingContext, (InputModifiableFigure) hoveredFigure).toolBarInit();
+                    new InputFigureEditor(drawingContext, (InputModifiableFigure) hoveredFigure).inputBarInit();
                     borderPane.setLeft(inputTool);
                 } else if (!(hoveredFigure instanceof InputModifiableFigure)) {
                     new SplineEditor(drawingContext, hoveredFigure).pointMovement();

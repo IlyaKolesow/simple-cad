@@ -1,13 +1,11 @@
 package com.example.simplecad.drawers;
 
-import com.example.simplecad.Mode;
+import com.example.simplecad.modes.DrawingMode;
 import com.example.simplecad.figures.Bezier;
 import com.example.simplecad.figures.Point;
 import com.example.simplecad.figures.QuadSpline;
 import com.example.simplecad.figures.Spline;
 import com.example.simplecad.util.DrawingContext;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,45 +16,32 @@ public class SplineDrawer extends FigureDrawer {
 
     public SplineDrawer(DrawingContext context) {
         super(context);
-        modes.getItems().addAll(Mode.QUAD_SPLINE, Mode.BEZIER);
-        modes.setValue(Mode.QUAD_SPLINE);
+        modes.getItems().addAll(DrawingMode.QUAD_SPLINE, DrawingMode.BEZIER);
+        modes.setValue(DrawingMode.QUAD_SPLINE);
     }
 
     @Override
     public void startDrawing() {
         switch (modes.getValue()) {
             case QUAD_SPLINE:
-                drawSpline(Mode.QUAD_SPLINE);
+                drawSpline(DrawingMode.QUAD_SPLINE);
                 break;
             case BEZIER:
-                drawSpline(Mode.BEZIER);
+                drawSpline(DrawingMode.BEZIER);
                 break;
         }
     }
 
-    private void drawSpline(Mode mode) {
+    private void drawSpline(DrawingMode mode) {
         points.clear();
-        if (mode == Mode.QUAD_SPLINE)
+        if (mode == DrawingMode.QUAD_SPLINE)
             spline = new QuadSpline();
         else
             spline = new Bezier();
 
         workSpace.getChildren().add(spline);
         inputBuilder.setPrompts("Укажите координаты точки 1", "X", "Y");
-
-        workSpace.setOnMouseClicked(e -> {
-            if (e.getButton() == MouseButton.PRIMARY)
-                drawNextPoint(e.getX(), e.getY());
-        });
-
-        toolBar.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ENTER) {
-                List<Double> inputs = inputBuilder.readInputValues();
-                double x = (coordsCenter.getX() + inputs.get(0) * drawingContext.getScale());
-                double y = (coordsCenter.getY() - inputs.get(1) * drawingContext.getScale());
-                drawNextPoint(x, y);
-            }
-        });
+        setInputHandlers(this::drawNextPoint);
     }
 
     private void drawNextPoint(double x, double y) {

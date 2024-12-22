@@ -1,7 +1,7 @@
 package com.example.simplecad.editors;
 
 import com.example.simplecad.figures.InputModifiableFigure;
-import com.example.simplecad.LineType;
+import com.example.simplecad.modes.LineType;
 import com.example.simplecad.figures.Point;
 import com.example.simplecad.util.DrawingContext;
 import com.example.simplecad.util.InputBuilder;
@@ -13,7 +13,7 @@ import javafx.scene.input.KeyCode;
 import java.util.List;
 import java.util.Map;
 
-public class FigureEditor {
+public class InputFigureEditor {
     private final DrawingContext context;
     private final ToolBar toolBar;
     private final InputModifiableFigure figure;
@@ -22,7 +22,7 @@ public class FigureEditor {
     private final InputBuilder inputBuilder;
     private ComboBox<LineType> lineTypes;
 
-    public FigureEditor(DrawingContext context, InputModifiableFigure figure) {
+    public InputFigureEditor(DrawingContext context, InputModifiableFigure figure) {
         this.context = context;
         this.figure = figure;
         this.toolBar = context.getInputTool();
@@ -31,7 +31,7 @@ public class FigureEditor {
         inputBuilder = new InputBuilder(toolBar);
     }
 
-    public void toolBarInit() {
+    public void inputBarInit() {
         Map<String, Double> prompts = figure.getValuesForOutput(center);
 
         if (figure.getLineType() == LineType.SOLID)

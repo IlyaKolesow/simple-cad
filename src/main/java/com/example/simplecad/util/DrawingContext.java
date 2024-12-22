@@ -7,6 +7,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
+import java.util.List;
 import java.util.Objects;
 
 public class DrawingContext {
@@ -17,13 +18,13 @@ public class DrawingContext {
     private final EventHandler<MouseEvent> defaultMouseMovedHandler, defaultMouseClickedHandler, defaultMouseDraggedHandler, defaultMousePressedHandler;
     private double scale;
 
-    public DrawingContext(Pane workSpace, ToolBar inputTool, EventHandler<MouseEvent> defaultMouseMovedHandler, EventHandler<MouseEvent> defaultMouseClickedHandler, EventHandler<MouseEvent> defaultMouseDraggedHandler, EventHandler<MouseEvent> defaultMousePressedHandler) {
+    public DrawingContext(Pane workSpace, ToolBar inputTool, List<EventHandler<MouseEvent>> mouseHandlers) {
         this.workSpace = workSpace;
         this.inputTool = inputTool;
-        this.defaultMouseMovedHandler = defaultMouseMovedHandler;
-        this.defaultMouseClickedHandler = defaultMouseClickedHandler;
-        this.defaultMouseDraggedHandler = defaultMouseDraggedHandler;
-        this.defaultMousePressedHandler = defaultMousePressedHandler;
+        this.defaultMouseMovedHandler = mouseHandlers.get(0);
+        this.defaultMouseClickedHandler = mouseHandlers.get(1);;
+        this.defaultMouseDraggedHandler = mouseHandlers.get(2);;
+        this.defaultMousePressedHandler = mouseHandlers.get(3);;
 
         coordsCenter = (Point) findById(workSpace, "center");
         cursor = (CustomCursor) findById(workSpace, "cursor");

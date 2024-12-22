@@ -1,6 +1,6 @@
-package com.example.simplecad;
+package com.example.simplecad.modes;
 
-public enum Mode {
+public enum DrawingMode {
     BY_2_POINTS("2 точки"),
     BY_3_POINTS("3 точки"),
     BY_SIDES("Стороны"),
@@ -12,7 +12,7 @@ public enum Mode {
     QUAD_SPLINE("Квадратичный"),
     BEZIER("Безье");
 
-    Mode(String name) {
+    DrawingMode(String name) {
         this.name = name;
     }
     

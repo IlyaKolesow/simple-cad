@@ -1,7 +1,7 @@
 package com.example.simplecad.figures;
 
-import com.example.simplecad.LineType;
-import com.example.simplecad.Mode;
+import com.example.simplecad.modes.LineType;
+import com.example.simplecad.modes.DrawingMode;
 import javafx.scene.paint.Color;
 
 import java.util.List;
@@ -17,17 +17,17 @@ public class Polygon extends InputModifiableFigure {
     private double R;
     private double r;
 
-    public Polygon(Point center, double radius, int n, Mode mode) {
-        if (mode == Mode.INSCRIBED_IN_CIRCLE)
+    public Polygon(Point center, double radius, int n, DrawingMode mode) {
+        if (mode == DrawingMode.INSCRIBED_IN_CIRCLE)
             this.R = radius;
-        else if (mode == Mode.CIRCUMSCRIBED_AROUND_CIRCLE)
+        else if (mode == DrawingMode.CIRCUMSCRIBED_AROUND_CIRCLE)
             this.r = radius;
 
         init(center, n);
         build(mode, null);
     }
 
-    public Polygon(Point center, Point vertex, int n, Mode mode) {
+    public Polygon(Point center, Point vertex, int n, DrawingMode mode) {
         init(center, n);
         build(mode, vertex);
     }
@@ -39,7 +39,7 @@ public class Polygon extends InputModifiableFigure {
         points = new Point[n];
     }
 
-    private void build(Mode mode, Point vertex) {
+    private void build(DrawingMode mode, Point vertex) {
         double extraAngle = 0;
 
         switch (mode) {
@@ -70,7 +70,7 @@ public class Polygon extends InputModifiableFigure {
         if (vertex != null && vertex.getX() < center.getX())
             extraAngle = 360 - extraAngle;
 
-        if (mode == Mode.CIRCUMSCRIBED_AROUND_CIRCLE && vertex != null) {
+        if (mode == DrawingMode.CIRCUMSCRIBED_AROUND_CIRCLE && vertex != null) {
             double x = vertex.getX() + sideLength / 2 * Math.cos(Math.toRadians(extraAngle));
             double y = vertex.getY() + sideLength / 2 * Math.sin(Math.toRadians(extraAngle));
             points[0] = new Point(x, y);

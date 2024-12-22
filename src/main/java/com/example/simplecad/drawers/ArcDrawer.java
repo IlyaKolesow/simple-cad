@@ -1,16 +1,12 @@
 package com.example.simplecad.drawers;
 
-import com.example.simplecad.Mode;
+import com.example.simplecad.modes.DrawingMode;
 import com.example.simplecad.drawers.helpers.DrawerByPoints;
 import com.example.simplecad.figures.Arc;
 import com.example.simplecad.figures.Figure;
 import com.example.simplecad.figures.Line;
 import com.example.simplecad.figures.Point;
 import com.example.simplecad.util.DrawingContext;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
-
-import java.util.List;
 
 public class ArcDrawer extends FigureDrawer {
     private Point center;
@@ -18,8 +14,8 @@ public class ArcDrawer extends FigureDrawer {
 
     public ArcDrawer(DrawingContext context) {
         super(context);
-        modes.getItems().addAll(Mode.BY_3_POINTS, Mode.CHORD);
-        modes.setValue(Mode.BY_3_POINTS);
+        modes.getItems().addAll(DrawingMode.BY_3_POINTS, DrawingMode.CHORD);
+        modes.setValue(DrawingMode.BY_3_POINTS);
     }
 
     @Override
@@ -47,21 +43,7 @@ public class ArcDrawer extends FigureDrawer {
 
     private void drawByChord() {
         inputBuilder.setPrompts("Укажите координаты центральной точки", "X", "Y");
-
-        workSpace.setOnMouseClicked(e -> {
-            if (e.getButton() == MouseButton.PRIMARY) {
-                drawNextPoint(e.getX(), e.getY());
-            }
-        });
-
-        toolBar.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ENTER) {
-                List<Double> inputs = inputBuilder.readInputValues();
-                double x = (coordsCenter.getX() + inputs.get(0) * drawingContext.getScale());
-                double y = (coordsCenter.getY() - inputs.get(1) * drawingContext.getScale());
-                drawNextPoint(x, y);
-            }
-        });
+        setInputHandlers(this::drawNextPoint);
     }
 
     private void drawNextPoint(double x, double y) {

@@ -1,7 +1,7 @@
 package com.example.simplecad.util;
 
-import com.example.simplecad.LineType;
-import com.example.simplecad.Mode;
+import com.example.simplecad.modes.LineType;
+import com.example.simplecad.modes.DrawingMode;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -15,7 +15,7 @@ public class InputBuilder {
     private final Label label;
     private final List<Label> prompts;
     private final List<TextField> inputs;
-    private final ComboBox<Mode> modes;
+    private final ComboBox<DrawingMode> modes;
     private final ComboBox<LineType> lineTypes;
     private Button applyBtn;
     private TextField thickness;
@@ -103,7 +103,7 @@ public class InputBuilder {
             toolBar.getItems().add(applyBtn);
     }
 
-    public ComboBox<Mode> addModeSelection() {
+    public ComboBox<DrawingMode> addModeSelection() {
         toolBar.getItems().addFirst(modes);
         return modes;
     }

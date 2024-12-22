@@ -1,4 +1,4 @@
-package com.example.simplecad;
+package com.example.simplecad.modes;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.example.simplecad.drawers;
 
-import com.example.simplecad.Mode;
+import com.example.simplecad.modes.DrawingMode;
 import com.example.simplecad.drawers.helpers.DrawerByPoints;
 import com.example.simplecad.drawers.helpers.DrawerByRadius;
 import com.example.simplecad.figures.Circle;
@@ -12,8 +12,8 @@ public class CircleDrawer extends FigureDrawer {
 
     public CircleDrawer(DrawingContext context) {
         super(context);
-        modes.getItems().addAll(Mode.BY_RADIUS, Mode.BY_3_POINTS);
-        modes.setValue(Mode.BY_RADIUS);
+        modes.getItems().addAll(DrawingMode.BY_RADIUS, DrawingMode.BY_3_POINTS);
+        modes.setValue(DrawingMode.BY_RADIUS);
     }
 
     @Override

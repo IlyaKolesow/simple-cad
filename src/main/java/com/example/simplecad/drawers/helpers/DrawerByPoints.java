@@ -5,10 +5,6 @@ import com.example.simplecad.figures.Figure;
 import com.example.simplecad.util.DrawingContext;
 import com.example.simplecad.figures.Point;
 import com.example.simplecad.util.InputBuilder;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
-
-import java.util.List;
 
 public abstract class DrawerByPoints extends Drawer {
     private final Point[] points;
@@ -21,20 +17,7 @@ public abstract class DrawerByPoints extends Drawer {
 
     public void setupDrawing() {
         inputBuilder.setPrompts("Укажите координаты точки 1", "X", "Y");
-
-        workSpace.setOnMouseClicked(e -> {
-            if (e.getButton() == MouseButton.PRIMARY)
-                drawNextPoint(e.getX(), e.getY());
-        });
-
-        toolBar.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ENTER) {
-                List<Double> inputs = inputBuilder.readInputValues();
-                double x = (coordsCenter.getX() + inputs.get(0) * drawingContext.getScale());
-                double y = (coordsCenter.getY() - inputs.get(1) * drawingContext.getScale());
-                drawNextPoint(x, y);
-            }
-        });
+        setInputHandlers(this::drawNextPoint);
     }
 
     private void drawNextPoint(double x, double y) {

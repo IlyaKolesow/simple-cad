@@ -1,11 +1,8 @@
 package com.example.simplecad.figures;
 
-import com.example.simplecad.LineType;
+import com.example.simplecad.modes.LineType;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
-
-import java.util.List;
-import java.util.Map;
 
 public abstract class Figure extends Group {
     protected Color color;

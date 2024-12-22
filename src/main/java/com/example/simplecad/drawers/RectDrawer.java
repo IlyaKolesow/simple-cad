@@ -1,6 +1,6 @@
 package com.example.simplecad.drawers;
 
-import com.example.simplecad.Mode;
+import com.example.simplecad.modes.DrawingMode;
 import com.example.simplecad.drawers.helpers.DrawerByPoints;
 import com.example.simplecad.figures.Figure;
 import com.example.simplecad.figures.Point;
@@ -15,8 +15,8 @@ public class RectDrawer extends FigureDrawer {
 
     public RectDrawer(DrawingContext context) {
         super(context);
-        modes.getItems().addAll(Mode.BY_2_POINTS, Mode.BY_SIDES);
-        modes.setValue(Mode.BY_2_POINTS);
+        modes.getItems().addAll(DrawingMode.BY_2_POINTS, DrawingMode.BY_SIDES);
+        modes.setValue(DrawingMode.BY_2_POINTS);
     }
 
     @Override

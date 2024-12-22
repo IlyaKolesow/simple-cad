@@ -3,17 +3,18 @@ package com.example.simplecad.drawers;
 import com.example.simplecad.util.DrawingContext;
 import com.example.simplecad.figures.Point;
 import com.example.simplecad.util.InputBuilder;
-import javafx.event.EventHandler;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
+
+import java.util.List;
+import java.util.function.Consumer;
 
 public class Drawer {
     protected final Pane workSpace;
     protected final ToolBar toolBar;
     protected final Point coordsCenter;
-    protected final EventHandler<MouseEvent> defaultMouseMovedHandler;
     protected final DrawingContext drawingContext;
     protected InputBuilder inputBuilder;
 
@@ -23,10 +24,26 @@ public class Drawer {
         toolBar = context.getInputTool();
         coordsCenter = context.getCoordsCenter();
         inputBuilder = new InputBuilder(toolBar);
-        defaultMouseMovedHandler = context.getDefaultMouseMovedHandler();
     }
 
-    protected TextField input(int n) {
-        return inputBuilder.getInputs().get(n);
+    protected interface PointHandler {
+        void handle(double x, double y);
+    }
+
+    protected void setInputHandlers(PointHandler nextAction) {
+        workSpace.setOnMouseClicked(e -> {
+            if (e.getButton() == MouseButton.PRIMARY) {
+                nextAction.handle(e.getX(), e.getY());
+            }
+        });
+
+        toolBar.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                List<Double> inputs = inputBuilder.readInputValues();
+                double x = (coordsCenter.getX() + inputs.get(0) * drawingContext.getScale());
+                double y = (coordsCenter.getY() - inputs.get(1) * drawingContext.getScale());
+                nextAction.handle(x, y);
+            }
+        });
     }
 }

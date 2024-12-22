@@ -1,6 +1,6 @@
 package com.example.simplecad.drawers;
 
-import com.example.simplecad.Mode;
+import com.example.simplecad.modes.DrawingMode;
 import com.example.simplecad.drawers.helpers.DrawerByRadius;
 import com.example.simplecad.figures.Figure;
 import com.example.simplecad.figures.Point;
@@ -12,8 +12,8 @@ public class PolygonDrawer extends FigureDrawer {
 
     public PolygonDrawer(DrawingContext context) {
         super(context);
-        modes.getItems().addAll(Mode.INSCRIBED_IN_CIRCLE, Mode.CIRCUMSCRIBED_AROUND_CIRCLE);
-        modes.setValue(Mode.INSCRIBED_IN_CIRCLE);
+        modes.getItems().addAll(DrawingMode.INSCRIBED_IN_CIRCLE, DrawingMode.CIRCUMSCRIBED_AROUND_CIRCLE);
+        modes.setValue(DrawingMode.INSCRIBED_IN_CIRCLE);
         inputBuilder.setPrompts("Укажите координаты центральной точки", "X", "Y", "Количество сторон");
         inputBuilder.getInputs().getLast().setText(String.valueOf(n));
     }
@@ -22,15 +22,15 @@ public class PolygonDrawer extends FigureDrawer {
     public void startDrawing() {
         switch (modes.getValue()) {
             case INSCRIBED_IN_CIRCLE:
-                draw(Mode.INSCRIBED_IN_CIRCLE);
+                draw(DrawingMode.INSCRIBED_IN_CIRCLE);
                 break;
             case CIRCUMSCRIBED_AROUND_CIRCLE:
-                draw(Mode.CIRCUMSCRIBED_AROUND_CIRCLE);
+                draw(DrawingMode.CIRCUMSCRIBED_AROUND_CIRCLE);
                 break;
         }
     }
 
-    private void draw(Mode mode) {
+    private void draw(DrawingMode mode) {
         DrawerByRadius byRadius = new DrawerByRadius(drawingContext, inputBuilder) {
             @Override
             protected Figure buildFigure(Point center, double radius) {

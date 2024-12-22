@@ -50,18 +50,18 @@ public class ArcDrawer extends FigureDrawer {
         if (startPoint != null) {
             Point endPoint = new Point(x, y);
             Arc arc = new Arc(center, new Line(startPoint, endPoint));
-            workSpace.getChildren().add(arc);
-            workSpace.getChildren().removeAll(startPoint, center);
+            workspace.getChildren().add(arc);
+            workspace.getChildren().removeAll(startPoint, center);
             startPoint = null;
             center = null;
             inputBuilder.setPrompts("Укажите координаты центральной точки", "X", "Y");
         } else if (center != null) {
             startPoint = new Point(x, y);
-            workSpace.getChildren().add(startPoint);
+            workspace.getChildren().add(startPoint);
             inputBuilder.setPrompts("Укажите координаты второй точки хорды", "X", "Y");
         } else {
             center = new Point(x, y);
-            workSpace.getChildren().add(center);
+            workspace.getChildren().add(center);
             inputBuilder.setPrompts("Укажите координаты первой точки хорды", "X", "Y");
         }
     }

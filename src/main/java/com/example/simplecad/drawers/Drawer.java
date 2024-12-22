@@ -9,10 +9,9 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class Drawer {
-    protected final Pane workSpace;
+    protected final Pane workspace;
     protected final ToolBar toolBar;
     protected final Point coordsCenter;
     protected final DrawingContext drawingContext;
@@ -20,7 +19,7 @@ public class Drawer {
 
     public Drawer(DrawingContext context) {
         this.drawingContext = context;
-        workSpace = context.getWorkSpace();
+        workspace = context.getWorkspace();
         toolBar = context.getInputTool();
         coordsCenter = context.getCoordsCenter();
         inputBuilder = new InputBuilder(toolBar);
@@ -31,7 +30,7 @@ public class Drawer {
     }
 
     protected void setInputHandlers(PointHandler nextAction) {
-        workSpace.setOnMouseClicked(e -> {
+        workspace.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
                 nextAction.handle(e.getX(), e.getY());
             }

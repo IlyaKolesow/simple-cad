@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ToolPanel {
     private final DrawingContext context;
-    private final Pane workSpace;
+    private final Pane workspace;
     private final ToolBar inputTool;
     private final Point center;
     private final CustomCursor cursor;
@@ -25,7 +25,7 @@ public class ToolPanel {
 
     public ToolPanel(DrawingContext context) {
         this.context = context;
-        workSpace = context.getWorkSpace();
+        workspace = context.getWorkspace();
         cursor = context.getCursor();
         inputTool = context.getInputTool();
         scale = context.getScale();
@@ -37,7 +37,7 @@ public class ToolPanel {
         double deltaX = e.getX() - start[0];
         double deltaY = e.getY() - start[1];
 
-        workSpace.getChildren().forEach(elem -> {
+        workspace.getChildren().forEach(elem -> {
             if (elem instanceof Figure)
                 ((Figure) elem).move(deltaX, deltaY);
         });
@@ -47,7 +47,7 @@ public class ToolPanel {
     }
 
     public void zoomByScroll() {
-        workSpace.setOnScroll(e -> {
+        workspace.setOnScroll(e -> {
             double wheelDirection = e.getDeltaY();
             double zoomCoef;
 
@@ -63,7 +63,7 @@ public class ToolPanel {
         scale *= zoomCoef;
         context.setScale(scale);
 
-        workSpace.getChildren().forEach(elem -> {
+        workspace.getChildren().forEach(elem -> {
             if (elem instanceof Figure) {
                 ((Figure) elem).scale(zoomCoef, cursor.getPosition());
                 ((Figure) elem).setLineType(((Figure) elem).getLineType(), scale);
@@ -107,6 +107,6 @@ public class ToolPanel {
 
         button.setOnAction(eventHandler);
         inputTool.setOnKeyPressed(null);
-        workSpace.setOnMouseClicked(context.getDefaultMouseClickedHandler());
+        workspace.setOnMouseClicked(context.getDefaultMouseClickedHandler());
     }
 }

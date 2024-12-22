@@ -52,20 +52,20 @@ public class RectDrawer extends FigureDrawer {
                 double param2 = inputs.get(1) * drawingContext.getScale();
                 if (rectCenter != null) {
                     Rectangle rectangle = new Rectangle(rectCenter, param1, param2);
-                    workSpace.getChildren().add(rectangle);
-                    workSpace.getChildren().remove(rectCenter);
+                    workspace.getChildren().add(rectangle);
+                    workspace.getChildren().remove(rectCenter);
                     rectCenter = null;
                     inputBuilder.setPrompts("Укажите координаты центральной точки", "Y", "X");
                 } else {
                     double x = coordsCenter.getX() + param1;
                     double y = coordsCenter.getY() - param2;
                     rectCenter = new Point(x, y);
-                    workSpace.getChildren().add(rectCenter);
+                    workspace.getChildren().add(rectCenter);
                     inputBuilder.setPrompts("Укажите размеры сторон", "Ширина", "Высота");
                 }
             }
         });
 
-        workSpace.setOnMouseClicked(null);
+        workspace.setOnMouseClicked(null);
     }
 }

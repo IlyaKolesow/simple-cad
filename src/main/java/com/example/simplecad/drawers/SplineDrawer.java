@@ -39,7 +39,7 @@ public class SplineDrawer extends FigureDrawer {
         else
             spline = new Bezier();
 
-        workSpace.getChildren().add(spline);
+        workspace.getChildren().add(spline);
         inputBuilder.setPrompts("Укажите координаты точки 1", "X", "Y");
         setInputHandlers(this::drawNextPoint);
     }
@@ -49,9 +49,9 @@ public class SplineDrawer extends FigureDrawer {
         points.add(point);
         spline.addPoint(point);
         if (points.size() == 1)
-            workSpace.getChildren().add(point);
+            workspace.getChildren().add(point);
         if (points.size() == 2)
-            workSpace.getChildren().remove(points.getFirst());
+            workspace.getChildren().remove(points.getFirst());
 
         inputBuilder.setPrompts("Укажите координаты точки " + (points.size() + 1), "X", "Y");
     }

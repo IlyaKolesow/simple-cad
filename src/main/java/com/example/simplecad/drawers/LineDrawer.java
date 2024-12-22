@@ -52,19 +52,19 @@ public class LineDrawer extends FigureDrawer {
                     double angle = inputs.get(0);
                     double length = inputs.get(1) * drawingContext.getScale();
                     Line line = new Line(firstPoint, angle, length);
-                    workSpace.getChildren().add(line);
+                    workspace.getChildren().add(line);
                     firstPoint = null;
                     inputBuilder.setPrompts("Укажите координаты первой точки", "X", "Y");
                 } else {
                     double x = coordsCenter.getX() + inputs.get(0) * drawingContext.getScale();
                     double y = coordsCenter.getY() - inputs.get(1) * drawingContext.getScale();
                     firstPoint = new Point(x, y);
-                    workSpace.getChildren().add(firstPoint);
+                    workspace.getChildren().add(firstPoint);
                     inputBuilder.setPrompts("Укажите угол и длину линии", "Угол", "Длина");
                 }
             }
         });
 
-        workSpace.setOnMouseClicked(null);
+        workspace.setOnMouseClicked(null);
     }
 }

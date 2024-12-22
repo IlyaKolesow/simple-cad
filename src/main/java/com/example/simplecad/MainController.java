@@ -19,7 +19,6 @@ import javafx.scene.paint.Color;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 public class MainController {
 
@@ -27,7 +26,7 @@ public class MainController {
     private BorderPane borderPane;
 
     @FXML
-    private Pane workSpace;
+    private Pane workspace;
 
     @FXML
     private Label mouseX, mouseY;
@@ -43,7 +42,7 @@ public class MainController {
     private DrawingContext drawingContext;
     private EventHandler<? super MouseEvent> previousMouseClickHandler;
     private EventHandler<MouseEvent> defaultMouseMovedHandler, defaultMouseClickedHandler, defaultMouseDraggedHandler, defaultMousePressedHandler;
-    private List<Figure> selectedFigures = new LinkedList<>();
+    private final List<Figure> selectedFigures = new LinkedList<>();
     private final double[] panStart = new double[2];
 
     @FXML
@@ -51,21 +50,22 @@ public class MainController {
         cursorInit();
         coordsSystemInit();
         toggleGroupInit();
-        setDefaultMouseMovedHandler();
-        setDefaultMouseClickedHandler();
-        setDefaultMousePressedHandler();
-        setDefaultMouseDraggedHandler(MouseButton.MIDDLE);
+        defaultMouseHandlersInit();
 
-        List<EventHandler<MouseEvent>> mouseHandlers = List.of(defaultMouseMovedHandler, defaultMouseClickedHandler, defaultMouseDraggedHandler, defaultMousePressedHandler);
-        //создать WorkSpace extends Pane с методами
-        drawingContext = new DrawingContext(workSpace, inputTool, mouseHandlers);
+        List<EventHandler<MouseEvent>> mouseHandlers = List.of(
+                defaultMouseMovedHandler,
+                defaultMouseClickedHandler,
+                defaultMouseDraggedHandler,
+                defaultMousePressedHandler
+        );
+        drawingContext = new DrawingContext(workspace, inputTool, mouseHandlers);
         toolPanel = new ToolPanel(drawingContext);
 
         borderPane.setLeft(null);
     }
 
     private void coordsSystemInit() {
-        Point center = new Point(workSpace.getPrefWidth() / 2, workSpace.getPrefHeight() / 2);
+        Point center = new Point(workspace.getPrefWidth() / 2, workspace.getPrefHeight() / 2);
         center.setId("center");
         center.setColor(Color.YELLOW);
 
@@ -81,25 +81,20 @@ public class MainController {
         lineY.getPoint1().setColor(null);
         lineY.getPoint2().setColor(null);
 
-        workSpace.getChildren().addAll(lineX, lineY, center);
+        workspace.getChildren().addAll(lineX, lineY, center);
     }
 
     private void cursorInit() {
         cursor = new CustomCursor();
         cursor.setId("cursor");
-        workSpace.getChildren().add(cursor);
-        workSpace.setCursor(Cursor.NONE);
+        workspace.getChildren().add(cursor);
+        workspace.setCursor(Cursor.NONE);
     }
 
     private void toggleGroupInit() {
         ToggleGroup toggleGroup = new ToggleGroup();
-        lineBtn.setToggleGroup(toggleGroup);
-        rectBtn.setToggleGroup(toggleGroup);
-        circleBtn.setToggleGroup(toggleGroup);
-        splineBtn.setToggleGroup(toggleGroup);
-        arcBtn.setToggleGroup(toggleGroup);
-        polygonBtn.setToggleGroup(toggleGroup);
-        rotationBtn.setToggleGroup(toggleGroup);
+        List.of(lineBtn, rectBtn, circleBtn, splineBtn, arcBtn, polygonBtn, rotationBtn)
+                .forEach(btn -> btn.setToggleGroup(toggleGroup));
     }
 
     private void setDefaultMouseMovedHandler() {
@@ -108,12 +103,12 @@ public class MainController {
             cursor.update(e);
             hovering(e);
         };
-        workSpace.setOnMouseMoved(defaultMouseMovedHandler);
+        workspace.setOnMouseMoved(defaultMouseMovedHandler);
     }
 
     private void setDefaultMouseClickedHandler() {
         defaultMouseClickedHandler = this::figureSelecting;
-        workSpace.setOnMouseClicked(defaultMouseClickedHandler);
+        workspace.setOnMouseClicked(defaultMouseClickedHandler);
     }
 
     private void setDefaultMousePressedHandler() {
@@ -121,7 +116,7 @@ public class MainController {
             panStart[0] = e.getX();
             panStart[1] = e.getY();
         };
-        workSpace.setOnMousePressed(defaultMousePressedHandler);
+        workspace.setOnMousePressed(defaultMousePressedHandler);
     }
 
     private void setDefaultMouseDraggedHandler(MouseButton button) {
@@ -130,28 +125,38 @@ public class MainController {
             if (event.getButton() == button)
                 toolPanel.pan(event, panStart);
         };
-        workSpace.setOnMouseDragged(defaultMouseDraggedHandler);
+        workspace.setOnMouseDragged(defaultMouseDraggedHandler);
+    }
+
+    private void defaultMouseHandlersInit() {
+        setDefaultMouseMovedHandler();
+        setDefaultMouseClickedHandler();
+        setDefaultMousePressedHandler();
+        setDefaultMouseDraggedHandler(MouseButton.MIDDLE);
+    }
+
+    private boolean isValidFigure(Figure figure) {
+        return !"coordsLineX".equals(figure.getId()) && !"coordsLineY".equals(figure.getId());
     }
 
     private Figure findHoveredFigure(MouseEvent e) {
-        return (Figure) workSpace.getChildren()
+        return (Figure) workspace.getChildren()
                 .stream()
                 .filter(elem ->
-                        elem instanceof Figure &&
-                        ((Figure) elem).isHover(e.getX(), e.getY()) &&
-                        !Objects.equals(elem.getId(), "coordsLineX") &&
-                        !Objects.equals(elem.getId(), "coordsLineY"))
+                        elem instanceof Figure figure &&
+                                figure.isHover(e.getX(), e.getY()) &&
+                                isValidFigure(figure))
                 .findFirst()
                 .orElse(null);
     }
 
     private void resetColors() {
-        workSpace.getChildren().forEach(elem -> {
-            if (elem instanceof Figure && !Objects.equals(elem.getId(), "coordsLineX") && !Objects.equals(elem.getId(), "coordsLineY")) {
-                ((Figure) elem).setColor(Color.WHITE);
+        workspace.getChildren().forEach(elem -> {
+            if (elem instanceof Figure figure && isValidFigure(figure)) {
+                figure.setColor(Color.WHITE);
 
-                if (Objects.equals(elem.getId(), "center"))
-                    ((Figure) elem).setColor(Color.YELLOW);
+                if ("center".equals(elem.getId()))
+                    figure.setColor(Color.YELLOW);
             }
         });
     }
@@ -224,11 +229,10 @@ public class MainController {
 
         if (button.isSelected()) {
             borderPane.setLeft(inputTool);
-//            toolPanel.pan(MouseButton.MIDDLE);
             panBtn.setSelected(false);
             drawer.startDrawing();
         } else {
-            workSpace.setOnMouseClicked(defaultMouseClickedHandler);
+            workspace.setOnMouseClicked(defaultMouseClickedHandler);
             borderPane.setLeft(null);
             previousMouseClickHandler = null;
         }
@@ -236,15 +240,15 @@ public class MainController {
 
     @FXML
     private void panByLBM(ActionEvent event) {
-        if (workSpace.getOnMouseClicked() != null)
-            previousMouseClickHandler = workSpace.getOnMouseClicked();
+        if (workspace.getOnMouseClicked() != null)
+            previousMouseClickHandler = workspace.getOnMouseClicked();
 
         if (panBtn.isSelected()) {
-            workSpace.setOnMouseClicked(null);
+            workspace.setOnMouseClicked(null);
             setDefaultMouseDraggedHandler(MouseButton.PRIMARY);
         } else {
             setDefaultMouseDraggedHandler(MouseButton.MIDDLE);
-            workSpace.setOnMouseClicked(previousMouseClickHandler);
+            workspace.setOnMouseClicked(previousMouseClickHandler);
         }
     }
 
@@ -264,7 +268,7 @@ public class MainController {
             borderPane.setLeft(inputTool);
             toolPanel.rotate(selectedFigures);
         } else {
-            workSpace.setOnMouseClicked(defaultMouseClickedHandler);
+            workspace.setOnMouseClicked(defaultMouseClickedHandler);
             borderPane.setLeft(null);
         }
     }

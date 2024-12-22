@@ -21,16 +21,16 @@ public abstract class DrawerByRadius extends Drawer {
     public void setupDrawing() {
         setFirstActionPrompts();
 
-        workSpace.setOnMouseClicked(e -> {
+        workspace.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
                 if (center != null) {
                     setFirstActionPrompts();
-                    workSpace.getChildren().add(buildFigure(center, new Point(e.getX(), e.getY())));
-                    workSpace.getChildren().remove(center);
+                    workspace.getChildren().add(buildFigure(center, new Point(e.getX(), e.getY())));
+                    workspace.getChildren().remove(center);
                     center = null;
                 } else {
                     center = new Point(e.getX(), e.getY());
-                    workSpace.getChildren().add(center);
+                    workspace.getChildren().add(center);
                     setSecondActionPrompts();
                 }
             }
@@ -42,14 +42,14 @@ public abstract class DrawerByRadius extends Drawer {
                 if (center != null) {
                     double radius = inputs.get(0) * drawingContext.getScale();
                     setFirstActionPrompts();
-                    workSpace.getChildren().add(buildFigure(center, radius));
-                    workSpace.getChildren().remove(center);
+                    workspace.getChildren().add(buildFigure(center, radius));
+                    workspace.getChildren().remove(center);
                     center = null;
                 } else {
                     double x = (coordsCenter.getX() + inputs.get(0) * drawingContext.getScale());
                     double y = (coordsCenter.getY() - inputs.get(1) * drawingContext.getScale());
                     center = new Point(x, y);
-                    workSpace.getChildren().add(center);
+                    workspace.getChildren().add(center);
                     setSecondActionPrompts();
                 }
             }

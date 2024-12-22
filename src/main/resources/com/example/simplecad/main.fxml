@@ -5,7 +5,7 @@
 <BorderPane fx:id="borderPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.simplecad.MainController">
     <center>
-        <Pane fx:id="workSpace" prefWidth="1280" prefHeight="720" style="-fx-background-color: #13002a"/>
+        <Pane fx:id="workspace" prefWidth="1280" prefHeight="720" style="-fx-background-color: #13002a"/>
     </center>
 
     <top>

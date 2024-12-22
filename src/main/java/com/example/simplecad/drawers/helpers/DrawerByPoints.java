@@ -26,15 +26,15 @@ public abstract class DrawerByPoints extends Drawer {
                 points[i] = new Point(x, y);
 
                 if (i == points.length - 1) {
-                    workSpace.getChildren().add(buildFigure(points));
+                    workspace.getChildren().add(buildFigure(points));
                     inputBuilder.setPrompts("Укажите координаты точки 1", "X", "Y");
 
                     for (int j = 0; j < points.length; j++) {
-                        workSpace.getChildren().remove(points[j]);
+                        workspace.getChildren().remove(points[j]);
                         points[j] = null;
                     }
                 } else {
-                    workSpace.getChildren().add(points[i]);
+                    workspace.getChildren().add(points[i]);
                     inputBuilder.setPrompts("Укажите координаты точки " + (i + 2), "X", "Y");
                 }
                 break;

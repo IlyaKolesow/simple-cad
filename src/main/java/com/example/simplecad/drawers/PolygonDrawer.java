@@ -15,7 +15,7 @@ public class PolygonDrawer extends FigureDrawer {
         modes.getItems().addAll(DrawingMode.INSCRIBED_IN_CIRCLE, DrawingMode.CIRCUMSCRIBED_AROUND_CIRCLE);
         modes.setValue(DrawingMode.INSCRIBED_IN_CIRCLE);
         inputBuilder.setPrompts("Укажите координаты центральной точки", "X", "Y", "Количество сторон");
-        inputBuilder.getInputs().getLast().setText(String.valueOf(n));
+        inputBuilder.getCoordsInputs().getLast().setText(String.valueOf(n));
     }
 
     @Override
@@ -44,18 +44,18 @@ public class PolygonDrawer extends FigureDrawer {
 
             @Override
             protected void setFirstActionPrompts() {
-                if (inputBuilder.getInputs().getLast().getText() != null)
-                    n = Integer.parseInt(inputBuilder.getInputs().getLast().getText());
+                if (inputBuilder.getCoordsInputs().getLast().getText() != null)
+                    n = Integer.parseInt(inputBuilder.getCoordsInputs().getLast().getText());
                 inputBuilder.setPrompts("Укажите координаты центральной точки", "X", "Y", "Количество сторон");
-                inputBuilder.getInputs().getLast().setText(String.valueOf(n));
+                inputBuilder.getCoordsInputs().getLast().setText(String.valueOf(n));
             }
 
             @Override
             protected void setSecondActionPrompts() {
-                if (inputBuilder.getInputs().getLast().getText() != null)
-                    n = Integer.parseInt(inputBuilder.getInputs().getLast().getText());
+                if (inputBuilder.getCoordsInputs().getLast().getText() != null)
+                    n = Integer.parseInt(inputBuilder.getCoordsInputs().getLast().getText());
                 inputBuilder.setPrompts("Укажите радиус", "R", "Количество сторон");
-                inputBuilder.getInputs().getLast().setText(String.valueOf(n));
+                inputBuilder.getCoordsInputs().getLast().setText(String.valueOf(n));
             }
         };
 

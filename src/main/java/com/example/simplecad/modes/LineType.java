@@ -2,7 +2,6 @@ package com.example.simplecad.modes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class LineType {
@@ -19,7 +18,7 @@ public class LineType {
     public LineType(String name, double dashLength, double spaceLength) {
         this.name = name;
         pattern = new ArrayList<>();
-        setDashSpace(new double[]{dashLength, spaceLength});
+        setDashSpace(List.of(dashLength, spaceLength));
     }
 
     public LineType(String name) {
@@ -33,14 +32,20 @@ public class LineType {
                 .collect(Collectors.toList());
     }
 
-    public double[] getDashSpace() {
-        return new double[]{dashLength, spaceLength};
+    public List<Double> getDashSpace() {
+        if (name.equals("Сплошная"))
+            return List.of();
+        return List.of(dashLength, spaceLength);
     }
 
-    public void setDashSpace(double[] dashSpace) {
-        dashLength = dashSpace[0];
-        spaceLength = dashSpace[1];
+    public void setDashSpace(List<Double> dashSpace) {
         pattern.clear();
+
+        if (dashSpace.isEmpty())
+            return;
+
+        dashLength = dashSpace.get(0);
+        spaceLength = dashSpace.get(1);
         switch (name) {
             case "Штриховая":
                 pattern.addAll(List.of(dashLength, spaceLength));
@@ -55,28 +60,18 @@ public class LineType {
     }
 
     public static LineType copy(LineType origin) {
+        if (origin.getDashSpace().isEmpty())
+            return new LineType(origin.name);
+
         return new LineType(
                 origin.name,
-                origin.getDashSpace()[0],
-                origin.getDashSpace()[1]
+                origin.getDashSpace().get(0),
+                origin.getDashSpace().get(1)
         );
     }
 
     @Override
     public String toString() {
         return name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        LineType lineType = (LineType) o;
-        return Objects.equals(name, lineType.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
     }
 }

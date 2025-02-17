@@ -129,8 +129,7 @@ public class Arc extends InputModifiableFigure {
     public void setLineType(LineType lineType, double scale) {
         super.setLineType(lineType, scale);
         arc.getStrokeDashArray().clear();
-        if (lineType != LineType.SOLID)
-            arc.getStrokeDashArray().addAll(lineType.getPattern(scale));
+        arc.getStrokeDashArray().addAll(lineType.getPattern(scale));
     }
 
     private void setCenter(Point center) {

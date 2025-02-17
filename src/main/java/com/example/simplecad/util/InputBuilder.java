@@ -13,69 +13,88 @@ import java.util.Map;
 public class InputBuilder {
     private final ToolBar toolBar;
     private final Label label;
-    private final List<Label> prompts;
-    private final List<TextField> inputs;
+    private final List<Label> coordsPrompts;
+    private final List<TextField> coordsInputs;
+    private final List<Label> lineTypePrompts;
+    private final List<TextField> lineTypeInputs;
     private final ComboBox<DrawingMode> modes;
-    private final ComboBox<LineType> lineTypes;
+    private ComboBox<LineType> lineTypes;
     private Button applyBtn;
     private TextField thickness;
 
     public InputBuilder(ToolBar toolBar) {
         this.toolBar = toolBar;
         label = new Label();
-        prompts = new ArrayList<>();
-        inputs = new ArrayList<>();
+        coordsPrompts = new ArrayList<>();
+        coordsInputs = new ArrayList<>();
+        lineTypePrompts = new ArrayList<>();
+        lineTypeInputs = new ArrayList<>();
         thickness = new TextField();
         modes = new ComboBox<>();
-        lineTypes = new ComboBox<>();
     }
 
     public void setPrompts(String label, String... prompts) {
-        this.prompts.clear();
-        this.inputs.clear();
+        coordsPrompts.clear();
+        coordsInputs.clear();
 
         for (String text : prompts) {
-            this.prompts.add(new Label(text + ":"));
-            inputs.add(new TextField());
+            coordsPrompts.add(new Label(text + ":"));
+            coordsInputs.add(new TextField());
         }
         this.label.setText(label + ":");
 
         update();
     }
 
-    public void setPrompts(String label, Map<String, Double> prompts, double scale, double thickness, double... dashSpace) {
-        this.prompts.clear();
-        this.inputs.clear();
+    public void setPrompts(String label, Map<String, Double> prompts, double scale) {
+        coordsPrompts.clear();
+        coordsInputs.clear();
 
         for (Map.Entry<String, Double> entry : prompts.entrySet()) {
-            this.prompts.add(new Label(entry.getKey() + ":"));
+            coordsPrompts.add(new Label(entry.getKey() + ":"));
             String value = String.format("%.1f", entry.getValue() / scale);
-            inputs.add(new TextField(value.replace(",", ".")));
+            coordsInputs.add(new TextField(value.replace(",", ".")));
         }
         this.label.setText(label + ":");
-
-        this.thickness = new TextField(String.valueOf(thickness));
-        this.prompts.add(new Label("Толщина линии:"));
-        inputs.add(this.thickness);
-        toolBar.getItems().add(this.thickness);
-
-        if (dashSpace.length > 0) {
-            this.prompts.add(new Label("Длина штриха:"));
-            this.prompts.add(new Label("Длина пробела:"));
-            inputs.add(new TextField(String.valueOf(dashSpace[0])));
-            inputs.add(new TextField(String.valueOf(dashSpace[1])));
-        }
 
         update();
     }
 
-    public List<TextField> getInputs() {
-        return inputs;
+    public void setLabel(String label) {
+        this.label.setText(label + ":");
+    }
+
+    public ComboBox<LineType> setLineType(double thickness, List<Double> dashSpace) {
+        lineTypePrompts.clear();
+        lineTypeInputs.clear();
+
+        if (lineTypes == null)
+            lineTypes = new ComboBox<>();
+
+        this.thickness = new TextField(String.valueOf(thickness));
+        lineTypePrompts.add(new Label("Толщина линии:"));
+        lineTypeInputs.add(this.thickness);
+        toolBar.getItems().add(this.thickness);
+
+        if (!dashSpace.isEmpty()) {
+            lineTypePrompts.add(new Label("Длина штриха:"));
+            lineTypePrompts.add(new Label("Длина пробела:"));
+            lineTypeInputs.add(new TextField(String.valueOf(dashSpace.get(0))));
+            lineTypeInputs.add(new TextField(String.valueOf(dashSpace.get(1))));
+        }
+
+        update();
+
+        return lineTypes;
+    }
+
+    public List<TextField> getCoordsInputs() {
+        return coordsInputs;
     }
 
     public List<Double> readInputValues() {
         List<Double> values = new ArrayList<>();
-        for (TextField field : inputs) {
+        for (TextField field : coordsInputs) {
             String text = field.getText();
             values.add(Double.parseDouble(text.replace(",", ".")));
         }
@@ -88,6 +107,18 @@ public class InputBuilder {
             toolBar.getItems().add(modes);
         toolBar.getItems().add(label);
 
+        setStyle(coordsPrompts, coordsInputs);
+
+        if (lineTypes != null) {
+            toolBar.getItems().add(lineTypes);
+            setStyle(lineTypePrompts, lineTypeInputs);
+        }
+
+        if (applyBtn != null)
+            toolBar.getItems().add(applyBtn);
+    }
+
+    private void setStyle(List<Label> prompts, List<TextField> inputs) {
         for (int i = 0; i < prompts.size(); i++) {
             HBox hBox = new HBox(prompts.get(i), inputs.get(i));
             toolBar.getItems().add(hBox);
@@ -96,21 +127,11 @@ public class InputBuilder {
             hBox.setAlignment(Pos.CENTER_LEFT);
             inputs.get(i).setMaxWidth(50);
         }
-
-        if (!lineTypes.getItems().isEmpty())
-            toolBar.getItems().add(lineTypes);
-        if (applyBtn != null)
-            toolBar.getItems().add(applyBtn);
     }
 
     public ComboBox<DrawingMode> addModeSelection() {
         toolBar.getItems().addFirst(modes);
         return modes;
-    }
-
-    public ComboBox<LineType> addLineTypeSelection() {
-        toolBar.getItems().addLast(lineTypes);
-        return lineTypes;
     }
 
     public Button addApplyButton() {
@@ -123,14 +144,12 @@ public class InputBuilder {
         return Double.parseDouble(thickness.getText().replace(",", "."));
     }
 
-    public void setDashSpace(double dashLength, double spaceLength) {
-        inputs.get(inputs.size() - 2).setText(String.valueOf(dashLength));
-        inputs.getLast().setText(String.valueOf(spaceLength));
-    }
+    public List<Double> getDashSpace() {
+        if (lineTypeInputs.size() < 2)
+            return List.of();
 
-    public double[] getDashSpace() {
-        double dash = Double.parseDouble(inputs.get(inputs.size() - 2).getText().replace(",", "."));
-        double space = Double.parseDouble(inputs.getLast().getText().replace(",", "."));
-        return new double[]{dash, space};
+        double dash = Double.parseDouble(lineTypeInputs.get(lineTypeInputs.size() - 2).getText().replace(",", "."));
+        double space = Double.parseDouble(lineTypeInputs.getLast().getText().replace(",", "."));
+        return List.of(dash, space);
     }
 }

@@ -89,9 +89,9 @@ public class ToolPanel {
             @Override
             public void handle(ActionEvent event) {
                 List<Double> inputs = inputBuilder.readInputValues();
-                if (!figures.isEmpty() && centralPoint == null && inputBuilder.getInputs().isEmpty()) {
+                if (!figures.isEmpty() && centralPoint == null && inputBuilder.getCoordsInputs().isEmpty()) {
                     inputBuilder.setPrompts("Укажите координаты центральной точки вращения", "X", "Y");
-                } else if (centralPoint == null && !inputBuilder.getInputs().isEmpty()) {
+                } else if (centralPoint == null && !inputBuilder.getCoordsInputs().isEmpty()) {
                     double x = (center.getX() + inputs.get(0) * scale);
                     double y = (center.getY() - inputs.get(1) * scale);
                     centralPoint = new Point(x, y);

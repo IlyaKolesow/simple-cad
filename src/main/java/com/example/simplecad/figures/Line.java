@@ -107,8 +107,7 @@ public class Line extends InputModifiableFigure {
     public void setLineType(LineType lineType, double scale) {
         super.setLineType(lineType, scale);
         line.getStrokeDashArray().clear();
-        if (lineType != LineType.SOLID)
-            line.getStrokeDashArray().addAll(lineType.getPattern(scale));
+        line.getStrokeDashArray().addAll(lineType.getPattern(scale));
     }
 
     public Point getPoint1() {

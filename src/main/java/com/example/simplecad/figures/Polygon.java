@@ -162,7 +162,7 @@ public class Polygon extends InputModifiableFigure {
 
     @Override
     public Map<String, Double> getValuesForOutput(Point center) {
-        return centerRadius(center, this.center, R);
+        return getCenterRadiusForOutput(center, this.center, R);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.simplecad.figures;
 
+import com.example.simplecad.modes.LineType;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.CubicCurve;
 
@@ -49,6 +50,7 @@ public class Bezier extends Spline {
 
             setColor(color);
             setThickness(thickness);
+            setLinePattern(linePattern);
             getChildren().addAll(spline, line1, line2);
         }
     }
@@ -95,11 +97,26 @@ public class Bezier extends Spline {
     }
 
     @Override
+    public void setLineType(LineType lineType, double scale) {
+        super.setLineType(lineType, scale);
+        setLinePattern(linePattern);
+    }
+
+    @Override
+    protected void setLinePattern(List<Double> pattern) {
+        super.setLinePattern(pattern);
+        splines.forEach(e -> {
+            e.getStrokeDashArray().clear();
+            e.getStrokeDashArray().addAll(pattern);
+        });
+    }
+
+    @Override
     public boolean isHover(double x, double y) {
-        for (int i = 0; i < points.size() - 2; i++)
+        for (int i = 0; i <= points.size() - 2; i++)
             if (new Line(points.get(i), points.get(i + 1)).isHover(x, y))
                 return true;
-        return false;
+        return controlPoints.stream().anyMatch(p -> p.isHover(x, y));
     }
 
     @Override

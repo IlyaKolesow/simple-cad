@@ -1,8 +1,7 @@
 package com.example.simplecad;
 
 import com.example.simplecad.drawers.*;
-import com.example.simplecad.editors.InputFigureEditor;
-import com.example.simplecad.editors.SplineEditor;
+import com.example.simplecad.editors.FigureEditor;
 import com.example.simplecad.figures.*;
 import com.example.simplecad.util.CustomCursor;
 import com.example.simplecad.util.DrawingContext;
@@ -136,7 +135,7 @@ public class MainController {
     }
 
     private boolean isValidFigure(Figure figure) {
-        return !"coordsLineX".equals(figure.getId()) && !"coordsLineY".equals(figure.getId());
+        return !"coordsLineX".equals(figure.getId()) && !"coordsLineY".equals(figure.getId()) && !"center".equals(figure.getId());
     }
 
     private Figure findHoveredFigure(MouseEvent e) {
@@ -152,12 +151,8 @@ public class MainController {
 
     private void resetColors() {
         workspace.getChildren().forEach(elem -> {
-            if (elem instanceof Figure figure && isValidFigure(figure)) {
+            if (elem instanceof Figure figure && isValidFigure(figure))
                 figure.setColor(Color.WHITE);
-
-                if ("center".equals(elem.getId()))
-                    figure.setColor(Color.YELLOW);
-            }
         });
     }
 
@@ -175,6 +170,7 @@ public class MainController {
             if (!rotationBtn.isSelected())
                 borderPane.setLeft(null);
             resetColors();
+
             if (hoveredFigure != null) {
                 if (!e.isShiftDown())
                     selectedFigures.clear();
@@ -182,14 +178,14 @@ public class MainController {
                 selectedFigures.add(hoveredFigure);
                 selectedFigures.forEach(figure -> figure.setColor(Color.ORANGE));
 
-                if (selectedFigures.size() == 1 && !rotationBtn.isSelected() && hoveredFigure instanceof InputModifiableFigure) {
-                    new InputFigureEditor(drawingContext, (InputModifiableFigure) hoveredFigure).inputBarInit();
+                if (selectedFigures.size() == 1 && !rotationBtn.isSelected()) {
+                    new FigureEditor(drawingContext, hoveredFigure).inputBarInit();
                     borderPane.setLeft(inputTool);
-                } else if (!(hoveredFigure instanceof InputModifiableFigure)) {
-                    new SplineEditor(drawingContext, hoveredFigure).pointMovement();
                 }
-            } else
+            } else {
                 selectedFigures.clear();
+                workspace.setOnMouseDragged(defaultMouseDraggedHandler);
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.simplecad.figures;
 
+import com.example.simplecad.modes.LineType;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.QuadCurve;
 
@@ -58,6 +59,7 @@ public class QuadSpline extends Spline {
 
             setColor(color);
             setThickness(thickness);
+            setLinePattern(linePattern);
             getChildren().add(spline);
         }
     }
@@ -98,6 +100,21 @@ public class QuadSpline extends Spline {
     public void setThickness(double thickness) {
         super.setThickness(thickness);
         splines.forEach(e -> e.setStrokeWidth(thickness));
+    }
+
+    @Override
+    public void setLineType(LineType lineType, double scale) {
+        super.setLineType(lineType, scale);
+        setLinePattern(linePattern);
+    }
+
+    @Override
+    protected void setLinePattern(List<Double> pattern) {
+        super.setLinePattern(pattern);
+        splines.forEach(e -> {
+            e.getStrokeDashArray().clear();
+            e.getStrokeDashArray().addAll(pattern);
+        });
     }
 
     @Override

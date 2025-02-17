@@ -92,8 +92,7 @@ public class Circle extends InputModifiableFigure {
     public void setLineType(LineType lineType, double scale) {
         super.setLineType(lineType, scale);
         circle.getStrokeDashArray().clear();
-        if (lineType != LineType.SOLID)
-            circle.getStrokeDashArray().addAll(lineType.getPattern(scale));
+        circle.getStrokeDashArray().addAll(lineType.getPattern(scale));
     }
 
     @Override
@@ -106,7 +105,7 @@ public class Circle extends InputModifiableFigure {
 
     @Override
     public Map<String, Double> getValuesForOutput(Point center) {
-        return centerRadius(center, this.center, radius);
+        return getCenterRadiusForOutput(center, this.center, radius);
     }
 
     @Override

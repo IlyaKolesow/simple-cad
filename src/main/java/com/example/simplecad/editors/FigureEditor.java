@@ -62,7 +62,7 @@ public class FigureEditor {
         lineTypes.getItems().addAll(LineType.SOLID, LineType.DASHED, LineType.DASH_DOT, LineType.DASH_DOT_DOT);
         lineTypes.setValue(figure.getLineType());
         lineTypes.setOnAction(e -> {
-            LineType lineType = LineType.copy(lineTypes.getValue());
+            LineType lineType = lineTypes.getValue();
             inputBuilder.setLineType(figure.getThickness(), lineType.getDashSpace());
             figure.setLineType(lineType, scale);
         });
@@ -77,7 +77,7 @@ public class FigureEditor {
         }
 
         figure.setThickness(inputBuilder.getThicknessValue());
-        LineType lineType = LineType.copy(figure.getLineType());
+        LineType lineType = figure.getLineType();
         lineType.setDashSpace(inputBuilder.getDashSpace());
         figure.setLineType(lineType, context.getScale());
     }

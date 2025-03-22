@@ -154,15 +154,15 @@ public class Polygon extends InputModifiableFigure {
     }
 
     @Override
-    public void setValuesFromInputs(List<Double> values, Point coordsCenter) {
+    public void setCoords(List<Double> values, Point coordsCenter) {
         setCenter(values.get(0) + coordsCenter.getX(), coordsCenter.getY() - values.get(1));
         double R = values.get(2);
         setRadius(R);
     }
 
     @Override
-    public Map<String, Double> getValuesForOutput(Point center) {
-        return getCenterRadiusForOutput(center, this.center, R);
+    public Map<String, Double> getCoords(Point center) {
+        return getCenterRadiusCoords(center, this.center, R);
     }
 
     @Override

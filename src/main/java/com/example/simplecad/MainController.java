@@ -3,9 +3,9 @@ package com.example.simplecad;
 import com.example.simplecad.drawers.*;
 import com.example.simplecad.editors.FigureEditor;
 import com.example.simplecad.figures.*;
+import com.example.simplecad.filesaving.DXFWriter;
 import com.example.simplecad.util.CustomCursor;
 import com.example.simplecad.util.DrawingContext;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
@@ -190,32 +190,32 @@ public class MainController {
     }
 
     @FXML
-    private void lineDrawing(ActionEvent event) {
+    private void lineDrawing() {
         figureDrawing(lineBtn, new LineDrawer(drawingContext));
     }
 
     @FXML
-    private void rectDrawing(ActionEvent event) {
+    private void rectDrawing() {
         figureDrawing(rectBtn, new RectDrawer(drawingContext));
     }
 
     @FXML
-    private void circleDrawing(ActionEvent event) {
+    private void circleDrawing() {
         figureDrawing(circleBtn, new CircleDrawer(drawingContext));
     }
 
     @FXML
-    private void splineDrawing(ActionEvent event) {
+    private void splineDrawing() {
         figureDrawing(splineBtn, new SplineDrawer(drawingContext));
     }
 
     @FXML
-    private void arcDrawing(ActionEvent event) {
+    private void arcDrawing() {
         figureDrawing(arcBtn, new ArcDrawer(drawingContext));
     }
 
     @FXML
-    private void polygonDrawing(ActionEvent event) {
+    private void polygonDrawing() {
         figureDrawing(polygonBtn, new PolygonDrawer(drawingContext));
     }
 
@@ -235,7 +235,7 @@ public class MainController {
     }
 
     @FXML
-    private void panByLBM(ActionEvent event) {
+    private void panByLBM() {
         if (workspace.getOnMouseClicked() != null)
             previousMouseClickHandler = workspace.getOnMouseClicked();
 
@@ -249,12 +249,12 @@ public class MainController {
     }
 
     @FXML
-    private void zoomPlus(ActionEvent event) {
+    private void zoomPlus() {
         toolPanel.zoom(1.1);
     }
 
     @FXML
-    private void zoomMinus(ActionEvent event) {
+    private void zoomMinus() {
         toolPanel.zoom(0.9);
     }
 
@@ -267,5 +267,10 @@ public class MainController {
             workspace.setOnMouseClicked(defaultMouseClickedHandler);
             borderPane.setLeft(null);
         }
+    }
+
+    @FXML
+    private void saveFile() {
+        new DXFWriter(workspace).save();
     }
 }

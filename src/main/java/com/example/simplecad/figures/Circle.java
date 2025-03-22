@@ -96,7 +96,7 @@ public class Circle extends InputModifiableFigure {
     }
 
     @Override
-    public void setValuesFromInputs(List<Double> values, Point center) {
+    public void setCoords(List<Double> values, Point center) {
         double x = values.get(0) + center.getX();
         double y = center.getY() - values.get(1);
         setCenter(new Point(x, y));
@@ -104,8 +104,8 @@ public class Circle extends InputModifiableFigure {
     }
 
     @Override
-    public Map<String, Double> getValuesForOutput(Point center) {
-        return getCenterRadiusForOutput(center, this.center, radius);
+    public Map<String, Double> getCoords(Point center) {
+        return getCenterRadiusCoords(center, this.center, radius);
     }
 
     @Override

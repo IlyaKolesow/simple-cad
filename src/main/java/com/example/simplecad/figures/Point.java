@@ -89,13 +89,13 @@ public class Point extends InputModifiableFigure {
     }
 
     @Override
-    public void setValuesFromInputs(List<Double> values, Point center) {
+    public void setCoords(List<Double> values, Point center) {
         setX(values.get(0) + center.getX());
         setY(center.getY() - values.get(1));
     }
 
     @Override
-    public Map<String, Double> getValuesForOutput(Point center) {
+    public Map<String, Double> getCoords(Point center) {
         Map<String, Double> map = new LinkedHashMap<>();
         map.put("X", x - center.getX());
         map.put("Y", center.getY() - y);

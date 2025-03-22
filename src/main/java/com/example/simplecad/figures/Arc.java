@@ -143,7 +143,7 @@ public class Arc extends InputModifiableFigure {
     }
 
     @Override
-    public void setValuesFromInputs(List<Double> values, Point coordsCenter) {
+    public void setCoords(List<Double> values, Point coordsCenter) {
         double deltaX = values.get(0) + coordsCenter.getX() - this.center.getX();
         double deltaY = coordsCenter.getY() - values.get(1) - this.center.getY();
         double radius = values.get(2);
@@ -153,12 +153,8 @@ public class Arc extends InputModifiableFigure {
     }
 
     @Override
-    public Map<String, Double> getValuesForOutput(Point center) {
-        Map<String, Double> map = new LinkedHashMap<>();
-        map.put("Центр [X]", this.center.getX() - center.getX());
-        map.put("Центр [Y]", center.getY() - this.center.getY());
-        map.put("Радиус", radius);
-        return map;
+    public Map<String, Double> getCoords(Point center) {
+        return getCenterRadiusCoords(center, this.center, radius);
     }
 
     @Override

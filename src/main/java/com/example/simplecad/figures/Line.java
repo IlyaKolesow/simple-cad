@@ -119,7 +119,7 @@ public class Line extends InputModifiableFigure {
     }
 
     @Override
-    public void setValuesFromInputs(List<Double> values, Point center) {
+    public void setCoords(List<Double> values, Point center) {
         point1.setX(values.get(0) + center.getX());
         point1.setY(center.getY() - values.get(1));
         point2.setX(values.get(2) + center.getX());
@@ -128,7 +128,7 @@ public class Line extends InputModifiableFigure {
     }
 
     @Override
-    public Map<String, Double> getValuesForOutput(Point center) {
+    public Map<String, Double> getCoords(Point center) {
         Map<String, Double> map = new LinkedHashMap<>();
         map.put("X1", point1.getX() - center.getX());
         map.put("Y1", center.getY() - point1.getY());

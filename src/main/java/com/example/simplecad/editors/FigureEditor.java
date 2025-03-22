@@ -52,7 +52,7 @@ public class FigureEditor {
     }
 
     private void showCoords() {
-        Map<String, Double> prompts = ((InputModifiableFigure) figure).getValuesForOutput(center);
+        Map<String, Double> prompts = ((InputModifiableFigure) figure).getCoords(center);
         inputBuilder.setPrompts(figure.getName(), prompts, scale);
     }
 
@@ -73,7 +73,7 @@ public class FigureEditor {
             List<Double> values = inputBuilder.readInputValues().stream()
                     .map(value -> value * context.getScale())
                     .toList();
-            f.setValuesFromInputs(values, center);
+            f.setCoords(values, center);
         }
 
         figure.setThickness(inputBuilder.getThicknessValue());

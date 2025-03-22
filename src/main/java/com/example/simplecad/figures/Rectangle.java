@@ -147,14 +147,14 @@ public class Rectangle extends InputModifiableFigure {
     }
 
     @Override
-    public void setValuesFromInputs(List<Double> values, Point coordsCenter) {
+    public void setCoords(List<Double> values, Point coordsCenter) {
         setCenter(values.get(0) + coordsCenter.getX(), coordsCenter.getY() - values.get(1));
         setWidth(values.get(2));
         setHeight(values.get(3));
     }
 
     @Override
-    public Map<String, Double> getValuesForOutput(Point center) {
+    public Map<String, Double> getCoords(Point center) {
         Map<String, Double> map = new LinkedHashMap<>();
         map.put("Центр [X]", this.center.getX() - center.getX());
         map.put("Центр [Y]", center.getY() - this.center.getY());

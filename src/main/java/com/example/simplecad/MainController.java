@@ -10,6 +10,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -61,6 +63,7 @@ public class MainController {
         toolPanel = new ToolPanel(drawingContext);
 
         borderPane.setLeft(null);
+        borderPane.setOnKeyPressed(this::handleDeleteKey);
     }
 
     private void coordsSystemInit() {
@@ -272,5 +275,18 @@ public class MainController {
     @FXML
     private void saveFile() {
         new DXFWriter(workspace).save();
+    }
+
+    private void handleDeleteKey(KeyEvent event) {
+        if (event.getCode() == KeyCode.DELETE && !selectedFigures.isEmpty()) {
+            List<Figure> figuresToRemove = new LinkedList<>(selectedFigures);
+            
+            figuresToRemove.stream()
+                .filter(this::isValidFigure)
+                .forEach(figure -> workspace.getChildren().remove(figure));
+
+            selectedFigures.clear();
+            borderPane.setLeft(null);
+        }
     }
 }

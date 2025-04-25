@@ -132,6 +132,14 @@ public class Arc extends InputModifiableFigure {
         arc.getStrokeDashArray().addAll(lineType.getPattern(scale));
     }
 
+    @Override
+    public void setThickness(double thickness) {
+        super.setThickness(thickness);
+        arc.setStrokeWidth(thickness);
+        startPoint.setThickness(thickness + 1);
+        endPoint.setThickness(thickness + 1);
+    }
+
     private void setCenter(Point center) {
         arc.setCenterX(center.getX());
         arc.setCenterY(center.getY());

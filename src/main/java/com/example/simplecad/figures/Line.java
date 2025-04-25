@@ -143,6 +143,11 @@ public class Line extends InputModifiableFigure {
     }
 
     @Override
+    public String getDXFName() {
+        return "LINE";
+    }
+
+    @Override
     public void rotate(Point centralPoint, double angle) {
         point1.rotate(centralPoint, angle);
         point2.rotate(centralPoint, angle);

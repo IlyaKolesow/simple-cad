@@ -40,6 +40,29 @@ public class Rectangle extends InputModifiableFigure {
         build(point1, point2, point3, point4);
     }
 
+    public Rectangle(List<Point> points) {
+        Point point1 = points.get(0);
+        Point point2 = points.get(1);
+        Point point3 = points.get(2);
+        Point point4 = points.get(3);
+
+        width = Math.max(
+            Math.max(Math.abs(point1.getX() - point3.getX()), Math.abs(point2.getX() - point4.getX())),
+            Math.max(Math.abs(point1.getX() - point2.getX()), Math.abs(point3.getX() - point4.getX()))
+        );
+        
+        height = Math.max(
+            Math.max(Math.abs(point1.getY() - point3.getY()), Math.abs(point2.getY() - point4.getY())),
+            Math.max(Math.abs(point1.getY() - point2.getY()), Math.abs(point3.getY() - point4.getY()))
+        );
+        
+        double sumX = point1.getX() + point2.getX() + point3.getX() + point4.getX();
+        double sumY = point1.getY() + point2.getY() + point3.getY() + point4.getY();
+        center = new Point(sumX / 4, sumY / 4);
+        
+        build(point1, point2, point3, point4);
+    }
+
     private void build(Point point1, Point point2, Point point3, Point point4) {
         lines[0] = new Line(point1, point2);
         lines[1] = new Line(point2, point3);
@@ -169,9 +192,18 @@ public class Rectangle extends InputModifiableFigure {
     }
 
     @Override
+    public String getDXFName() {
+        return "POLYLINE";
+    }
+
+    @Override
     public void rotate(Point centralPoint, double angle) {
         for (Point point : points)
             point.rotate(centralPoint, angle);
         updateLines();
+    }
+
+    public Point[] getPoints() {
+        return points;
     }
 }

@@ -3,7 +3,8 @@ package com.example.simplecad;
 import com.example.simplecad.drawers.*;
 import com.example.simplecad.editors.FigureEditor;
 import com.example.simplecad.figures.*;
-import com.example.simplecad.filesaving.DXFWriter;
+import com.example.simplecad.dxf.DXFReader;
+import com.example.simplecad.dxf.DXFWriter;
 import com.example.simplecad.util.CustomCursor;
 import com.example.simplecad.util.DrawingContext;
 import javafx.event.EventHandler;
@@ -274,7 +275,14 @@ public class MainController {
 
     @FXML
     private void saveFile() {
-        new DXFWriter(workspace).save();
+        DXFWriter writer = new DXFWriter(drawingContext);
+        writer.save();
+    }
+
+    @FXML
+    private void openFile() {
+        DXFReader reader = new DXFReader(drawingContext);
+        reader.open();
     }
 
     private void handleDeleteKey(KeyEvent event) {

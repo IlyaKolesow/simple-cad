@@ -142,6 +142,22 @@ public class Arc extends InputModifiableFigure {
         arc.setRadiusY(radius);
     }
 
+    public Point getCenter() {
+        return center;
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public double getStartAngle() {
+        return arc.getStartAngle();
+    }
+
+    public double getLength() {
+        return arc.getLength();
+    }
+
     @Override
     public void setCoords(List<Double> values, Point coordsCenter) {
         double deltaX = values.get(0) + coordsCenter.getX() - this.center.getX();
@@ -160,6 +176,11 @@ public class Arc extends InputModifiableFigure {
     @Override
     public String getName() {
         return "ДУГА";
+    }
+
+    @Override
+    public String getDXFName() {
+        return "ARC";
     }
 
     @Override

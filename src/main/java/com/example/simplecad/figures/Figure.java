@@ -43,5 +43,6 @@ public abstract class Figure extends Group {
     public abstract void scale(double coef, Point cursorPosition);
     public abstract boolean isHover(double x, double y);
     public abstract String getName();
+    public abstract String getDXFName();
     public abstract void rotate(Point centralPoint, double angle);
 }

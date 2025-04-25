@@ -12,6 +12,7 @@
         <VBox>
             <MenuBar>
                 <Menu text="Файл">
+                    <MenuItem text="Открыть" onAction="#openFile"/>
                     <MenuItem text="Сохранить" onAction="#saveFile"/>
                 </Menu>
             </MenuBar>

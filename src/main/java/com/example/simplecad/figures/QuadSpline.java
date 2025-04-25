@@ -127,4 +127,9 @@ public class QuadSpline extends Spline {
     public String getName() {
         return "КВАДРАТИЧНЫЙ СПЛАЙН";
     }
+
+    @Override
+    public String getDXFName() {
+        return "SPLINE";
+    }
 }

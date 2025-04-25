@@ -76,6 +76,14 @@ public class Circle extends InputModifiableFigure {
         circle.setRadius(radius);
     }
 
+    public Point getCenter() {
+        return center;
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
     @Override
     public void setColor(Color color) {
         super.setColor(color);
@@ -111,6 +119,11 @@ public class Circle extends InputModifiableFigure {
     @Override
     public String getName() {
         return "ОКРУЖНОСТЬ";
+    }
+
+    @Override
+    public String getDXFName() {
+        return "CIRCLE";
     }
 
     @Override

@@ -32,6 +32,26 @@ public class Polygon extends InputModifiableFigure {
         build(mode, vertex);
     }
 
+    public Polygon(Point center, List<Point> pointsList) {
+        this.center = center;
+        this.n = pointsList.size();
+
+        this.lines = new Line[n];
+        this.points = new Point[n];
+
+        for (int i = 0; i < n; i++)
+            this.points[i] = pointsList.get(i);
+
+        for (int i = 0; i < n - 1; i++)
+            lines[i] = new Line(points[i], points[i + 1]);
+        lines[n - 1] = new Line(points[n - 1], points[0]);
+
+        this.R = getPointsDistance(center, points[0]);
+        this.r = R * Math.cos(Math.PI / n);
+
+        getChildren().addAll(lines);
+    }
+
     private void init(Point center, int n) {
         this.center = center;
         this.n = n;
@@ -171,9 +191,18 @@ public class Polygon extends InputModifiableFigure {
     }
 
     @Override
+    public String getDXFName() {
+        return "POLYLINE";
+    }
+
+    @Override
     public void rotate(Point centralPoint, double angle) {
         for (Point point : points)
             point.rotate(centralPoint, angle);
         updateLines();
+    }
+
+    public Point[] getPoints() {
+        return points;
     }
 }

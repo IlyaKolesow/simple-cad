@@ -32,6 +32,10 @@ public enum LineType {
                 .collect(Collectors.toList());
     }
 
+    public List<Double> getPattern() {
+        return pattern;
+    }
+
     public List<Double> getDashSpace() {
         if (name.equals("Сплошная"))
             return List.of();

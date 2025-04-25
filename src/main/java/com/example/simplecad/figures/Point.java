@@ -108,6 +108,11 @@ public class Point extends InputModifiableFigure {
     }
 
     @Override
+    public String getDXFName() {
+        return "POINT";
+    }
+
+    @Override
     public void rotate(Point centralPoint, double angle) {
         double distance = getPointsDistance(this, centralPoint);
         if (distance == 0)
